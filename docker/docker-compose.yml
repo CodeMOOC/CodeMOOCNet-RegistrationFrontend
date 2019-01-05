@@ -27,7 +27,7 @@ services:
     - "traefik.docker.network=web"
     - "traefik.protocol=http"
     - "traefik.port=5001"
-    - "traefik.frontend.rule=Host:codemooc.net;PathPrefix:/iscrizione"
+    - "traefik.frontend.rule=Host:codemooc.net;PathPrefixStrip:/iscrizione"
     - "traefik.frontend.entryPoints=http,https"
 
   codemooc-reg-db:

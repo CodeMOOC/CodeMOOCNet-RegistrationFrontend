@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CodeMooc.Web.Controllers {
 
-    [Route("iscrizione")]
+    [Route("")]
     public class RegisterController : ControllerBase {
 
         protected DatabaseManager Database { get; }
