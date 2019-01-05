@@ -1,0 +1,87 @@
+﻿@{
+    Layout = "Main";
+    ViewData["Title"] = "Iscrizione";
+}
+@model CodeMooc.Web.Model.RegistrationViewModel
+
+<div class="container">
+    <h1 class="text-center">Iscrizione</h1>
+
+    <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3">
+        <p>
+            God help us, we're in the hands of engineers. You really think you can fly that thing? We gotta burn the rain forest, dump toxic waste, pollute the air, and rip up the OZONE! 'Cause maybe if we screw up this planet enough, they won't want it anymore!
+        </p>
+
+        <p>
+            Eventually, you do plan to have dinosaurs on your dinosaur tour, right? Jaguar shark! So tell me - does it really exist? So you two dig up, dig up dinosaurs? Checkmate... Eventually, you do plan to have dinosaurs on your dinosaur tour, right? So you two dig up, dig up dinosaurs?
+        </p>
+
+        <form asp-controller="Register" asp-action="Process" method="post" class="form-horizontal" role="form">
+            <div class="form-group">
+                <label asp-for="Name">Nome</label>
+                <input asp-for="Name" class="form-control" autofocus />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Surname">Cognome</label>
+                <input asp-for="Surname" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email">Indirizzo e-mail</label>
+                <input asp-for="Email" class="form-control" />
+                <small class="text-muted">
+                    Se stai già partecipando (o intendi partecipare) al <a href="">crowdfunding di CodeMOOC.net</a>, assicurati di iscriverti utilizzando lo stesso indirizzo e-mail.
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Birthday">Data di nascita</label>
+                <input asp-for="Birthday" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Birthplace">Luogo di nascita</label>
+                <input asp-for="Birthplace" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PhoneNumber">Numero di telefono</label>
+                <input asp-for="PhoneNumber" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Password">Password</label>
+                <input asp-for="Password" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PasswordConfirm">Conferma Password</label>
+                <input asp-for="PasswordConfirm" class="form-control" />
+            </div>
+
+            <div class="form-check">
+                <input asp-for="IsTeacher" class="form-check-input" />
+                <label asp-for="IsTeacher" class="form-check-label">Spunta questa casella se sei un insegnante.</label>
+            </div>
+
+            <div class="form-check">
+                <input asp-for="HasAttendedMooc" class="form-check-input" />
+                <label asp-for="HasAttendedMooc" class="form-check-label">Spunta questa casella se hai concluso o hai partecipato ad un MOOC erogato dall’Università di Urbino sul coding.</label>
+            </div>
+
+            <div class="form-check">
+                <input asp-for="AcceptsConditions" class="form-check-input" />
+                <label asp-for="AcceptsConditions" class="form-check-label">Ho letto e accettato le condizioni.</label>
+            </div>
+
+            <div class="form-check">
+                <input asp-for="AcceptsGdpr" class="form-check-input" />
+                <label asp-for="AcceptsGdpr" class="form-check-label">Accetto l’informativa sulla privacy ed autorizzo il trattamento dei dati.</label>
+            </div>
+
+            <button id="submit" type="submit" value="submit" class="btn btn-primary btn-block">Iscriviti!</button>
+        </form>
+    </div>
+
+</div>
