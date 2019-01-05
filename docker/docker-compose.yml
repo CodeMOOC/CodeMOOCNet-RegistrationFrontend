@@ -1,0 +1,49 @@
+version: '3'
+volumes:
+  codemooc-reg-db:
+    external: true
+
+networks:
+  web:
+    external: true
+  codemooc-reg-backend:
+
+services:
+  codemooc-reg-web:
+    container_name: codemooc-reg-web
+    build: ../src/Web
+    depends_on:
+    - codemooc-reg-db
+    networks:
+    - web
+    - codemooc-reg-backend
+    env_file: config.env
+    expose:
+    - 5001
+    environment:
+    - ASPNETCORE_ENVIRONMENT=Development
+    labels:
+    - "traefik.enable=true"
+    - "traefik.docker.network=web"
+    - "traefik.protocol=http"
+    - "traefik.port=5001"
+    - "traefik.frontend.rule=Host:codemooc.net;PathPrefix:/iscrizione"
+    - "traefik.frontend.entryPoints=http,https"
+
+  codemooc-reg-db:
+    container_name: codemooc-reg-db
+    image: mysql:5.7
+    networks:
+    - codemooc-reg-backend
+    volumes:
+    - codemooc-reg-db:/var/lib/mysql:rw
+    env_file: config.env
+
+  codemooc-reg-db-client:
+    container_name: codemooc-reg-db-client
+    build: ../src/MysqlClient
+    depends_on:
+    - codemooc-reg-db
+    networks:
+    - codemooc-reg-backend
+    env_file: config.env
