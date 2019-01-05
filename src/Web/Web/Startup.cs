@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,16 @@ namespace CodeMooc.Web {
         public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
+            }
+
+            // Fix incoming base path for hosting behind proxy
+            string basePath = Environment.GetEnvironmentVariable("ASPNETCORE_BASEPATH");
+            if (!string.IsNullOrEmpty(basePath)) {
+                app.Use(async (context, next) =>
+                {
+                    context.Request.PathBase = basePath;
+                    await next.Invoke();
+                });
             }
 
             app.UseMvc();

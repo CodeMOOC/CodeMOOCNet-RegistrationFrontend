@@ -22,6 +22,7 @@ services:
     - 5001
     environment:
     - ASPNETCORE_ENVIRONMENT=Development
+    - ASPNETCORE_BASEPATH=/iscrizione
     labels:
     - "traefik.enable=true"
     - "traefik.docker.network=web"
