@@ -16,6 +16,7 @@ a:hover {
 h1 {
     text-transform: uppercase;
     font-weight: 600;
+    margin-bottom: 3rem;
 }
 
 .form-group label {
