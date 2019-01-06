@@ -164,9 +164,41 @@ namespace CodeMooc.Web.Controllers {
             return View("Confirm");
         }
 
-        [HttpPost("verifica")]
+        [HttpGet("verifica/{id}")]
         public IActionResult Validate([FromRoute] int id, [FromQuery] string secret) {
-            return Ok(false);
+            var user = (from r in Database.Context.Registrations
+                        where r.Id == id
+                        where r.ConfirmationTimestamp == null
+                        select r).SingleOrDefault();
+
+            if (user == null) {
+                Logger.LogInformation(LoggingEvents.Registration, "User #{0} not found", id);
+                return StatusCode(404);
+            }
+
+            if(!user.ConfirmationSecret.Equals(secret, StringComparison.InvariantCulture)) {
+                Logger.LogInformation(LoggingEvents.Registration, "Secrets do not match {0} != {1}", secret, user.ConfirmationSecret);
+                return StatusCode(404);
+            }
+
+            user.ConfirmationTimestamp = DateTime.UtcNow;
+            Database.Context.SaveChanges();
+
+            return View("Validated");
+        }
+
+        [HttpGet("mostra/{id}")]
+        public IActionResult Show([FromRoute] int id) {
+            var user = (from r in Database.Context.Registrations
+                        where r.Id == id
+                        select r).SingleOrDefault();
+
+            if (user == null) {
+                return StatusCode(404);
+            }
+
+            user.ConfirmationSecret = null; // Do not show confirmation secret! 🕵️‍
+            return Ok(user);
         }
 
     }
