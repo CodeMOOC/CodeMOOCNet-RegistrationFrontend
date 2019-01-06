@@ -26,6 +26,12 @@ h1 {
     margin-bottom: 0.7em;
 }
 
+input.input-validation-error {
+    background: #fefbfd;
+    border-color: #da0b0b;
+    border-width: 3px;
+}
+
 button {
     margin-bottom: 1em;
 }

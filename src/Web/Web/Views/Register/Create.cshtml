@@ -16,19 +16,21 @@
             Eventually, you do plan to have dinosaurs on your dinosaur tour, right? Jaguar shark! So tell me - does it really exist? So you two dig up, dig up dinosaurs? Checkmate... Eventually, you do plan to have dinosaurs on your dinosaur tour, right? So you two dig up, dig up dinosaurs?
         </p>
 
-        <form asp-controller="Register" asp-action="Process" method="post" class="form-horizontal" role="form">
+        <form asp-controller="Register" asp-action="Process" method="post" class="form-horizontal" role="form" asp-antiforgery="false">
             <div class="form-group">
-                <label asp-for="Name">Nome</label>
+                <label asp-for="Name">Nome *</label>
                 <input asp-for="Name" class="form-control" autofocus />
+                <span asp-validation-for="Name"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="Surname">Cognome</label>
+                <label asp-for="Surname">Cognome *</label>
                 <input asp-for="Surname" class="form-control" />
+                <span asp-validation-for="Surname"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="Email">Indirizzo e-mail</label>
+                <label asp-for="Email">Indirizzo e-mail *</label>
                 <input asp-for="Email" class="form-control" />
                 <small class="text-muted">
                     Se stai già partecipando (o intendi partecipare) al <a href="">crowdfunding di CodeMOOC.net</a>, assicurati di iscriverti utilizzando lo stesso indirizzo e-mail.
@@ -36,12 +38,12 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="Birthday">Data di nascita</label>
+                <label asp-for="Birthday">Data di nascita *</label>
                 <input asp-for="Birthday" class="form-control" />
             </div>
 
             <div class="form-group">
-                <label asp-for="Birthplace">Luogo di nascita</label>
+                <label asp-for="Birthplace">Luogo di nascita *</label>
                 <input asp-for="Birthplace" class="form-control" />
             </div>
 
@@ -51,12 +53,12 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="Password">Password</label>
+                <label asp-for="Password">Password *</label>
                 <input asp-for="Password" class="form-control" />
             </div>
 
             <div class="form-group">
-                <label asp-for="PasswordConfirm">Conferma Password</label>
+                <label asp-for="PasswordConfirm">Conferma Password *</label>
                 <input asp-for="PasswordConfirm" class="form-control" />
             </div>
 
@@ -73,11 +75,13 @@
             <div class="form-check">
                 <input asp-for="AcceptsConditions" class="form-check-input" />
                 <label asp-for="AcceptsConditions" class="form-check-label">Ho letto e accettato le condizioni.</label>
+                <span asp-validation-for="AcceptsConditions"></span>
             </div>
 
             <div class="form-check">
                 <input asp-for="AcceptsGdpr" class="form-check-input" />
                 <label asp-for="AcceptsGdpr" class="form-check-label">Accetto l’informativa sulla privacy ed autorizzo il trattamento dei dati.</label>
+                <span asp-validation-for="AcceptsGdpr"></span>
             </div>
 
             <button id="submit" type="submit" value="submit" class="btn btn-primary btn-block">Iscriviti!</button>

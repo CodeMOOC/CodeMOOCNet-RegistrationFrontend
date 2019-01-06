@@ -5,16 +5,16 @@ namespace CodeMooc.Web.Model {
 
     public class RegistrationViewModel {
 
-        [Required]
+        [Required(ErrorMessage = "Il nome deve essere valido")]
         [Display(Name = "Nome", Prompt = "Mario")]
         public string Name { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Il cognome deve essere valido")]
         [Display(Name = "Cognome", Prompt = "Rossi")]
         public string Surname { get; set; }
 
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "Inserire un indirizzo e-mail")]
+        [EmailAddress(ErrorMessage = "Inserire un indirizzo e-mail valido")]
         [Display(Name = "Indirizzo e-mail", Prompt = "mario.rossi@example.org")]
         public string Email { get; set; }
 
@@ -24,11 +24,11 @@ namespace CodeMooc.Web.Model {
         public DateTime Birthday { get; set; }
 
         [Required]
-        [Display(Name = "Luogo di nascita")]
+        [Display(Name = "Luogo di nascita", Prompt = "Urbino (PU)")]
         public string Birthplace { get; set; }
 
         [Phone]
-        [Display(Name = "Numero di telefono")]
+        [Display(Name = "Numero di telefono", Prompt = "+39 123 1234567")]
         public string PhoneNumber { get; set; }
 
         [Required]
@@ -39,6 +39,7 @@ namespace CodeMooc.Web.Model {
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Password di conferma")]
+        [Compare(nameof(Password), ErrorMessage = "La password non coincide")]
         public string PasswordConfirm { get; set; }
 
         public bool IsTeacher { get; set; }

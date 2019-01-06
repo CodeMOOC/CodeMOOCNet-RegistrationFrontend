@@ -28,13 +28,49 @@ namespace CodeMooc.Web.Controllers {
         }
 
         [HttpPost()]
-        [ValidateAntiForgeryToken]
         public IActionResult Process(RegistrationViewModel model) {
-            Logger.LogInformation(LoggingEvents.Registration, "Received registration request for email {0}", model.Email);
+            Logger.LogInformation(LoggingEvents.Registration, "Received registration request");
 
             if(!ModelState.IsValid) {
                 Logger.LogInformation(LoggingEvents.Registration, "Model binding failed");
+
                 return View("Create", model);
+            }
+
+            var existingRegistration = (from r in Database.Context.Registrations
+                                        where r.Email == model.Email.ToLowerInvariant()
+                                        select r).SingleOrDefault();
+            if (existingRegistration != null) {
+                Logger.LogInformation(LoggingEvents.Registration, "E-mail already registered");
+                ModelState.AddModelError(nameof(RegistrationViewModel.Email), "Indirizzo e-mail già registrato");
+
+                return View("Create", model);
+            }
+
+            var hashedPassword = BCrypt.Net.BCrypt.EnhancedHashPassword(model.Password);
+
+            Logger.LogDebug(LoggingEvents.Registration, "Password {0} is hashed to {1}, length {2}", model.Password, hashedPassword, hashedPassword.Length);
+
+            var user = new Data.Registration {
+                Name = model.Name.Trim(),
+                Surname = model.Surname.Trim(),
+                Email = model.Email.Trim().ToLowerInvariant(),
+                Birthday = model.Birthday,
+                Birthplace = model.Birthplace,
+                PhoneNumber = model.PhoneNumber,
+                PasswordSchema = "bcrypt.net",
+                PasswordHash = hashedPassword,
+                IsTeacher = model.IsTeacher,
+                HasAttendedMooc = model.HasAttendedMooc,
+                RegistrationTimestamp = DateTime.UtcNow,
+                ConfirmationSecret = "abc"
+            };
+            Database.Context.Registrations.Add(user);
+            int changes = Database.Context.SaveChanges();
+
+            if(changes != 1) {
+                Logger.LogError(LoggingEvents.Registration, "Database changes not equal to 1");
+                return StatusCode(500, "Database registration error");
             }
 
             return Ok(true);
