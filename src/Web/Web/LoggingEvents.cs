@@ -9,6 +9,8 @@ namespace CodeMooc.Web {
 
         public const int Registration = 2000;
 
+        public const int Email = 3000;
+
     }
 
 }

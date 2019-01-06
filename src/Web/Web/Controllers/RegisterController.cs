@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using CodeMooc.Web.Model;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +23,55 @@ namespace CodeMooc.Web.Controllers {
         ) {
             Database = database;
             Logger = logger;
+        }
+
+        private string GenerateSecret() {
+            var rnd = new Random();
+            byte[] buffer = new byte[10];
+            rnd.NextBytes(buffer);
+            return Convert.ToBase64String(buffer, Base64FormattingOptions.None).Substring(0, 10);
+        }
+
+        private async Task SendConfirmationEmail(Data.Registration user) {
+            string url = Url.Action(nameof(Validate), "Register", new { id = user.Id, secret = user.ConfirmationSecret });
+            string link = "http://codemooc.net" + url;
+
+            Logger.LogTrace(LoggingEvents.Email, "Destination URL {0}, final link {1}", url, link);
+
+            using (var client = new SmtpClient()) {
+                var credentials = new NetworkCredential(
+                    Environment.GetEnvironmentVariable("SMTP_USERNAME"),
+                    Environment.GetEnvironmentVariable("SMTP_PASSWORD")
+                );
+
+                client.EnableSsl = true;
+                client.Host = Environment.GetEnvironmentVariable("SMTP_HOST");
+                client.Port = Convert.ToInt32(Environment.GetEnvironmentVariable("SMTP_PORT"));
+                client.Credentials = credentials;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.Timeout = 5000;
+
+                Logger.LogTrace(LoggingEvents.Email, "SMTP host {0}:{1} username {2} SSL {3}", client.Host, client.Port, credentials.UserName, client.EnableSsl);
+
+                var noReplyAddress = new MailAddress("no-reply@codemooc.net", "CodeMOOC.net");
+                var msg = new MailMessage {
+                    From = noReplyAddress,
+                    Subject = "Verifica indirizzo e-mail",
+                    IsBodyHtml = false,
+                    Body = $"Ciao {user.Name}!\n\nGrazie per esserti registrato/a su CodeMOOC.net. Ti preghiamo di verificare il tuo indirizzo e-mai cliccando sul seguente link:\n{link}\n\nA presto!"
+                };
+                msg.To.Add(new MailAddress(user.Email, $"{user.Name} {user.Surname}"));
+                msg.ReplyToList.Add(noReplyAddress);
+
+                Logger.LogTrace(LoggingEvents.Email, "Sending e-mail");
+
+                try {
+                    await client.SendMailAsync(msg);
+                }
+                catch(Exception ex) {
+                    Logger.LogError(LoggingEvents.Email, ex, "Failed to send e-mail");
+                }
+            }
         }
 
         [HttpGet]
@@ -93,17 +144,20 @@ namespace CodeMooc.Web.Controllers {
                 HasAttendedMooc = model.HasAttendedMooc,
                 HasCompletedMooc = model.HasCompletedMooc,
                 RegistrationTimestamp = DateTime.UtcNow,
-                ConfirmationSecret = "abc"
+                ConfirmationSecret = GenerateSecret()
             };
             Database.Context.Registrations.Add(user);
             int changes = Database.Context.SaveChanges();
 
             if(changes != 1) {
-                Logger.LogError(LoggingEvents.Registration, "Database changes not equal to 1");
-                return StatusCode(500, "Database registration error");
+                throw new InvalidOperationException("Expected changes equal to 1 when registering user");
             }
 
-            return Ok(true);
+            SendConfirmationEmail(user).Forget();
+
+            // Confirmation view
+            ViewData["email"] = user.Email;
+            return View("Confirm");
         }
 
         [HttpPost("verifica")]
