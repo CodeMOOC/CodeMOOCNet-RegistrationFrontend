@@ -58,7 +58,7 @@ namespace CodeMooc.Web.Controllers {
                     From = noReplyAddress,
                     Subject = "Verifica indirizzo e-mail",
                     IsBodyHtml = false,
-                    Body = $"Ciao {user.Name}!\n\nGrazie per esserti registrato/a su CodeMOOC.net. Ti preghiamo di verificare il tuo indirizzo e-mai cliccando sul seguente link:\n{link}\n\nA presto!"
+                    Body = $"Ciao {user.Name} {user.Surname}!\n\nGrazie per esserti registrato/a su CodeMOOC.net. Ti preghiamo di verificare il tuo indirizzo e-mail cliccando sul seguente link:\n{link}\n\nA presto!\nCodeMOOC.net"
                 };
                 msg.To.Add(new MailAddress(user.Email, $"{user.Name} {user.Surname}"));
                 msg.ReplyToList.Add(noReplyAddress);
@@ -71,6 +71,8 @@ namespace CodeMooc.Web.Controllers {
                 catch(Exception ex) {
                     Logger.LogError(LoggingEvents.Email, ex, "Failed to send e-mail");
                 }
+
+                Logger.LogDebug(LoggingEvents.Email, "E-mail sent");
             }
         }
 
@@ -79,8 +81,8 @@ namespace CodeMooc.Web.Controllers {
             return View("Create");
         }
 
-        [HttpPost()]
-        public IActionResult Process(RegistrationViewModel model, [FromForm(Name = "g-recaptcha-response")] string recaptchaResponse) {
+        [HttpPost]
+        public async Task<IActionResult> Process(RegistrationViewModel model, [FromForm(Name = "g-recaptcha-response")] string recaptchaResponse) {
             Logger.LogInformation(LoggingEvents.Registration, "Received registration request");
 
             // Check e-mail
@@ -153,7 +155,7 @@ namespace CodeMooc.Web.Controllers {
                 throw new InvalidOperationException("Expected changes equal to 1 when registering user");
             }
 
-            SendConfirmationEmail(user).Forget();
+            await SendConfirmationEmail(user);
 
             // Confirmation view
             ViewData["email"] = user.Email;
