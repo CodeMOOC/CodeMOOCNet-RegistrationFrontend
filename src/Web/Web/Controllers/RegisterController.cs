@@ -88,6 +88,7 @@ namespace CodeMooc.Web.Controllers {
             // Check e-mail
             var existingMailUser = (from r in Database.Context.Registrations
                                     where r.Email == model.Email.ToLowerInvariant()
+                                    where r.ConfirmationTimestamp != null
                                     select r).SingleOrDefault();
             if (existingMailUser != null) {
                 Logger.LogInformation(LoggingEvents.Registration, "E-mail already registered");
@@ -97,6 +98,7 @@ namespace CodeMooc.Web.Controllers {
             // Check fiscal code
             var existingCodeUser = (from r in Database.Context.Registrations
                                     where r.FiscalCode == model.FiscalCode.ToUpperInvariant()
+                                    where r.ConfirmationTimestamp != null
                                     select r).SingleOrDefault();
             if (existingCodeUser != null) {
                 Logger.LogInformation(LoggingEvents.Registration, "Fiscal code already registered");
