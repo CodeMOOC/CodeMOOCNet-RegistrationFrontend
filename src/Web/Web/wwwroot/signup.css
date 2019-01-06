@@ -31,6 +31,11 @@ input.input-validation-error {
     border-color: #da0b0b;
     border-width: 3px;
 }
+span.field-validation-error {
+    display: block;
+    color: #da0b0b;
+    font-weight: 600;
+}
 
 button {
     margin-bottom: 1em;
@@ -38,6 +43,12 @@ button {
 
 .text-muted {
     color: rgb(172, 82, 138) !important;
+}
+
+hr {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    border-top: 2px #ca70a8 solid;
 }
 
 #logo {

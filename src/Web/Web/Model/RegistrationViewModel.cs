@@ -58,7 +58,8 @@ namespace CodeMooc.Web.Model {
         [Compare(nameof(Password), ErrorMessage = "La password non coincide")]
         public string PasswordConfirm { get; set; }
 
-        public string Category { get; set; }
+        [Required(ErrorMessage = "Devi specificare una categoria")]
+        public UserCategory Category { get; set; } = UserCategory.Teacher;
 
         public bool HasAttendedMooc { get; set; }
 

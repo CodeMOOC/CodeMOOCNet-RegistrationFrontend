@@ -80,7 +80,7 @@ namespace CodeMooc.Web.Controllers {
                 Email = model.Email.Trim().ToLowerInvariant(),
                 PasswordSchema = "bcrypt.net", // hard-coded to hash function
                 PasswordHash = hashedPassword,
-                Category = model.Category.ToLowerInvariant(),
+                Category = model.Category,
                 HasAttendedMooc = model.HasAttendedMooc,
                 HasCompletedMooc = model.HasCompletedMooc,
                 RegistrationTimestamp = DateTime.UtcNow,

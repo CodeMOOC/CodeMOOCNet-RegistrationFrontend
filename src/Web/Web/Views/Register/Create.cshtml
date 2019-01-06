@@ -113,7 +113,8 @@
 
             <div class="form-group">
                 <label asp-for="Category">Categoria</label>
-                <input asp-for="Category" class="form-control" />
+                <select asp-for="Category" asp-items="Html.GetEnumSelectList<CodeMooc.Web.UserCategory>()" class="form-control">
+                </select>
                 <span asp-validation-for="Category"></span>
             </div>
 

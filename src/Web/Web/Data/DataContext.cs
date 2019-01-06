@@ -30,6 +30,7 @@ namespace CodeMooc.Web.Data {
             modelBuilder.Entity<Registration>(e => {
                 e.HasKey(nameof(Registration.Id));
                 e.Property(nameof(Registration.Id)).ValueGeneratedOnAdd();
+                e.Property(nameof(Registration.Category)).HasConversion<string>();
                 e.Property(nameof(Registration.HasAttendedMooc)).HasConversion<int>();
                 e.Property(nameof(Registration.HasCompletedMooc)).HasConversion<int>();
             });

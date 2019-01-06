@@ -21,7 +21,7 @@ namespace CodeMooc.Web.Data {
         public string PasswordSchema { get; set; }
         public string PasswordHash { get; set; }
 
-        public string Category { get; set; }
+        public UserCategory Category { get; set; }
 
         public bool HasAttendedMooc { get; set; }
         public bool HasCompletedMooc { get; set; }

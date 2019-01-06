@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `CodeMoocNet`.`Registrations` (
   `Email` VARCHAR(512) NOT NULL COLLATE latin1_general_ci,
   `PasswordSchema` CHAR(10) NOT NULL,
   `PasswordHash` BINARY(70) NOT NULL,
-  `Category` VARCHAR(32) NOT NULL,
+  `Category` VARCHAR(16) NOT NULL,
   `HasAttendedMooc` BIT(1) DEFAULT b'0',
   `HasCompletedMooc` BIT(1) DEFAULT b'0',
   `RegistrationTimestamp` DATETIME NOT NULL,
