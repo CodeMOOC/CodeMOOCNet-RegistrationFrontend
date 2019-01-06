@@ -32,10 +32,22 @@ namespace CodeMooc.Web.Controllers {
         public IActionResult Process(RegistrationViewModel model, [FromForm(Name = "g-recaptcha-response")] string recaptchaResponse) {
             Logger.LogInformation(LoggingEvents.Registration, "Received registration request");
 
-            if (!ModelState.IsValid) {
-                Logger.LogInformation(LoggingEvents.Registration, "Model binding failed");
+            // Check e-mail
+            var existingMailUser = (from r in Database.Context.Registrations
+                                    where r.Email == model.Email.ToLowerInvariant()
+                                    select r).SingleOrDefault();
+            if (existingMailUser != null) {
+                Logger.LogInformation(LoggingEvents.Registration, "E-mail already registered");
+                ModelState.AddModelError(nameof(RegistrationViewModel.Email), "Indirizzo e-mail già registrato");
+            }
 
-                return View("Create", model);
+            // Check fiscal code
+            var existingCodeUser = (from r in Database.Context.Registrations
+                                    where r.FiscalCode == model.FiscalCode.ToUpperInvariant()
+                                    select r).SingleOrDefault();
+            if (existingCodeUser != null) {
+                Logger.LogInformation(LoggingEvents.Registration, "Fiscal code already registered");
+                ModelState.AddModelError(nameof(RegistrationViewModel.FiscalCode), "Codice fiscale già registrato");
             }
 
             // Check ReCaptcha
@@ -45,7 +57,7 @@ namespace CodeMooc.Web.Controllers {
             restReq.AddParameter("response", recaptchaResponse);
             restReq.AddParameter("secret", Environment.GetEnvironmentVariable("GOOGLE_RECAPTCHA_SECRET"));
             var recaptchaResult = rest.Execute<ReCaptchaResponse>(restReq);
-            if(!recaptchaResult.IsSuccessful || !recaptchaResult.Data.Success) {
+            if (!recaptchaResult.IsSuccessful || !recaptchaResult.Data.Success) {
                 Logger.LogWarning(LoggingEvents.Registration, "ReCaptcha verification failed");
                 ModelState.AddModelError("ReCaptcha", "Attiva il controllo anti-spam ReCaptcha");
 
@@ -53,17 +65,13 @@ namespace CodeMooc.Web.Controllers {
             }
             Logger.LogInformation(LoggingEvents.Registration, "ReCaptcha verification succeeded for hostname {0}", recaptchaResult.Data.Hostname);
 
-            //Check e-mail
-            var existingRegistration = (from r in Database.Context.Registrations
-                                        where r.Email == model.Email.ToLowerInvariant()
-                                        select r).SingleOrDefault();
-            if (existingRegistration != null) {
-                Logger.LogInformation(LoggingEvents.Registration, "E-mail already registered");
-                ModelState.AddModelError(nameof(RegistrationViewModel.Email), "Indirizzo e-mail già registrato");
+            if (!ModelState.IsValid) {
+                Logger.LogInformation(LoggingEvents.Registration, "Model binding failed");
 
                 return View("Create", model);
             }
 
+            // Proceed
             var hashedPassword = BCrypt.Net.BCrypt.EnhancedHashPassword(model.Password);
 
             Logger.LogDebug(LoggingEvents.Registration, "Password hashed to {0}, length {1}", hashedPassword, hashedPassword.Length);

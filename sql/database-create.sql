@@ -35,8 +35,9 @@ CREATE TABLE IF NOT EXISTS `CodeMoocNet`.`Registrations` (
   `ConfirmationTimestamp` DATETIME DEFAULT NULL,
   PRIMARY KEY (`ID`),
   INDEX `FullName_idx` (`Surname`, `Name`),
-  INDEX `Email_idx` (`Email`),
   INDEX `Address_idx` (`AddressCountry`, `AddressCity`),
+  INDEX `FiscalCode_idx` (`FiscalCode`),
+  INDEX `Email_idx` (`Email`),
   INDEX `RegistrationTimestamp_idx` (`RegistrationTimestamp`)
 )
 ENGINE = InnoDB;
