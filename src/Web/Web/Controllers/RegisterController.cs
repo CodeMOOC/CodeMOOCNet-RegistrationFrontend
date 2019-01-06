@@ -54,14 +54,19 @@ namespace CodeMooc.Web.Controllers {
             var user = new Data.Registration {
                 Name = model.Name.Trim(),
                 Surname = model.Surname.Trim(),
-                Email = model.Email.Trim().ToLowerInvariant(),
                 Birthday = model.Birthday,
                 Birthplace = model.Birthplace,
-                PhoneNumber = model.PhoneNumber,
-                PasswordSchema = "bcrypt.net",
+                FiscalCode = model.FiscalCode.ToUpperInvariant(),
+                AddressStreet = model.AddressStreet,
+                AddressCity = model.AddressCity,
+                AddressCap = model.AddressCap,
+                AddressCountry = model.AddressCountry,
+                Email = model.Email.Trim().ToLowerInvariant(),
+                PasswordSchema = "bcrypt.net", // hard-coded to hash function
                 PasswordHash = hashedPassword,
-                IsTeacher = model.IsTeacher,
+                Category = model.Category.ToLowerInvariant(),
                 HasAttendedMooc = model.HasAttendedMooc,
+                HasCompletedMooc = model.HasCompletedMooc,
                 RegistrationTimestamp = DateTime.UtcNow,
                 ConfirmationSecret = "abc"
             };

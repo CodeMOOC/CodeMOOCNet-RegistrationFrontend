@@ -29,16 +29,9 @@ namespace CodeMooc.Web.Data {
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.Entity<Registration>(e => {
                 e.HasKey(nameof(Registration.Id));
-                e.Property(nameof(Registration.Id)).HasColumnType("INT UNSIGNED").ValueGeneratedOnAdd();
-                e.Property(nameof(Registration.Name)).IsRequired();
-                e.Property(nameof(Registration.Surname)).IsRequired();
-                e.Property(nameof(Registration.Email)).IsRequired();
-                e.Property(nameof(Registration.Birthplace)).IsRequired();
-                e.Property(nameof(Registration.PasswordSchema)).IsRequired();
-                e.Property(nameof(Registration.PasswordHash)).IsRequired();
-                e.Property(nameof(Registration.ConfirmationSecret)).IsRequired();
-                e.Property(nameof(Registration.IsTeacher)).IsRequired().HasConversion<int>();
-                e.Property(nameof(Registration.HasAttendedMooc)).IsRequired().HasConversion<int>();
+                e.Property(nameof(Registration.Id)).ValueGeneratedOnAdd();
+                e.Property(nameof(Registration.HasAttendedMooc)).HasConversion<int>();
+                e.Property(nameof(Registration.HasCompletedMooc)).HasConversion<int>();
             });
         }
 

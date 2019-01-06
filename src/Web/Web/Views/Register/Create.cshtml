@@ -17,71 +17,150 @@
         </p>
 
         <form asp-controller="Register" asp-action="Process" method="post" class="form-horizontal" role="form" asp-antiforgery="false">
-            <div class="form-group">
-                <label asp-for="Name">Nome *</label>
-                <input asp-for="Name" class="form-control" autofocus />
-                <span asp-validation-for="Name"></span>
+            <div class="form-row">
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="Name">Nome *</label>
+                        <input asp-for="Name" class="form-control" autofocus />
+                        <span asp-validation-for="Name"></span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="Surname">Cognome *</label>
+                        <input asp-for="Surname" class="form-control" />
+                        <span asp-validation-for="Surname"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="Birthday">Data di nascita *</label>
+                        <input asp-for="Birthday" class="form-control" />
+                        <span asp-validation-for="Birthday"></span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="Birthplace">Luogo di nascita *</label>
+                        <input asp-for="Birthplace" class="form-control" />
+                        <span asp-validation-for="Birthplace"></span>
+                    </div>
+                </div>
             </div>
 
             <div class="form-group">
-                <label asp-for="Surname">Cognome *</label>
-                <input asp-for="Surname" class="form-control" />
-                <span asp-validation-for="Surname"></span>
+                <label asp-for="FiscalCode">Codice fiscale *</label>
+                <input asp-for="FiscalCode" class="form-control" />
+                <span asp-validation-for="FiscalCode"></span>
             </div>
+
+            <div class="form-group">
+                <label asp-for="AddressStreet">Indirizzo *</label>
+                <input asp-for="AddressStreet" class="form-control" />
+                <span asp-validation-for="AddressStreet"></span>
+            </div>
+
+            <div class="form-row">
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="AddressCap">CAP *</label>
+                        <input asp-for="AddressCap" class="form-control" />
+                        <span asp-validation-for="AddressCap"></span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="AddressCity">Città *</label>
+                        <input asp-for="AddressCity" class="form-control" />
+                        <span asp-validation-for="AddressCity"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="AddressCountry">Paese *</label>
+                <input asp-for="AddressCountry" class="form-control" />
+                <span asp-validation-for="AddressCountry"></span>
+            </div>
+
+            <hr />
 
             <div class="form-group">
                 <label asp-for="Email">Indirizzo e-mail *</label>
                 <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email"></span>
                 <small class="text-muted">
                     Se stai già partecipando (o intendi partecipare) al <a href="">crowdfunding di CodeMOOC.net</a>, assicurati di iscriverti utilizzando lo stesso indirizzo e-mail.
                 </small>
             </div>
 
             <div class="form-group">
-                <label asp-for="Birthday">Data di nascita *</label>
-                <input asp-for="Birthday" class="form-control" />
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Birthplace">Luogo di nascita *</label>
-                <input asp-for="Birthplace" class="form-control" />
-            </div>
-
-            <div class="form-group">
-                <label asp-for="PhoneNumber">Numero di telefono</label>
-                <input asp-for="PhoneNumber" class="form-control" />
-            </div>
-
-            <div class="form-group">
                 <label asp-for="Password">Password *</label>
                 <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="PasswordConfirm">Conferma Password *</label>
                 <input asp-for="PasswordConfirm" class="form-control" />
+                <span asp-validation-for="PasswordConfirm"></span>
             </div>
 
-            <div class="form-check">
-                <input asp-for="IsTeacher" class="form-check-input" />
-                <label asp-for="IsTeacher" class="form-check-label">Spunta questa casella se sei un insegnante.</label>
+            <hr />
+
+            <div class="form-group">
+                <label asp-for="Category">Categoria</label>
+                <input asp-for="Category" class="form-control" />
+                <span asp-validation-for="Category"></span>
             </div>
 
             <div class="form-check">
                 <input asp-for="HasAttendedMooc" class="form-check-input" />
-                <label asp-for="HasAttendedMooc" class="form-check-label">Spunta questa casella se hai concluso o hai partecipato ad un MOOC erogato dall’Università di Urbino sul coding.</label>
+                <label asp-for="HasAttendedMooc" class="form-check-label">Spunta questa casella se hai frequentato <b>CodeMOOC</b> o altri MOOC sul coding dell’Università di Urbino.</label>
+            </div>
+
+            <div class="form-check">
+                <input asp-for="HasCompletedMooc" class="form-check-input" />
+                <label asp-for="HasCompletedMooc" class="form-check-label">Spunta questa casella se hai concluso <b>CodeMOOC</b> o altri MOOC sul coding dell’Università di Urbino.</label>
+            </div>
+
+            <hr />
+
+            <div class="form-check">
+                <input asp-for="AcceptsStatute" class="form-check-input" />
+                <label asp-for="AcceptsStatute" class="form-check-label">Dichiaro di aver preso visione dello <a href="~/static/statuto-codemooc-net.pdf">Statuto</a> e mi impegno a rispettarlo.</label>
+                <span asp-validation-for="AcceptsStatute"></span>
+            </div>
+
+            <div class="form-check">
+                <input asp-for="AcceptsManifesto" class="form-check-input" />
+                <label asp-for="AcceptsManifesto" class="form-check-label">Dichiaro di impegnarmi a rispettare il <a href="http://paroleostili.com/manifesto/">Decalogo del Manifesto della Comunicazione</a> non Ostile.</label>
+                <span asp-validation-for="AcceptsManifesto"></span>
+            </div>
+
+            <div class="form-check">
+                <input asp-for="AcceptsProcess" class="form-check-input" />
+                <label asp-for="AcceptsProcess" class="form-check-label">Dichiaro di essere consapevole che la domanda di iscrizione verrà presa in carico solo dopo la conferma dell’indirizzo e-mail fornito, e che l’effettiva iscrizione avverrà a seguito della verifica del versamento di un contributo non inferiore ai 20&nbsp;Euro a beneficio del <a href="https://www.produzionidalbasso.com/project/codemooc-net/">progetto CODEMOOC&nbsp;NET</a>, effettuato specificando lo stesso indirizzo e-mail.</label>
+                <span asp-validation-for="AcceptsProcess"></span>
+            </div>
+
+            <div class="form-check">
+                <input asp-for="AcceptsPrivacy" class="form-check-input" />
+                <label asp-for="AcceptsPrivacy" class="form-check-label">Dichiaro di aver preso visione dell’informativa sul GDPR.</label>
+                <span asp-validation-for="AcceptsPrivacy"></span>
             </div>
 
             <div class="form-check">
                 <input asp-for="AcceptsConditions" class="form-check-input" />
-                <label asp-for="AcceptsConditions" class="form-check-label">Ho letto e accettato le condizioni.</label>
+                <label asp-for="AcceptsConditions" class="form-check-label">Autorizzo il trattamento dei dati forniti ai fini dell’iscrizione.</label>
                 <span asp-validation-for="AcceptsConditions"></span>
             </div>
 
-            <div class="form-check">
-                <input asp-for="AcceptsGdpr" class="form-check-input" />
-                <label asp-for="AcceptsGdpr" class="form-check-label">Accetto l’informativa sulla privacy ed autorizzo il trattamento dei dati.</label>
-                <span asp-validation-for="AcceptsGdpr"></span>
+            <div class="form-group">
+                <div class="g-recaptcha" data-sitekey="6LccN4cUAAAAAHkPVCGZLem-g6wo5b33InjSb6Ja" data-theme="dark"></div>
             </div>
 
             <button id="submit" type="submit" value="submit" class="btn btn-primary btn-block">Iscriviti!</button>
