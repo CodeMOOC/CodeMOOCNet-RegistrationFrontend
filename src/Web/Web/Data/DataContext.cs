@@ -27,16 +27,19 @@ namespace CodeMooc.Web.Data {
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
-            /*modelBuilder.Entity<Move>(e => {
-                e.HasKey(nameof(Move.Id));
-                e.Property(nameof(Move.Id)).HasColumnType("INT UNSIGNED").ValueGeneratedOnAdd();
-                e.Property(nameof(Move.AlexaSessionId)).IsRequired();
-                e.Property(nameof(Move.AlexaUserId)).IsRequired();
-                e.Property(nameof(Move.Coordinates)).HasColumnType("CHAR(2)").IsRequired();
-                e.Property(nameof(Move.Direction)).HasColumnType("CHAR(1)").IsRequired(false);
-                e.Property(nameof(Move.CreationTime)).IsRequired();
-                e.Property(nameof(Move.ReachedOn)).IsRequired(false);
-            });*/
+            modelBuilder.Entity<Registration>(e => {
+                e.HasKey(nameof(Registration.Id));
+                e.Property(nameof(Registration.Id)).HasColumnType("INT UNSIGNED").ValueGeneratedOnAdd();
+                e.Property(nameof(Registration.Name)).IsRequired();
+                e.Property(nameof(Registration.Surname)).IsRequired();
+                e.Property(nameof(Registration.Email)).IsRequired();
+                e.Property(nameof(Registration.Birthplace)).IsRequired();
+                e.Property(nameof(Registration.PasswordSchema)).IsRequired();
+                e.Property(nameof(Registration.PasswordHash)).IsRequired();
+                e.Property(nameof(Registration.ConfirmationSecret)).IsRequired();
+                e.Property(nameof(Registration.IsTeacher)).IsRequired().HasConversion<int>();
+                e.Property(nameof(Registration.HasAttendedMooc)).IsRequired().HasConversion<int>();
+            });
         }
 
         public override void Dispose() {

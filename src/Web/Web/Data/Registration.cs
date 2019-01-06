@@ -1,7 +1,9 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CodeMooc.Web.Data {
 
+    [Table("Registrations")]
     public class Registration {
 
         public int Id { get; set; }

@@ -13,7 +13,7 @@ USE `CodeMoocNet`;
 -- -----------------------------------------------------
 -- Table `CodyMaze`.`Moves`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `CodeMoocNet`.`Registration` (
+CREATE TABLE IF NOT EXISTS `CodeMoocNet`.`Registrations` (
   `ID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `Name` VARCHAR(256) NOT NULL,
   `Surname` VARCHAR(256) NOT NULL,
