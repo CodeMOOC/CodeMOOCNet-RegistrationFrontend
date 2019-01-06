@@ -47,6 +47,7 @@ namespace CodeMooc.Web.Controllers {
             var recaptchaResult = rest.Execute<ReCaptchaResponse>(restReq);
             if(!recaptchaResult.IsSuccessful || !recaptchaResult.Data.Success) {
                 Logger.LogWarning(LoggingEvents.Registration, "ReCaptcha verification failed");
+                ModelState.AddModelError("ReCaptcha", "Attiva il controllo anti-spam ReCaptcha");
 
                 return View("Create", model);
             }
