@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,6 +40,12 @@ namespace CodeMooc.Web {
                     await next.Invoke();
                 });
             }
+
+            app.UseRequestLocalization(o => {
+                o.AddSupportedCultures("it");
+                o.AddSupportedUICultures("it");
+                o.DefaultRequestCulture = new RequestCulture("it");
+            });
 
             app.UseMvc();
             app.UseStaticFiles("/static");
