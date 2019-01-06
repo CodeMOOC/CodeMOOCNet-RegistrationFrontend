@@ -17,7 +17,9 @@ services:
     networks:
     - web
     - codemooc-reg-backend
-    env_file: config.env
+    env_file:
+    - config.env
+    - secret.env
     expose:
     - 5001
     environment:

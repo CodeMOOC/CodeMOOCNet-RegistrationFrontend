@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CodeMooc.Web.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using RestSharp;
 
 namespace CodeMooc.Web.Controllers {
 
@@ -28,15 +29,30 @@ namespace CodeMooc.Web.Controllers {
         }
 
         [HttpPost()]
-        public IActionResult Process(RegistrationViewModel model) {
+        public IActionResult Process(RegistrationViewModel model, [FromForm(Name = "g-recaptcha-response")] string recaptchaResponse) {
             Logger.LogInformation(LoggingEvents.Registration, "Received registration request");
 
-            if(!ModelState.IsValid) {
+            if (!ModelState.IsValid) {
                 Logger.LogInformation(LoggingEvents.Registration, "Model binding failed");
 
                 return View("Create", model);
             }
 
+            // Check ReCaptcha
+            Logger.LogTrace(LoggingEvents.Registration, "Checking ReCaptcha token");
+            var rest = new RestClient("https://www.google.com/recaptcha/api/siteverify");
+            var restReq = new RestRequest(Method.POST);
+            restReq.AddParameter("response", recaptchaResponse);
+            restReq.AddParameter("secret", Environment.GetEnvironmentVariable("GOOGLE_RECAPTCHA_SECRET"));
+            var recaptchaResult = rest.Execute<ReCaptchaResponse>(restReq);
+            if(!recaptchaResult.IsSuccessful || !recaptchaResult.Data.Success) {
+                Logger.LogWarning(LoggingEvents.Registration, "ReCaptcha verification failed");
+
+                return View("Create", model);
+            }
+            Logger.LogInformation(LoggingEvents.Registration, "ReCaptcha verification succeeded for hostname {0}", recaptchaResult.Data.Hostname);
+
+            //Check e-mail
             var existingRegistration = (from r in Database.Context.Registrations
                                         where r.Email == model.Email.ToLowerInvariant()
                                         select r).SingleOrDefault();
@@ -49,7 +65,7 @@ namespace CodeMooc.Web.Controllers {
 
             var hashedPassword = BCrypt.Net.BCrypt.EnhancedHashPassword(model.Password);
 
-            Logger.LogDebug(LoggingEvents.Registration, "Password {0} is hashed to {1}, length {2}", model.Password, hashedPassword, hashedPassword.Length);
+            Logger.LogDebug(LoggingEvents.Registration, "Password hashed to {0}, length {1}", hashedPassword, hashedPassword.Length);
 
             var user = new Data.Registration {
                 Name = model.Name.Trim(),
