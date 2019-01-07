@@ -73,3 +73,14 @@ hr {
     background-color: rgb(202,112,168);
     border-color: rgb(202,112,168);
 }
+
+footer {
+    display: block;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+footer p {
+    font-size: 0.8rem;
+    color: rgb(172, 82, 138);
+}
