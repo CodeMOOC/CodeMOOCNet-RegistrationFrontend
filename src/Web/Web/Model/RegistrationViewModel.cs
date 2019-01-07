@@ -82,7 +82,10 @@ namespace CodeMooc.Web.Model {
         public bool AcceptsPrivacy { get; set; }
 
         [MustBeTrue(ErrorMessage = "Devi autorizzare il trattamento dei dati")]
-        public bool AcceptsConditions { get; set; }
+        public bool AcceptsTreatment { get; set; }
+
+        [MustBeTrue(ErrorMessage = "Devi autorizzare la comunicazione dei dati")]
+        public bool AcceptsCommunication { get; set; }
 
     }
 

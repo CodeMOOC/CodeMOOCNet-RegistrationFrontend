@@ -120,8 +120,7 @@
 
             <div class="form-group">
                 <label asp-for="Category">Categoria</label>
-                <select asp-for="Category" asp-items="Html.GetEnumSelectList<CodeMooc.Web.UserCategory>()" class="form-control">
-                </select>
+                <select asp-for="Category" asp-items="Html.GetEnumSelectList<CodeMooc.Web.UserCategory>()" class="form-control"></select>
                 <span asp-validation-for="Category"></span>
             </div>
 
@@ -157,14 +156,22 @@
 
             <div class="form-check">
                 <input asp-for="AcceptsPrivacy" class="form-check-input" />
-                <label asp-for="AcceptsPrivacy" class="form-check-label">Dichiaro di aver preso visione dell’informativa sul GDPR.</label>
+                <label asp-for="AcceptsPrivacy" class="form-check-label">Dichiaro di aver preso visione dell’<a href="~/static/informativa-privacy-codemooc-net.pdf">informativa sulla privacy</a>.</label>
                 <span asp-validation-for="AcceptsPrivacy"></span>
             </div>
 
+            <p>Alla luce dell’informativa ricevuta:</p>
+
             <div class="form-check">
-                <input asp-for="AcceptsConditions" class="form-check-input" />
-                <label asp-for="AcceptsConditions" class="form-check-label">Autorizzo il trattamento dei dati forniti ai fini dell’iscrizione.</label>
-                <span asp-validation-for="AcceptsConditions"></span>
+                <input asp-for="AcceptsTreatment" class="form-check-input" />
+                <label asp-for="AcceptsTreatment" class="form-check-label">Esprimo il consenso al trattamento dei propri dati personali inclusi quelli considerati come categorie particolari di dati,</label>
+                <span asp-validation-for="AcceptsTreatment"></span>
+            </div>
+
+            <div class="form-check">
+                <input asp-for="AcceptsCommunication" class="form-check-input" />
+                <label asp-for="AcceptsCommunication" class="form-check-label">Esprimo il consenso alla comunicazione dei propri dati personali per le finalità indicate nell’informativa.</label>
+                <span asp-validation-for="AcceptsCommunication"></span>
             </div>
 
             <div class="form-group">
