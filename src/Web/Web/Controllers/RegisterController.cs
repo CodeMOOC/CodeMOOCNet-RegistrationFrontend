@@ -68,7 +68,7 @@ namespace CodeMooc.Web.Controllers {
                 try {
                     await client.SendMailAsync(msg);
                 }
-                catch(Exception ex) {
+                catch (Exception ex) {
                     Logger.LogError(LoggingEvents.Email, ex, "Failed to send e-mail");
                 }
 
@@ -157,7 +157,7 @@ namespace CodeMooc.Web.Controllers {
             Database.Context.Registrations.Add(user);
             int changes = Database.Context.SaveChanges();
 
-            if(changes != 1) {
+            if (changes != 1) {
                 throw new InvalidOperationException("Expected changes equal to 1 when registering user");
             }
 
@@ -172,23 +172,53 @@ namespace CodeMooc.Web.Controllers {
         public IActionResult Validate([FromRoute] int id, [FromQuery] string secret) {
             var user = (from r in Database.Context.Registrations
                         where r.Id == id
+                        select r).SingleOrDefault();
+
+            if (user == null) {
+                Logger.LogInformation(LoggingEvents.Verification, "User #{0} not found", id);
+                return StatusCode(404);
+            }
+
+            if (user.ConfirmationTimestamp != null) {
+                Logger.LogDebug(LoggingEvents.Verification, "User {0} verified", id);
+                return View("Validated");
+            }
+
+            if (!user.ConfirmationSecret.Equals(secret, StringComparison.InvariantCulture)) {
+                Logger.LogInformation(LoggingEvents.Verification, "Secrets do not match {0} != {1}", secret, user.ConfirmationSecret);
+                return StatusCode(404);
+            }
+
+            Logger.LogDebug(LoggingEvents.Verification, "Returning verification page for user {0}", id);
+
+            ViewData["id"] = id;
+            ViewData["secret"] = secret;
+            return View("Validate");
+        }
+
+        [HttpPost("verifica/{id}")]
+        public IActionResult DoValidate([FromRoute] int id, [FromForm] string secret) {
+            var user = (from r in Database.Context.Registrations
+                        where r.Id == id
                         where r.ConfirmationTimestamp == null
                         select r).SingleOrDefault();
 
             if (user == null) {
-                Logger.LogInformation(LoggingEvents.Registration, "User #{0} not found", id);
+                Logger.LogInformation(LoggingEvents.Verification, "User #{0} not found", id);
                 return StatusCode(404);
             }
 
-            if(!user.ConfirmationSecret.Equals(secret, StringComparison.InvariantCulture)) {
-                Logger.LogInformation(LoggingEvents.Registration, "Secrets do not match {0} != {1}", secret, user.ConfirmationSecret);
+            if (!user.ConfirmationSecret.Equals(secret, StringComparison.InvariantCulture)) {
+                Logger.LogInformation(LoggingEvents.Verification, "Secrets do not match {0} != {1}", secret, user.ConfirmationSecret);
                 return StatusCode(404);
             }
 
             user.ConfirmationTimestamp = DateTime.UtcNow;
             Database.Context.SaveChanges();
 
-            return View("Validated");
+            Logger.LogInformation(LoggingEvents.Verification, "User {0} verified", id);
+
+            return RedirectToAction("Validate", new { id, secret });
         }
 
         [HttpGet("mostra/{id}")]

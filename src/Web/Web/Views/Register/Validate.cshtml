@@ -1,0 +1,17 @@
+﻿@{
+    Layout = "Main";
+    ViewData["Title"] = "Conferma iscrizione";
+}
+
+<div class="container">
+    <h1 class="text-center">Conferma iscrizione</h1>
+
+    <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3">
+        <p>Clicca il pulsante qui sotto per confermare la tua iscrizione a <b>CodeMOOC.net</b>:</p>
+
+        <form asp-action="DoValidate" asp-controller="Register" asp-route-id="@ViewData["id"]" asp-antiforgery="false" method="post" class="form-horizontal" role="form">
+            <input type="hidden" name="secret" value="@ViewData["secret"]" />
+            <button id="submit" type="submit" value="submit" class="btn btn-primary btn-block">Conferma!</button>
+        </form>
+    </div>
+</div>
