@@ -11,7 +11,7 @@ using RestSharp;
 
 namespace CodeMooc.Web.Controllers {
 
-    [Route("")]
+    [Route("iscrizione")]
     public class RegisterController : Controller {
 
         protected DatabaseManager Database { get; }

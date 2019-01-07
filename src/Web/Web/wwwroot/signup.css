@@ -17,6 +17,17 @@ h1 {
     text-transform: uppercase;
     font-weight: 600;
     margin-bottom: 3rem;
+    color: white;
+}
+
+h2 {
+    font-weight: 600;
+    color: white;
+}
+
+.article-label {
+    font-weight: 600;
+    color: white;
 }
 
 .form-group label {

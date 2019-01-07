@@ -24,13 +24,12 @@ services:
     - 5001
     environment:
     - ASPNETCORE_ENVIRONMENT=Development
-    - ASPNETCORE_BASEPATH=/iscrizione
     labels:
     - "traefik.enable=true"
     - "traefik.docker.network=web"
     - "traefik.protocol=http"
     - "traefik.port=5001"
-    - "traefik.frontend.rule=Host:codemooc.net;PathPrefixStrip:/iscrizione"
+    - "traefik.frontend.rule=Host:codemooc.net;PathPrefix:/iscrizione,/statuto,/static"
     - "traefik.frontend.entryPoints=http,https"
 
   codemooc-reg-db:
