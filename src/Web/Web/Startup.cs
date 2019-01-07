@@ -34,6 +34,7 @@ namespace CodeMooc.Web {
             // Fix incoming base path for hosting behind proxy
             string basePath = Environment.GetEnvironmentVariable("ASPNETCORE_BASEPATH");
             if (!string.IsNullOrEmpty(basePath)) {
+                app.UsePathBase(new PathString(basePath));
                 app.Use(async (context, next) =>
                 {
                     context.Request.PathBase = basePath;
