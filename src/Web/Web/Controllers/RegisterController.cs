@@ -86,23 +86,27 @@ namespace CodeMooc.Web.Controllers {
             Logger.LogInformation(LoggingEvents.Registration, "Received registration request");
 
             // Check e-mail
-            var existingMailUser = (from r in Database.Context.Registrations
-                                    where r.Email == model.Email.ToLowerInvariant()
-                                    where r.ConfirmationTimestamp != null
-                                    select r).SingleOrDefault();
-            if (existingMailUser != null) {
-                Logger.LogInformation(LoggingEvents.Registration, "E-mail already registered");
-                ModelState.AddModelError(nameof(RegistrationViewModel.Email), "Indirizzo e-mail già registrato");
+            if (!string.IsNullOrWhiteSpace(model.Email)) {
+                var existingMailUser = (from r in Database.Context.Registrations
+                                        where r.Email == model.Email.ToLowerInvariant()
+                                        where r.ConfirmationTimestamp != null
+                                        select r).SingleOrDefault();
+                if (existingMailUser != null) {
+                    Logger.LogInformation(LoggingEvents.Registration, "E-mail already registered");
+                    ModelState.AddModelError(nameof(RegistrationViewModel.Email), "Indirizzo e-mail già registrato");
+                }
             }
 
             // Check fiscal code
-            var existingCodeUser = (from r in Database.Context.Registrations
-                                    where r.FiscalCode == model.FiscalCode.ToUpperInvariant()
-                                    where r.ConfirmationTimestamp != null
-                                    select r).SingleOrDefault();
-            if (existingCodeUser != null) {
-                Logger.LogInformation(LoggingEvents.Registration, "Fiscal code already registered");
-                ModelState.AddModelError(nameof(RegistrationViewModel.FiscalCode), "Codice fiscale già registrato");
+            if (!string.IsNullOrWhiteSpace(model.FiscalCode)) {
+                var existingCodeUser = (from r in Database.Context.Registrations
+                                        where r.FiscalCode == model.FiscalCode.ToUpperInvariant()
+                                        where r.ConfirmationTimestamp != null
+                                        select r).SingleOrDefault();
+                if (existingCodeUser != null) {
+                    Logger.LogInformation(LoggingEvents.Registration, "Fiscal code already registered");
+                    ModelState.AddModelError(nameof(RegistrationViewModel.FiscalCode), "Codice fiscale già registrato");
+                }
             }
 
             // Check ReCaptcha
