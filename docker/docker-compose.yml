@@ -23,7 +23,7 @@ services:
     expose:
     - 5001
     environment:
-    - ASPNETCORE_ENVIRONMENT=Development
+    - ASPNETCORE_ENVIRONMENT=Production
     labels:
     - "traefik.enable=true"
     - "traefik.docker.network=web"
@@ -31,6 +31,7 @@ services:
     - "traefik.port=5001"
     - "traefik.frontend.rule=Host:codemooc.net;PathPrefix:/iscrizione,/statuto,/static"
     - "traefik.frontend.entryPoints=http,https"
+    - "traefik.frontend.redirect.entryPoint=https"
 
   codemooc-reg-db:
     container_name: codemooc-reg-db
