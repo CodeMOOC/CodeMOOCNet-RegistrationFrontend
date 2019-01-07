@@ -9,11 +9,15 @@
 
     <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3">
         <p>
-            God help us, we're in the hands of engineers. You really think you can fly that thing? We gotta burn the rain forest, dump toxic waste, pollute the air, and rip up the OZONE! 'Cause maybe if we screw up this planet enough, they won't want it anymore!
+            <b>CodeMOOC</b> è l’acronimo di un corso online aperto e gratuito che l’Università di Urbino eroga dal&nbsp;2016 per aiutare gli insegnanti ad introdurre il pensiero computazionale in classe attraverso la pratica del coding . CodeMOOC ha creato un modo nuovo di fare formazione, ha aperto un collegamento diretto tra università e scuola, ha offerto nuovi strumenti di cambiamento dal basso, ha favorito l’innovazione partendo dalle competenze, ha dato vita ad una comunità di apprendimento e di pratica che ad oggi coinvolge più di 30.000&nbsp;insegnanti e, per loro tramite, più di un milione di ragazzi.
+        </p>
+        
+        <p>
+            <b>CODEMOOC NET</b> nasce per riconoscere l’identità e il valore di questa comunità di pratica, per offrirle strumenti adeguati di confronto, di condivisione e di crescita, per ampliarne l’impatto sociale e culturale, per permetterle di autofinanziare lo sviluppo di strumenti e progetti utili a perseguirne le finalità. Tra questi: una rete di insegnanti con competenze ed esperienze certificate di coding a scuola, che possano essere facilmente rintracciate e messe a disposizione delle scuole che ne avvertano il bisogno, una rivista tematica open access che offra agli insegnanti che praticano il coding a scuola l’opportunità di documentare in modo rigoroso e condividere le proprie esperienze in forma di lesson plan, revisionati tra pari e validati da un comitato editoriale e da un comitato scientifico.
         </p>
 
         <p>
-            Eventually, you do plan to have dinosaurs on your dinosaur tour, right? Jaguar shark! So tell me - does it really exist? So you two dig up, dig up dinosaurs? Checkmate... Eventually, you do plan to have dinosaurs on your dinosaur tour, right? So you two dig up, dig up dinosaurs?
+            <b>CODEMOOC NET</b> è un’Assocazione di Promozione Sociale e Culturale senza scopo di lucro, aperta alla partecipazione di chiunque ne riconosca lo scopo e lo spirito.
         </p>
 
         <form asp-controller="Register" asp-action="Process" method="post" class="form-horizontal" role="form" asp-antiforgery="false">
@@ -21,14 +25,14 @@
             <h2>Anagrafica</h2>
 
             <div class="form-row">
-                <div class="col">
+                <div class="col-sm-6">
                     <div class="form-group">
                         <label asp-for="Name">Nome *</label>
                         <input asp-for="Name" class="form-control" autofocus />
                         <span asp-validation-for="Name"></span>
                     </div>
                 </div>
-                <div class="col">
+                <div class="col-sm-6">
                     <div class="form-group">
                         <label asp-for="Surname">Cognome *</label>
                         <input asp-for="Surname" class="form-control" />
@@ -38,14 +42,14 @@
             </div>
 
             <div class="form-row">
-                <div class="col">
+                <div class="col-sm-6">
                     <div class="form-group">
                         <label asp-for="Birthday">Data di nascita *</label>
                         <input asp-for="Birthday" class="form-control" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" />
                         <span asp-validation-for="Birthday"></span>
                     </div>
                 </div>
-                <div class="col">
+                <div class="col-sm-6">
                     <div class="form-group">
                         <label asp-for="Birthplace">Luogo di nascita *</label>
                         <input asp-for="Birthplace" class="form-control" />
@@ -98,7 +102,7 @@
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email"></span>
                 <small class="text-muted">
-                    Se stai già partecipando (o intendi partecipare) al <a href="">crowdfunding di CodeMOOC.net</a>, assicurati di iscriverti utilizzando lo stesso indirizzo e-mail.
+                    Se stai già partecipando (o intendi partecipare) al <a href="https://www.produzionidalbasso.com/project/codemooc-net/">crowdfunding di CodeMOOC.net</a>, assicurati di iscriverti utilizzando lo stesso indirizzo e-mail.
                 </small>
             </div>
 
@@ -138,7 +142,7 @@
 
             <div class="form-check">
                 <input asp-for="AcceptsStatute" class="form-check-input" />
-                <label asp-for="AcceptsStatute" class="form-check-label">Dichiaro di aver preso visione dello <a href="~/static/statuto-codemooc-net.pdf">Statuto</a> e mi impegno a rispettarlo.</label>
+                <label asp-for="AcceptsStatute" class="form-check-label">Dichiaro di aver preso visione dello <a href="@Url.Action("ShowStatute", "Static")">Statuto</a> e mi impegno a rispettarlo.</label>
                 <span asp-validation-for="AcceptsStatute"></span>
             </div>
 
@@ -164,13 +168,13 @@
 
             <div class="form-check">
                 <input asp-for="AcceptsTreatment" class="form-check-input" />
-                <label asp-for="AcceptsTreatment" class="form-check-label">Esprimo il consenso al trattamento dei propri dati personali inclusi quelli considerati come categorie particolari di dati,</label>
+                <label asp-for="AcceptsTreatment" class="form-check-label">Esprimo il consenso al trattamento dei miei dati personali inclusi quelli considerati come categorie particolari di dati,</label>
                 <span asp-validation-for="AcceptsTreatment"></span>
             </div>
 
             <div class="form-check">
                 <input asp-for="AcceptsCommunication" class="form-check-input" />
-                <label asp-for="AcceptsCommunication" class="form-check-label">Esprimo il consenso alla comunicazione dei propri dati personali per le finalità indicate nell’informativa.</label>
+                <label asp-for="AcceptsCommunication" class="form-check-label">Esprimo il consenso alla comunicazione dei miei dati personali per le finalità indicate nell’informativa.</label>
                 <span asp-validation-for="AcceptsCommunication"></span>
             </div>
 
