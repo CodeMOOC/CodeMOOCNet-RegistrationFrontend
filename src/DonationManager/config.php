@@ -1,0 +1,7 @@
+<?php
+/**
+ *
+ * configuration file template
+ *
+ */
+

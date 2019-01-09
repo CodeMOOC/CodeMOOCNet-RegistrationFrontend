@@ -4,3 +4,7 @@
 \.vs/
 *.csproj.user
 docker/secret.env
+composer.phar
+/src/DonationManager/vendor/*
+/src/DonationManager/config_local.php
+*.xlsx
