@@ -5,13 +5,13 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
--- Schema CodyMaze
+-- Schema CodeMoocNet
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `CodeMoocNet` DEFAULT CHARACTER SET utf8;
 USE `CodeMoocNet`;
 
 -- -----------------------------------------------------
--- Table `CodyMaze`.`Moves`
+-- Table `CodeMoocNet`.`Registrations`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `CodeMoocNet`.`Registrations` (
   `ID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS `CodeMoocNet`.`Registrations` (
   `FiscalCode` CHAR(16) NOT NULL COLLATE latin1_general_ci,
   `AddressStreet` VARCHAR(128) NOT NULL,
   `AddressCity` VARCHAR(64) NOT NULL,
-  `AddressCap` CHAR(6) NOT NULL COLLATE latin1_general_ci,
+  `AddressCap` CHAR(5) NOT NULL COLLATE latin1_general_ci,
   `AddressCountry` VARCHAR(64) NOT NULL,
   `Email` VARCHAR(512) NOT NULL COLLATE latin1_general_ci,
   `PasswordSchema` CHAR(10) NOT NULL,
@@ -33,12 +33,51 @@ CREATE TABLE IF NOT EXISTS `CodeMoocNet`.`Registrations` (
   `RegistrationTimestamp` DATETIME NOT NULL,
   `ConfirmationSecret` CHAR(10) NOT NULL,
   `ConfirmationTimestamp` DATETIME DEFAULT NULL,
+  
   PRIMARY KEY (`ID`),
   INDEX `FullName_idx` (`Surname`, `Name`),
   INDEX `Address_idx` (`AddressCountry`, `AddressCity`),
   INDEX `FiscalCode_idx` (`FiscalCode`),
   INDEX `Email_idx` (`Email`),
   INDEX `RegistrationTimestamp_idx` (`RegistrationTimestamp`)
+)
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `CodeMoocNet`.`Registrations`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `CodeMoocNet`.`Donations` (
+  `ID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Name` VARCHAR(128) NOT NULL,
+  `Surname` VARCHAR(128) NOT NULL,
+  `Email` VARCHAR(512) NOT NULL COLLATE latin1_general_ci,
+  `Date` DATETIME NOT NULL,
+  `Amount` SMALLINT UNSIGNED NOT NULL,
+
+  PRIMARY KEY (`ID`),
+  INDEX `FullName_idx` (`Surname`, `Name`),
+  INDEX `Email_idx` (`Email`),
+  INDEX `Date_idx` (`Date`)
+)
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `CodeMoocNet`.`Badges`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `CodeMoocNet`.`Badges` (
+  `DonationID` INT UNSIGNED NOT NULL,
+  `Type` VARCHAR(32) NOT NULL COLLATE latin1_general_ci,
+  `IssueTimestamp` DATETIME NOT NULL,
+  `EvidenceToken` VARCHAR(64) NOT NULL COLLATE latin1_general_ci,
+
+  PRIMARY KEY (`DonationID`, `Type`),
+  INDEX `Issue_idx` (`IssueTimestamp`),
+  INDEX `Lookup_idx` (`Type`, `EvidenceToken`),
+
+  FOREIGN KEY `DonationID_fk` (`DonationID`)
+    REFERENCES `Donations` (`ID`)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT
 )
 ENGINE = InnoDB;
 
