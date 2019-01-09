@@ -36,6 +36,11 @@ rebuild:
 	${DC} build web
 	${DC} up -d
 
+.PHONY: process-donations
+process-donations:
+	${DC} build donation-manager
+	${DC_RUN} donation-manager
+
 .PHONY: stop
 stop:
 	${DC} stop

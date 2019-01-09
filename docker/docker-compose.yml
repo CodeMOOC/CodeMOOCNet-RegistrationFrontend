@@ -48,3 +48,11 @@ services:
     networks:
     - codemooc-reg-backend
     env_file: config.env
+
+  donation-manager:
+    build: ../src/DonationManager
+    depends_on:
+    - db
+    networks:
+    - codemooc-reg-backend
+    env_file: config.env
