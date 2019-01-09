@@ -28,9 +28,10 @@ services:
     - "traefik.docker.network=web"
     - "traefik.protocol=http"
     - "traefik.port=5001"
-    - "traefik.frontend.rule=Host:codemooc.net;PathPrefix:/iscrizione,/statuto,/static"
+    - "traefik.frontend.rule=Host:codemooc.net;PathPrefix:/iscrizione,/statuto,/static,/badge"
     - "traefik.frontend.entryPoints=http,https"
     - "traefik.frontend.redirect.entryPoint=https"
+    - "traefik.frontend.priority=100"
 
   db:
     image: mysql:5.7
