@@ -47,17 +47,14 @@ ENGINE = InnoDB;
 -- Table `CodeMoocNet`.`Registrations`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `CodeMoocNet`.`Donations` (
-  `ID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `Name` VARCHAR(128) NOT NULL,
   `Surname` VARCHAR(128) NOT NULL,
   `Email` VARCHAR(512) NOT NULL COLLATE latin1_general_ci,
-  `Date` DATETIME NOT NULL,
+  `Year` YEAR(4) NOT NULL,
   `Amount` SMALLINT UNSIGNED NOT NULL,
 
-  PRIMARY KEY (`ID`),
-  INDEX `FullName_idx` (`Surname`, `Name`),
-  INDEX `Email_idx` (`Email`),
-  INDEX `Date_idx` (`Date`)
+  PRIMARY KEY (`Email`, `Year`),
+  INDEX `FullName_idx` (`Surname`, `Name`)
 )
 ENGINE = InnoDB;
 
@@ -65,19 +62,14 @@ ENGINE = InnoDB;
 -- Table `CodeMoocNet`.`Badges`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `CodeMoocNet`.`Badges` (
-  `DonationID` INT UNSIGNED NOT NULL,
+  `Email` VARCHAR(512) NOT NULL COLLATE latin1_general_ci,
   `Type` VARCHAR(32) NOT NULL COLLATE latin1_general_ci,
   `IssueTimestamp` DATETIME NOT NULL,
   `EvidenceToken` VARCHAR(64) NOT NULL COLLATE latin1_general_ci,
 
-  PRIMARY KEY (`DonationID`, `Type`),
+  PRIMARY KEY (`Email`, `Type`),
   INDEX `Issue_idx` (`IssueTimestamp`),
-  INDEX `Lookup_idx` (`Type`, `EvidenceToken`),
-
-  FOREIGN KEY `DonationID_fk` (`DonationID`)
-    REFERENCES `Donations` (`ID`)
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT
+  INDEX `Lookup_idx` (`Type`, `EvidenceToken`)
 )
 ENGINE = InnoDB;
 

@@ -38,6 +38,7 @@ rebuild:
 
 .PHONY: process-donations
 process-donations:
+	test -f donations.xlsx
 	${DC} build donation-manager
 	${DC_RUN} donation-manager
 

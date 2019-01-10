@@ -1,5 +1,5 @@
 <?php
-require_once '../config_local.php';
+require_once '../config.php';
 require '../models/donator.php';
 
 class DbConnection

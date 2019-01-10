@@ -1,6 +1,5 @@
 <?php
 require 'vendor/autoload.php';
-require_once 'config_local.php';
 
 /**
  * Class Authorization

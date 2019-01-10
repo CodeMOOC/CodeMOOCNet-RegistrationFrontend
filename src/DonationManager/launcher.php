@@ -5,8 +5,12 @@ require_once 'load_spreadsheet.php';
 require_once 'models/badges.php';
 require_once 'db/db_conn.php';
 
+echo "Starting donation processing now" . PHP_EOL;
+
 // Load spreadsheet data
 $donators = LoadSpreadsheet::loadData();
+
+echo "Loaded " . count($donators) . " donors" . PHP_EOL;
 
 // Connect to DB
 $conn = DbConnection::Connect();

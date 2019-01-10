@@ -15,7 +15,7 @@ class LoadSpreadsheet
         try {
             $reader = new Xlsx();
             //$spreadsheet = $reader->load('xlsx/progetto20543.xlsx');
-            $spreadsheet = $reader->load('xlsx/test.xlsx');
+            $spreadsheet = $reader->load('/data/donations.xlsx');
 
             $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
             $donators = [];
