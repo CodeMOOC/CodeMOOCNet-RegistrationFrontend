@@ -23,11 +23,28 @@ namespace CodeMooc.Web.Controllers {
 
         [HttpGet("{type}/criteri")]
         public IActionResult ShowCriteria([FromRoute] string type) {
-            if(!type.TryParseBadgeType(out BadgeType badgeType)) {
+            if (!type.TryParseBadgeType(out BadgeType badgeType)) {
                 return NotFound();
             }
 
             return View("Criteria", badgeType);
+        }
+
+        [HttpGet("{type}/evidence/{token}")]
+        public IActionResult ShowEvidence([FromRoute] string type, [FromRoute] string token) {
+            if (!type.TryParseBadgeType(out BadgeType badgeType)) {
+                return NotFound();
+            }
+
+            var badge = (from b in Database.Context.Badges
+                         where b.Type == badgeType
+                         where b.EvidenceToken == token
+                         select b).SingleOrDefault();
+            if(badge == null) {
+                return NotFound();
+            }
+
+            return Ok();
         }
 
     }

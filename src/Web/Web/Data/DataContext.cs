@@ -34,6 +34,15 @@ namespace CodeMooc.Web.Data {
                 e.Property(nameof(Registration.HasAttendedMooc)).HasConversion<int>();
                 e.Property(nameof(Registration.HasCompletedMooc)).HasConversion<int>();
             });
+
+            modelBuilder.Entity<Donation>(e => {
+                e.HasKey(nameof(Donation.Email), nameof(Donation.Year));
+            });
+
+            modelBuilder.Entity<Badge>(e => {
+                e.HasKey(nameof(Badge.Email), nameof(Badge.Type));
+                e.Property(nameof(Badge.Type)).HasConversion(BadgeTypeConverter.Create());
+            });
         }
 
         public override void Dispose() {
@@ -43,6 +52,8 @@ namespace CodeMooc.Web.Data {
         }
 
         public DbSet<Registration> Registrations { get; set; }
+        public DbSet<Donation> Donations { get; set; }
+        public DbSet<Badge> Badges { get; set; }
 
     }
 
