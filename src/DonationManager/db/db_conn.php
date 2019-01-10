@@ -43,20 +43,27 @@ class DbConnection
     /**
      * @param $conn PDO
      */
-    static function GetContributorsToAssociate($conn)
+    static function GetContributorsWithoutAssociationBadge($conn)
     {
         try {
             $sql = "SELECT Email 
-                    FROM Registrations 
-                    LEFT JOIN Badges
-                    ON Registrations.Email = Badges.Email
-                    WHERE Registrations.ConfirmationTimestamp IS NOT NULL;";
-
+                    FROM 
+                      (SELECT * 
+                      FROM Registrations 
+                      WHERE ConfirmationTimestamp IS NOT NULL) Registrations 
+                    LEFT JOIN Donations 
+                    ON Registrations.Email = Donations.Email
+                    LEFT JOIN Badges 
+                    ON Registrations.Email = Badges.Email;";
             $result = $conn->query($sql);
 
+            $contributors = [];
             while ($row = $result->fetch()) {
-                echo $row['Email']."<br />\n";
+                var_dump($row['Email']);
+                $contributors[] = $row;
             }
+
+            return $contributors;
         } catch(PDOException $e)
         {
             echo $sql . "<br>" . $e->getMessage();

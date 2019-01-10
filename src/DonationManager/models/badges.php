@@ -13,9 +13,9 @@ class Badges
 
     static function badgeList()
     {
-        return [self::ISCRIZIONE_2019 => self::IS_ASSOCIATION,
-                self::SOSTENITORE_2019 => self::IS_DONATION,
-                self::SOSTENITORE_GOLD_2019 => self::IS_DONATION,
-                self::DONATORE_SPONSOR_2019  => self::IS_DONATION];
+        return [self::ISCRIZIONE_2019 => ["type" => self::IS_ASSOCIATION, "name" => "CODEMOOC NET 2019"],
+                self::SOSTENITORE_2019 => ["type" => self::IS_DONATION, "name" => "SOSTENITORE 2019"],
+                self::SOSTENITORE_GOLD_2019 => ["type" => self::IS_DONATION, "name" => "SOSTENITORE GOLD 2019"],
+                self::DONATORE_SPONSOR_2019  => ["type" => self::IS_DONATION, "name" => "DONATORE SPONSOR 2019"]];
     }
 }

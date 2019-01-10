@@ -3,9 +3,13 @@ require_once 'assign_badge.php';
 require_once 'assign_badge_initializer.php';
 require_once 'load_spreadsheet.php';
 require_once 'models/badges.php';
+require_once 'db/db_conn.php';
 
 // Load spreadsheet data
 $donators = LoadSpreadsheet::loadData();
+
+// Connect to DB
+$conn = DbConnection::Connect();
 
 // Update donator DB
 // TODO
@@ -17,9 +21,17 @@ $donators = LoadSpreadsheet::loadData();
 //    return;
 //}
 
-foreach(Badges::badgeList() as $badge => $type)
+// Get list of users that have to receive association badge
+$associateUsers = DbConnection::GetContributorsWithoutAssociationBadge($conn);
+
+// Get list of users that haven't received a badge yet
+// TODO
+
+
+
+foreach(Badges::badgeList() as $badge => $info)
 {
-    if($type == Badges::IS_ASSOCIATION)
+    if($info["type"] == Badges::IS_ASSOCIATION)
     {
         // Assign association badge if necessary
         // TODO
