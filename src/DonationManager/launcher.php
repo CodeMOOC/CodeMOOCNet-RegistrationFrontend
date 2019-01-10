@@ -3,20 +3,32 @@ require_once 'assign_badge.php';
 require_once 'assign_badge_initializer.php';
 require_once 'load_spreadsheet.php';
 require_once 'models/badges.php';
-require_once 'db/db_conn.php';
+require_once 'db_conn.php';
+
+date_default_timezone_set('UTC');
 
 echo "Starting donation processing now" . PHP_EOL;
 
 // Load spreadsheet data
 $donators = LoadSpreadsheet::loadData();
-
 echo "Loaded " . count($donators) . " donors" . PHP_EOL;
 
-// Connect to DB
+// Start DB connection
 $conn = DbConnection::Connect();
+if(!$conn)
+    return;
 
 // Update donator DB
-// TODO
+foreach ($donators as $donator) {
+    echo "upserting user " . $donator->email . "..." . PHP_EOL;
+    DbConnection::InsertDonator($conn, $donator);
+}
+
+// Get list of users that have to receive association badge
+$associateUsers = DbConnection::GetContributorsWithoutAssociationBadge($conn);
+var_dump($associateUsers);
+if(!$associateUsers)
+    echo "No users to associate." . PHP_EOL;
 
 // Request badgr.io api token
 //$init = new AssignBadgeInitializer();
@@ -25,14 +37,11 @@ $conn = DbConnection::Connect();
 //    return;
 //}
 
-// Get list of users that have to receive association badge
-$associateUsers = DbConnection::GetContributorsWithoutAssociationBadge($conn);
-
 // Get list of users that haven't received a badge yet
 // TODO
 
 
-
+/*
 foreach(Badges::badgeList() as $badge => $info)
 {
     if($info["type"] == Badges::IS_ASSOCIATION)
@@ -46,7 +55,7 @@ foreach(Badges::badgeList() as $badge => $info)
         // TODO
     }
 }
-
+*/
 
 
 // Assign badges

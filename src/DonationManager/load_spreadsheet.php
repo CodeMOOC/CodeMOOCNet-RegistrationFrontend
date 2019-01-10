@@ -14,7 +14,6 @@ class LoadSpreadsheet
     {
         try {
             $reader = new Xlsx();
-            //$spreadsheet = $reader->load('xlsx/progetto20543.xlsx');
             $spreadsheet = $reader->load('/data/donations.xlsx');
 
             $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
@@ -22,7 +21,7 @@ class LoadSpreadsheet
 
             foreach ($sheetData as $row)
             {
-                if($row['A'] == 'Date' || empty($row['A']))
+                if($row['A'] == 'Data' || $row['A'] == 'Date' || empty($row['A']))
                     continue;
 
                 $donator = new Donator($row);
