@@ -26,20 +26,53 @@ class DbConnection
 
     /**
      * @param $conn mysqli
+     * @param $year string
+     * @return array|bool
      */
-    static function GetContributorsWithoutBadges($conn)
+    static function GetAllContributorsForYear($conn, $year)
     {
         try {
-            $sql = "SELECT Email 
-                    FROM Donations 
-                    LEFT JOIN Badges 
-                    ON Donations.ID = Badges.DonationID
-                    WHERE Badges.DonationID IS NULL;";
+            $sql = "SELECT *
+                    FROM Donations WHERE Year = '$year';";
+
             $result = $conn->query($sql);
 
+            $contributors = [];
+            if($result === false)
+                return false;
+
             while ($row = $result->fetch_assoc()) {
-                echo $row['Email']."<br />\n";
+                $contributors[] = $row;
             }
+
+            return $contributors;
+        } catch(Exception $e)
+        {
+            echo $sql . "<br>" . $e->getMessage();
+            return false;
+        }
+    }
+
+    /**
+     * @param $conn mysqli
+     * @param $email
+     * @param $type
+     * @return bool
+     */
+    static function GetContributorBadges($conn, $email, $type)
+    {
+        try {
+            $sql = "SELECT * 
+                    FROM Badges
+                    WHERE Email = '$email' 
+                    AND Type = '$type';";
+
+            $result = $conn->query($sql);
+
+            if($result->num_rows == 0)
+                return true;
+
+            return false;
         } catch (Exception $e)
         {
             echo $sql . "<br>" . $e->getMessage();
@@ -67,11 +100,11 @@ class DbConnection
             $result = $conn->query($sql);
 
             $contributors = [];
-            if(!$result)
+            if($result === false)
                 return false;
 
             while ($row = $result->fetch_assoc()) {
-                $contributors[] = $row;
+                $contributors[] = $row['Email'];
             }
 
             return $contributors;
@@ -110,14 +143,14 @@ class DbConnection
      * @param $badgeInfo
      * @return bool
      */
-    static function InsertAssignedBadge($conn, $badgeInfo)
+    static function InsertAssignedBadge($conn, $email, $token, $type)
     {
-        // TODO
         try {
-            //$sql = "INSERT INTO Badges (name, surname, email, date, donation)
-            //        VALUES ('$name', '$surname', '$email', '$date', $donation)";
-            // use exec() because no results are returned
-            //$conn->query($sql);
+            $date = date("Y-m-d H:i:s");
+            $sql = "INSERT INTO Badges (Email, Type, IssueTimestamp, EvidenceToken)
+                    VALUES ('$email', '$type', '$date', '$token')";
+
+            $conn->query($sql);
             return true;
         } catch(Exception $e)
         {

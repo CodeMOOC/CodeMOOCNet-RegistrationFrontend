@@ -18,8 +18,8 @@ class Authorization
             $response = $client->request("POST", $uri,
                 array(
                     'form_params' => [
-                        'username' => ISSUER_EMAIL,
-                        'password' => ISSUER_PASSWORD
+                        'username' => getenv('BADGR_ISSUER_EMAIL'),
+                        'password' => getenv('BADGR_ISSUER_PASSWORD')
                     ]
                 )
             );

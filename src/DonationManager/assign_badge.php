@@ -26,40 +26,49 @@ class AssignBadge
      */
     function issueBadge($email, $evidenceUrl, $badge)
     {
-        $recipient = [
-            'identity' => "$email",
-            'type' => 'email',
-            'hashed' => true
-        ];
-        $evidence = [
-            [ 'url' => "{$evidenceUrl}" ]
-        ];
+        try {
 
-        // Get cURL resource
-        $curl = curl_init();
 
-        curl_setopt_array($curl, array(
-            CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_URL => "https://api.badgr.io/v2/badgeclasses/$badge/assertions",
-            CURLOPT_POST => 1,
-            CURLOPT_POSTFIELDS => json_encode(array(
-                "recipient" => $recipient,
-                "evidence" => $evidence
-            ),JSON_UNESCAPED_SLASHES)
-        ));
-        $headers = [
-            "Content-Type: application/json",
-            "Authorization: Bearer $this->authToken"
-        ];
+            $recipient = [
+                'identity' => "$email",
+                'type' => 'email',
+                'hashed' => true
+            ];
+            $evidence = [
+                ['url' => "{$evidenceUrl}"]
+            ];
 
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+            // Get cURL resource
+            $curl = curl_init();
 
-        // Send the request & save response to $resp
-        $resp = curl_exec($curl);
+            curl_setopt_array($curl, array(
+                CURLOPT_RETURNTRANSFER => 1,
+                CURLOPT_URL => "https://api.badgr.io/v2/badgeclasses/$badge/assertions",
+                CURLOPT_POST => 1,
+                CURLOPT_POSTFIELDS => json_encode(array(
+                    "recipient" => $recipient,
+                    "evidence" => $evidence,
+                    'create_notification' => true
+                ), JSON_UNESCAPED_SLASHES)
+            ));
+            $headers = [
+                "Content-Type: application/json",
+                "Authorization: Bearer $this->authToken"
+            ];
 
-        // Close request to clear up some resources
-        curl_close($curl);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 
-        return $resp;
+            // Send the request & save response to $resp
+            $resp = curl_exec($curl);
+
+            // Close request to clear up some resources
+            curl_close($curl);
+
+            return $resp;
+        } catch (Exception $e)
+        {
+            echo "Error issuing badge: $e" . PHP_EOL;
+            return false;
+        }
     }
 }
