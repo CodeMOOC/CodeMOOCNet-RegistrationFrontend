@@ -61,6 +61,10 @@ namespace CodeMooc.Web {
             return BadgeDescriptions.ResourceManager.GetString(badgeType.ToString());
         }
 
+        public static string GetEvidence(this BadgeType badgeType) {
+            return BadgeEvidenceDescriptions.ResourceManager.GetString(badgeType.ToString());
+        }
+
     }
 
 }

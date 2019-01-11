@@ -37,6 +37,7 @@ namespace CodeMooc.Web.Data {
 
             modelBuilder.Entity<Donation>(e => {
                 e.HasKey(nameof(Donation.Email), nameof(Donation.Year));
+                e.Property(nameof(Donation.Year)).HasConversion(YearConverter.Create());
             });
 
             modelBuilder.Entity<Badge>(e => {

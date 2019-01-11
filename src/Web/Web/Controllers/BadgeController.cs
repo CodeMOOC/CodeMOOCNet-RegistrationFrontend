@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CodeMooc.Web.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -44,7 +45,21 @@ namespace CodeMooc.Web.Controllers {
                 return NotFound();
             }
 
-            return Ok();
+            var user = (from u in Database.Context.Donations
+                        where u.Email == badge.Email
+                        select u).FirstOrDefault();
+            if(user == null) {
+                Logger.LogError(LoggingEvents.Badges, "Donation for badge email {0} not found", badge.Email);
+                return NotFound();
+            }
+
+            return View("Evidence", new BadgeEvidenceViewModel {
+                Name = user.Name,
+                Surname = user.Surname,
+                Email = user.Email,
+                BadgeType = badge.Type,
+                IssueTimestamp = badge.IssueTimestamp
+            });
         }
 
     }

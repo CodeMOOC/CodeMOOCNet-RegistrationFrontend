@@ -21,13 +21,16 @@
   </ItemGroup>
   
   <ItemGroup>
+    <Compile Update="Resources\BadgeEvidenceDescriptions.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BadgeEvidenceDescriptions.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\BadgeNames.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>BadgeNames.resx</DependentUpon>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Update="Resources\BadgeDescriptions.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -36,6 +39,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Resources\BadgeEvidenceDescriptions.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>BadgeEvidenceDescriptions.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\BadgeNames.resx">
       <LastGenOutput>BadgeNames.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>

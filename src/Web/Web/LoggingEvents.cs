@@ -12,6 +12,8 @@ namespace CodeMooc.Web {
 
         public const int Email = 3000;
 
+        public const int Badges = 4000;
+
     }
 
 }
