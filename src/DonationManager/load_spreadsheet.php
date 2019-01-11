@@ -1,45 +1,43 @@
 <?php
-use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 require 'vendor/autoload.php';
+require_once 'models/badge_types.php';
+require_once 'models/donator.php';
 
-// Load spreadsheet data
-LoadSpreadsheet::loadData();
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 
 class LoadSpreadsheet
 {
+    /**
+     * @return array|bool
+     */
     static function loadData()
     {
         try {
             $reader = new Xlsx();
-            $spreadsheet = $reader->load('xlsx/progetto20543.xlsx');
+            //$spreadsheet = $reader->load('xlsx/progetto20543.xlsx');
+            $spreadsheet = $reader->load('xlsx/test.xlsx');
 
             $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+            $donators = [];
 
             foreach ($sheetData as $row)
-            {   $reward = "no_badge";
-                if(!empty($row['G']))
-                {
-                    switch ($row['G'])
-                    {
-                        case "Tesseramento e iscrizione":
-                            $reward = "badge_iscr";
-                            break;
-                        case "Sostenitore":
-                            $reward = "badge_sost";
-                            break;
-                        case "Sostenitore gold":
-                            $reward = "badge_gold";
-                            break;
-                        case "Donatore sponsor":
-                            $reward = "badge_spon";
-                            break;
-                    }
+            {
+                if($row['A'] == 'Date' || empty($row['A']))
+                    continue;
+
+                $donator = new Donator($row);
+                if(isset($donators[$donator->email])) {
+                    // aggregate data if user donated more than once
+                    $donator->donation = $donators[$donator->email]->donation + $donator->donation;
+                    $donator->date = $donators[$donator->email]->date;
                 }
-                echo $row['E'] . ": \t\t" . $row['G']  . "\t" . $row['H'] . " €" . "\t" . $reward .  PHP_EOL;
+                $donators[$donator->email] = $donator;
             }
+            return $donators;
         } catch
         (\PhpOffice\PhpSpreadsheet\Exception $ex) {
             echo $ex;
+            return false;
         }
     }
 }
