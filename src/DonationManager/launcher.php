@@ -128,8 +128,7 @@ function launchBadgeAssigner($assignBadge, $conn, $email, $badgeType)
         return;
     }
 
-    // TODO: switch path for production
-    $evidence = "https://botify.it/codemoocnetbeta/badge/$urlPath/evidence/$token";
+    $evidence = "https://codemooc.net/badge/$urlPath/evidence/$token";
     $result = $assignBadge->issueBadge($email, $evidence, $badgeType);
     if($result === false) {
         echo "Error assigning " . Badges::badgeList()[$badgeType]["name"] . " - " . $badgeType . "to $email" . PHP_EOL;

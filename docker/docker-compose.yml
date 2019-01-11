@@ -57,4 +57,6 @@ services:
     - codemooc-reg-backend
     volumes:
     - ../donations.xlsx:/data/donations.xlsx:ro
-    env_file: config.env
+    env_file:
+    - config.env
+    - secret.env
