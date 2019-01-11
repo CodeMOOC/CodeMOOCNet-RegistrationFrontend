@@ -8,11 +8,11 @@ export
 
 .PHONY: install
 install:
-	${DC_RUN} db-client -h db -u ${MYSQL_USER} -p${MYSQL_PASSWORD} ${MYSQL_DATABASE} < sql/database-create.sql
+	${DC_RUN} db-client mysql -h db -u ${MYSQL_USER} -p${MYSQL_PASSWORD} ${MYSQL_DATABASE} < sql/database-create.sql
 
 .PHONY: mysql
 mysql: up
-	${DC_RUN} db-client -h db -u ${MYSQL_USER} -p${MYSQL_PASSWORD} ${MYSQL_DATABASE}
+	${DC_RUN} db-client mysql -h db -u ${MYSQL_USER} -p${MYSQL_PASSWORD} ${MYSQL_DATABASE}
 
 .PHONY: up
 up:
@@ -40,7 +40,7 @@ rebuild:
 process-donations:
 	test -f donations.xlsx
 	${DC} build donation-manager
-	${DC_RUN} donation-manager
+	${DC_RUN} donation-manager php launcher.php
 
 .PHONY: stop
 stop:

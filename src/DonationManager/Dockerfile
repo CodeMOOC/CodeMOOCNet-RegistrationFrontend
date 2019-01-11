@@ -17,4 +17,4 @@ RUN composer install
 COPY *.php /code/
 COPY models /code/models
 
-CMD php launcher.php
+CMD ["true"]
