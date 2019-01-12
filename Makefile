@@ -22,12 +22,16 @@ cmd:
 	@echo '${DC}'
 
 .PHONY: install
-install:
+install: up
 	${DC_RUN} db-client mysql -h db -u ${MYSQL_USER} -p${MYSQL_PASSWORD} ${MYSQL_DATABASE} < sql/database-create.sql
 
 .PHONY: mysql
 mysql: up
 	${DC_RUN} db-client mysql -h db -u ${MYSQL_USER} -p${MYSQL_PASSWORD} ${MYSQL_DATABASE}
+
+.PHONY: dump
+dump: up
+	${DC_RUN} db-client mysqldump -h db -u ${MYSQL_USER} -p${MYSQL_PASSWORD} ${MYSQL_DATABASE} > dump.sql
 
 .PHONY: up
 up:
