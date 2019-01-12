@@ -1,0 +1,16 @@
+version: '3'
+volumes:
+  codemooc-reg-db-beta:
+    external: true
+
+services:
+  web:
+    environment:
+    - ASPNETCORE_ENVIRONMENT=Development
+    - ASPNETCORE_BASEPATH=/codemoocnetbeta
+    labels:
+    - "traefik.frontend.rule=Host:botify.it;PathPrefix:/codemoocnetbeta"
+
+  db:
+    volumes:
+    - codemooc-reg-db-beta:/var/lib/mysql:rw

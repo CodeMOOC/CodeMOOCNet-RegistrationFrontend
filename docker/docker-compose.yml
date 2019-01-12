@@ -1,8 +1,4 @@
 version: '3'
-volumes:
-  codemooc-reg-db:
-    external: true
-
 networks:
   web:
     external: true
@@ -21,14 +17,11 @@ services:
     - secret.env
     expose:
     - 5001
-    environment:
-    - ASPNETCORE_ENVIRONMENT=Production
     labels:
     - "traefik.enable=true"
     - "traefik.docker.network=web"
     - "traefik.protocol=http"
     - "traefik.port=5001"
-    - "traefik.frontend.rule=Host:codemooc.net;PathPrefix:/iscrizione,/statuto,/static,/badge"
     - "traefik.frontend.entryPoints=http,https"
     - "traefik.frontend.redirect.entryPoint=https"
     - "traefik.frontend.priority=100"
@@ -37,8 +30,6 @@ services:
     image: mysql:5.7
     networks:
     - codemooc-reg-backend
-    volumes:
-    - codemooc-reg-db:/var/lib/mysql:rw
     env_file: config.env
 
   db-client:

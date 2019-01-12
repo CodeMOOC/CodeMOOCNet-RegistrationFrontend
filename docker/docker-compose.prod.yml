@@ -1,0 +1,15 @@
+version: '3'
+volumes:
+  codemooc-reg-db:
+    external: true
+
+services:
+  web:
+    environment:
+    - ASPNETCORE_ENVIRONMENT=Production
+    labels:
+    - "traefik.frontend.rule=Host:codemooc.net;PathPrefix:/iscrizione,/statuto,/static,/badge"
+
+  db:
+    volumes:
+    - codemooc-reg-db:/var/lib/mysql:rw
