@@ -10,6 +10,7 @@ RUN apk add --no-cache freetype libpng libjpeg-turbo freetype-dev libpng-dev lib
 
 # Compose dependencies
 COPY composer.json /code/composer.json
+COPY composer.lock /code/composer.lock
 WORKDIR /code
 RUN composer install
 
