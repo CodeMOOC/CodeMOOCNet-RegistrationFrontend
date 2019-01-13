@@ -12,6 +12,13 @@ class Authorization
      */
     function auth($client)
     {
+        if(empty(getenv('BADGR_ISSUER_EMAIL')) || empty(getenv('BADGR_ISSUER_PASSWORD'))) {
+            return array(
+                "success" => false,
+                "message" => "Badgr.io email or password unset"
+            );
+        }
+
         try {
             $uri = 'o/token';
             $response = null;
@@ -31,10 +38,12 @@ class Authorization
             return ["success" => true,
                 "token" => $json['access_token']];
 
-        } catch (GuzzleHttp\Exception\GuzzleException $guzzEx) {
+        } catch (GuzzleHttp\Exception\GuzzleException $guzzEx)
+        {
             return ["success" => false,
                 "message" => $guzzEx];
-        } catch (Exception $e) {
+        } catch (Exception $e)
+        {
             return ["success" => false,
                 "message" => $e];
         }

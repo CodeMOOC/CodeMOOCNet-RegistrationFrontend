@@ -1,5 +1,6 @@
 <?php
-require 'vendor/autoload.php';
+require(dirname(__FILE__) . '/vendor/autoload.php');
+require_once(dirname(__FILE__) . '/auth.php');
 
 class AssignBadge
 {
@@ -8,14 +9,31 @@ class AssignBadge
      */
     public $authToken;
 
+    public function isDryRun() {
+        return ($this->authToken == null || empty($this->authToken));
+    }
+
     /**
      * AssignBadge constructor.
      * @param $client GuzzleHttp\Client
      * @param $token string
      */
-    public function __construct($token)
+    public function __construct()
     {
-        $this->authToken = $token;
+        $cl = new GuzzleHttp\Client(['base_uri' => 'https://api.badgr.io/', 'verify' => false]);
+
+        $authorization = new Authorization();
+        $auth = $authorization->auth($cl);
+
+        if ($auth["success"])
+        {
+            $this->client = $cl;
+            $this->authToken = $auth["token"];
+        }
+        else
+        {
+            echo $auth["message"] . PHP_EOL;
+        }
     }
 
     /**
@@ -26,9 +44,11 @@ class AssignBadge
      */
     function issueBadge($email, $evidenceUrl, $badge)
     {
+        if($this->isDryRun()) {
+            return true;
+        }
+
         try {
-
-
             $recipient = [
                 'identity' => "$email",
                 'type' => 'email',
@@ -65,7 +85,8 @@ class AssignBadge
             curl_close($curl);
 
             return $resp;
-        } catch (Exception $e)
+        }
+        catch (Exception $e)
         {
             echo "Error issuing badge: $e" . PHP_EOL;
             return false;
