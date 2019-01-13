@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `CodeMoocNet`.`Registrations` (
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `CodeMoocNet`.`Registrations`
+-- Table `CodeMoocNet`.`Donations`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `CodeMoocNet`.`Donations` (
   `Name` VARCHAR(128) NOT NULL,
