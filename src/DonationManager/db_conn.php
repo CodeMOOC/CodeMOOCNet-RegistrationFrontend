@@ -145,4 +145,34 @@ class DbConnection
             return false;
         }
     }
+
+    static function GetBadgesToRetract($conn)
+    {
+        try {
+            $sql = "SELECT Badges.Email, Badges.Type, Donations.Amount FROM Badges LEFT OUTER JOIN Donations ON Badges.Email = Donations.Email WHERE Donations.Amount IS NULL OR Donations.Amount < CASE Badges.Type
+                WHEN 'Iscrizione2019' THEN 20
+                WHEN 'Sostenitore2019' THEN 50
+                WHEN 'SostenitoreGold2019' THEN 100
+                WHEN 'DonatoreSponsor2019' THEN 1000
+                ELSE 0
+            END";
+
+            $result = $conn->query($sql);
+
+            if($result === false)
+                return false;
+
+            $contributors = [];
+            while ($row = $result->fetch_array()) {
+                $contributors[] = $row;
+            }
+
+            return $contributors;
+        }
+        catch(Exception $e)
+        {
+            die("Failed to get badges to retract: " . $e->getMessage());
+            return false;
+        }
+    }
 }

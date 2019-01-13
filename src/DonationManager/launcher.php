@@ -80,6 +80,17 @@ foreach ($donors as $donor)
 
     launchBadgeAssigner($assignBadge, $conn, $donorEmail, $badgeType);
 }
+echo "...done." . PHP_EOL;
+
+echo "Safety check for badges to retract... ";
+$retractList = DbConnection::GetBadgesToRetract($conn);
+echo count($retractList) . " to delete found." . PHP_EOL;
+foreach($retractList as $retract)
+{
+    echo $retract[0] . ", " . $retract[1] . PHP_EOL;
+}
+
+echo "All done." . PHP_EOL;
 
 /**
  * @param $assignBadge AssignBadge
