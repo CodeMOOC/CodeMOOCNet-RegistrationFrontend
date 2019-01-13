@@ -32,8 +32,7 @@ class DbConnection
     static function GetAllContributorsForYear($conn, $year)
     {
         try {
-            $sql = "SELECT *
-                    FROM Donations WHERE Year = '$year';";
+            $sql = "SELECT Email, Amount FROM Donations WHERE Year = '$year';";
 
             $result = $conn->query($sql);
 
@@ -87,16 +86,7 @@ class DbConnection
     static function GetContributorsWithoutAssociationBadge($conn)
     {
         try {
-            $sql = "SELECT Registrations.Email 
-                    FROM 
-                      (SELECT * 
-                      FROM Registrations 
-                      WHERE ConfirmationTimestamp IS NOT NULL) Registrations 
-                    LEFT JOIN Donations 
-                    ON Registrations.Email = Donations.Email
-                    LEFT JOIN Badges 
-                    ON Registrations.Email = Badges.Email
-                    WHERE Badges.Email IS NULL;";
+            $sql = "SELECT Registrations.Email FROM Registrations LEFT OUTER JOIN Donations ON Registrations.Email = Donations.Email WHERE Registrations.ConfirmationTimestamp IS NOT NULL AND Donations.Amount >= 20 AND Registrations.Email NOT IN (SELECT Badges.Email FROM Badges WHERE Badges.Type = 'Iscrizione2019');";
             $result = $conn->query($sql);
 
             $contributors = [];
@@ -123,11 +113,8 @@ class DbConnection
     static function InsertDonator($conn, $donator)
     {
         try {
-            $sql = "INSERT INTO Donations (Name, Surname, Email, Year, Amount)
-                    VALUES ('$donator->name', '$donator->surname', '$donator->email', '". date("Y") . "', $donator->donation)
-                    ON DUPLICATE KEY UPDATE 
-                      Year = '" . date("Y") . "', 
-                      Amount = $donator->donation;";
+            $sql = "REPLACE INTO Donations (Name, Surname, Email, Year, Amount)
+                    VALUES ('$donator->name', '$donator->surname', '$donator->email', '". date("Y") . "', $donator->donation);";
 
             $result = $conn->query($sql);
             return true;

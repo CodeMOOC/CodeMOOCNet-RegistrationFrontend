@@ -26,73 +26,58 @@ if($assignBadge->isDryRun()) {
     echo "PERFORMING DRY RUN (will not assign badges)" . PHP_EOL;
 }
 
-// Update donator DB
+// Update donor DB
+echo "Updating donor DB... ";
+$donorUpsertCount = 0;
 foreach ($donators as $donator) {
-    echo "upserting user " . $donator->email . "..." . PHP_EOL;
     DbConnection::InsertDonator($conn, $donator);
+    $donorUpsertCount++;
 }
+echo "$donorUpsertCount processed." . PHP_EOL;
 
 // Get list of users that have to receive association badge
 $associateUsers = DbConnection::GetContributorsWithoutAssociationBadge($conn);
-echo "Found " . count($associateUsers) . " donors without association badge" . PHP_EOL;
+echo "Found " . count($associateUsers) . " donors without association badge..." . PHP_EOL;
 
-
-if(!$associateUsers)
-    echo "No users to associate." . PHP_EOL;
-else
+foreach($associateUsers as $email)
 {
-    /***************************/
-    /* Send association badges */
-    /***************************/
-    echo "Launching badge assigner for users..." . PHP_EOL;
-    foreach($associateUsers as $email)
-    {
-        $badgeType = Badges::ISCRIZIONE_2019;
-        launchBadgeAssigner($assignBadge, $conn, $email, $badgeType);
-    }
+    $badgeType = Badges::ISCRIZIONE_2019;
+    launchBadgeAssigner($assignBadge, $conn, $email, $badgeType);
 }
+echo "...done." . PHP_EOL;
 
 // Get all donations
 $donors = DbConnection::GetAllContributorsForYear($conn, "2019");
 if($donors === false)
 {
-    echo "Couldn't get donors list. " . PHP_EOL;
+    die("Couldn't get donor list");
     return;
 }
 
+echo "Processing " . count($donors) . " donors for badges..." . PHP_EOL;
 foreach ($donors as $donor)
 {
-    echo "Checking badges for " . $donor['Email'] . ", amount: " . $donor['Amount'] . PHP_EOL;
-
     // Get donation type
     $amount = $donor['Amount'];
     $donorEmail = $donor['Email'];
-    $badgeType = "";
-    if($amount >= 50 && $amount < 100)
-        $badgeType = Badges::SOSTENITORE_2019;
-    else if ($amount >= 100 && $amount < 1000)
-        $badgeType = Badges::SOSTENITORE_GOLD_2019;
-    else if ($amount >= 1000)
-        $badgeType = Badges::DONATORE_SPONSOR_2019;
-
-    // Assign badge
-    if(empty($badgeType) || $badgeType == "" || $badgeType == null)
-    {
-        echo "User can't receive a badge. " . PHP_EOL;
+    
+    if($amount < 50) {
         continue;
+    }
+    $badgeType = Badges::SOSTENITORE_2019;
+    if($amount >= 100) {
+        $badgeType = Badges::SOSTENITORE_GOLD_2019;
+    }
+    else if($amount >= 1000) {
+        $badgeType = Badges::DONATORE_SPONSOR_2019;
     }
 
     $query = DbConnection::GetContributorBadges($conn, $donorEmail, Badges::badgeList()[$badgeType]['name']);
     if($query === false)
     {
-        echo "User Badge already sent." . PHP_EOL;
         continue;
     }
 
-    /************************/
-    /* Send donation badges */
-    /************************/
-    echo "Assigning " . Badges::badgeList()[$badgeType]['name'] . " badge to $donorEmail" . PHP_EOL;
     launchBadgeAssigner($assignBadge, $conn, $donorEmail, $badgeType);
 }
 
@@ -129,11 +114,11 @@ function launchBadgeAssigner($assignBadge, $conn, $email, $badgeType)
     $evidence = "https://codemooc.net/badge/$urlPath/evidence/$token";
     $result = $assignBadge->issueBadge($email, $evidence, $badgeType);
     if($result === false) {
-        echo "Error assigning " . Badges::badgeList()[$badgeType]["name"] . " - " . $badgeType . "to $email" . PHP_EOL;
+        echo "Error assigning " . Badges::badgeList()[$badgeType]["name"] . " to $email" . PHP_EOL;
         return;
     }
 
-    echo "Issued badge for $email, inserting user in DB..." . PHP_EOL;
+    echo "Issued badge " . Badges::badgeList()[$badgeType]["name"] . " to $email." . PHP_EOL;
     // Update Badges table in DB
     $res = DbConnection::InsertAssignedBadge($conn, $email, $token, Badges::badgeList()[$badgeType]["name"]);
     if($res === false)
