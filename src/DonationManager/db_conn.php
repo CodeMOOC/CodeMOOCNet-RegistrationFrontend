@@ -17,6 +17,8 @@ class DbConnection
                 return false;
             }
 
+            $db->set_charset("utf8");
+
             return $db;
         } catch (Exception $e) {
             echo "Connection Error: " . $e->getMessage() . PHP_EOL;
@@ -114,7 +116,7 @@ class DbConnection
     {
         try {
             $sql = "REPLACE INTO Donations (Name, Surname, Email, Year, Amount)
-                    VALUES ('$donator->name', '$donator->surname', '$donator->email', '". date("Y") . "', $donator->donation);";
+                    VALUES ('" . $conn->real_escape_string($donator->name) . "', '" . $conn->real_escape_string($donator->surname) . "', '" . $conn->real_escape_string($donator->email) . "', '". date("Y") . "', $donator->donation);";
 
             $result = $conn->query($sql);
             return true;
@@ -135,7 +137,7 @@ class DbConnection
         try {
             $date = date("Y-m-d H:i:s");
             $sql = "INSERT INTO Badges (Email, Type, IssueTimestamp, EvidenceToken)
-                    VALUES ('$email', '$type', '$date', '$token')";
+                    VALUES ('" . $conn->real_escape_string($email) . "', '$type', '$date', '$token')";
 
             $conn->query($sql);
             return true;

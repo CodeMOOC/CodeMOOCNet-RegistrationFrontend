@@ -25,7 +25,7 @@ class LoadSpreadsheet
 
                 $donator = new Donator($row);
                 if(isset($donators[$donator->email])) {
-                    echo "Donor $donator->email donated multiple times" . PHP_EOL;
+                    echo "Donor $donator->email donated multiple times (" . $donators[$donator->email]->donation . " + $donator->donation)" . PHP_EOL;
                     // aggregate data if user donated more than once
                     $donator->donation = $donators[$donator->email]->donation + $donator->donation;
                     $donator->date = $donators[$donator->email]->date;
