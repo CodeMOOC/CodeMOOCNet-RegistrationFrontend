@@ -61,6 +61,9 @@ namespace CodeMooc.Web.Controllers {
                     Body = $"Ciao {user.Name} {user.Surname}!\n\nGrazie per esserti registrato/a su CodeMOOC.net. Ti preghiamo di verificare il tuo indirizzo e-mail cliccando sul seguente link:\n{link}\n\nA presto!\nCodeMOOC.net"
                 };
                 msg.To.Add(new MailAddress(user.Email, $"{user.Name} {user.Surname}"));
+                if (!string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("CONFIRMATION_MAIL_BCC"))) {
+                    msg.Bcc.Add(Environment.GetEnvironmentVariable("CONFIRMATION_MAIL_BCC"));
+                }
                 msg.ReplyToList.Add(noReplyAddress);
 
                 Logger.LogTrace(LoggingEvents.Email, "Sending e-mail");
