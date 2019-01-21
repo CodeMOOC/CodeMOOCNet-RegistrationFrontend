@@ -68,9 +68,11 @@ rebuild:
 	${DC} build web
 	${DC} up -d
 
+donations.xlsx:
+	src/retrieve_donations.sh
+
 .PHONY: process-donations
-process-donations:
-	test -f donations.xlsx
+process-donations: donations.xlsx
 	${DC} build donation-manager
 	${DC_RUN} donation-manager php launcher.php
 
