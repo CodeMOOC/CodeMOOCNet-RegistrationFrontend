@@ -5,6 +5,8 @@ require_once 'models/badges.php';
 require_once 'db_conn.php';
 require_once 'salty_hasher.php';
 
+$generated_badge_list = array();
+
 // Init date timezione
 date_default_timezone_set('UTC');
 
@@ -90,6 +92,43 @@ foreach($retractList as $retract)
     echo $retract[0] . ", " . $retract[1] . PHP_EOL;
 }
 
+echo "Sending summary e-mail... ";
+$summary_mail_to = getenv('CONFIRMATION_MAIL_BCC');
+if(!empty($summary_mail_to)) {
+    $summary_mail_text =  "<html><body><p>Hello,<br />this is your friendly donation manager for CODEMOOC NET. 🤖</p>";
+    $summary_mail_text .= "<p>Summary for <b>" . date('j F Y') . "</b>.</p>";
+    $summary_mail_text .= "<p>$donorUpsertCount unique donors.</p>";
+    if(count($generated_badge_list) > 0) {
+        $summary_mail_text .= "<p>Generated " . count($generated_badge_list) . " badges:<br />";
+        foreach($generated_badge_list as $badge) {
+            $summary_mail_text .= $badge[0] . " => " . $badge[1] . "<br />";
+        }
+        $summary_mail_text .= "</p>";
+    }
+    $summary_mail_text .= "<p>See you tomorrow.</p></body></html>";
+
+    $transport = (new Swift_SmtpTransport(getenv('SMTP_HOST'), getenv('SMTP_PORT')))
+        ->setUsername(getenv('SMTP_USERNAME'))
+        ->setPassword(getenv('SMTP_PASSWORD'))
+    ;
+    $mailer = new Swift_Mailer($transport);
+    
+    $message = (new Swift_Message('🏅 Badge generation summary'))
+        ->setFrom(['no-reply@codemooc.net' => 'CODEMOOC NET'])
+        ->setTo([$summary_mail_to])
+        ->setContentType('text/html')
+        ->setBody($summary_mail_text)
+        ;
+    
+    // Send the message
+    $result = $mailer->send($message);
+    if($result !== 1) {
+        echo "result is $result! ";
+    }
+}
+
+echo "done." . PHP_EOL;
+
 echo "All done." . PHP_EOL;
 
 /**
@@ -100,6 +139,8 @@ echo "All done." . PHP_EOL;
  */
 function launchBadgeAssigner($assignBadge, $conn, $email, $badgeType)
 {
+    global $generated_badge_list;
+
     $token = SaltyHasher::hash();
     $urlPath = "";
     switch ($badgeType)
@@ -137,4 +178,8 @@ function launchBadgeAssigner($assignBadge, $conn, $email, $badgeType)
         echo "Error inserting in DB " . Badges::badgeList()[$badgeType]["name"] . $email . PHP_EOL;
         return;
     }
+
+    $generated_badge_list[] = array(
+        $email, Badges::badgeList()[$badgeType]["name"]
+    );
 }
