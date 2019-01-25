@@ -17,5 +17,6 @@ RUN composer install
 # Copy in rest of the code
 COPY *.php /code/
 COPY models /code/models
+COPY *.sh /code/
 
 CMD ["true"]

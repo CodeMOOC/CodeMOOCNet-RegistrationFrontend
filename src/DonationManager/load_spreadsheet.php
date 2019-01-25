@@ -13,7 +13,7 @@ class LoadSpreadsheet
     {
         try {
             $reader = new Xlsx();
-            $spreadsheet = $reader->load('/data/donations.xlsx');
+            $spreadsheet = $reader->load('donations.xlsx');
 
             $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
             $donators = [];

@@ -1,4 +1,5 @@
 #! /bin/bash
+# This script downloads donations from back-end
 
 echo "Performing fake login to Produzioni dal Basso Website..."
 curl -s --cookie-jar pdb_cookies https://www.produzionidalbasso.com/ > /dev/null
@@ -9,3 +10,6 @@ curl -s --cookie pdb_cookies --referer https://www.produzionidalbasso.com/accoun
 
 # Clean up cookie jar
 rm pdb_cookies
+
+# Execute PHP donation manager
+php launcher.php
