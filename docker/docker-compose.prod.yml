@@ -15,7 +15,7 @@ services:
     - codemooc-reg-db:/var/lib/mysql:rw
 
   timer:
-    build: ../src/Timer
+    image: lorenzck/crontaimer:1.0
     networks:
     - codemooc-reg-backend
     volumes:
