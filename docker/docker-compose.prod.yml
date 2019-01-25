@@ -9,10 +9,12 @@ services:
     - ASPNETCORE_ENVIRONMENT=Production
     labels:
     - "traefik.frontend.rule=Host:codemooc.net;PathPrefix:/iscrizione,/statuto,/static,/badge"
+    restart: unless-stopped
 
   db:
     volumes:
     - codemooc-reg-db:/var/lib/mysql:rw
+    restart: unless-stopped
 
   timer:
     image: lorenzck/crontaimer:1.0
@@ -25,3 +27,4 @@ services:
     env_file:
     - config.env
     - secret.env
+    restart: unless-stopped
