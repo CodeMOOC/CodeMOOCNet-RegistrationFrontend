@@ -36,20 +36,20 @@ namespace CodeMooc.Web {
         public static string GetSrcSet(this BadgeType badgeType) {
             return string.Join(", ", from width in _widths
                                      orderby width
-                                     select string.Format("/static/{0}-{1}.png {1}w", badgeType.GetRootPath(), width));
+                                     select string.Format("{0}-{1}.png {1}w", badgeType.GetRootPath(), width));
         }
 
         public static string GetRootPath(this BadgeType badgeType) {
             switch(badgeType) {
                 default:
                 case BadgeType.Member2019:
-                    return "badges/2019/member";
+                    return "/static/badges/2019/member";
                 case BadgeType.Patron2019:
-                    return "badges/2019/patron";
+                    return "/static/badges/2019/patron";
                 case BadgeType.GoldPatron2019:
-                    return "badges/2019/patron-gold";
+                    return "/static/badges/2019/patron-gold";
                 case BadgeType.Sponsor2019:
-                    return "badges/2019/sponsor";
+                    return "/static/badges/2019/sponsor";
             }
         }
 
