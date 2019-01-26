@@ -105,7 +105,10 @@ if(!empty($summary_mail_to)) {
         }
         $summary_mail_text .= "</p>";
     }
-    $summary_mail_text .= "<p>See you tomorrow.</p></body></html>";
+    else {
+        $summary_mail_text .= "<p>No badges generated today.</p>";
+    }
+    $summary_mail_text .= "<p>See you tomorrow. 👋</p></body></html>";
 
     $transport = (new Swift_SmtpTransport(getenv('SMTP_HOST'), getenv('SMTP_PORT')))
         ->setUsername(getenv('SMTP_USERNAME'))
