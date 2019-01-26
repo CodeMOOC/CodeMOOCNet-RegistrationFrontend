@@ -1,1 +1,3 @@
-30 6 * * * cd /code && make process-donations
+SHELL=/bin/bash
+TZ=UTC
+30 6 * * * cd /code && make process-donations 2>&1
