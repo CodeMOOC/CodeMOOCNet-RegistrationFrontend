@@ -21,6 +21,13 @@ namespace CodeMooc.Web {
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            services.AddAuthentication(opt => {
+                opt.DefaultAuthenticateScheme = BasicAuthenticationSchemeOptions.DefaultScheme;
+                opt.DefaultChallengeScheme = BasicAuthenticationSchemeOptions.DefaultScheme;
+            }).AddScheme<BasicAuthenticationSchemeOptions, BasicAuthenticationHandler>(BasicAuthenticationSchemeOptions.DefaultScheme, opt => {
+                // Noop
+            });
+
             // Add services to dependency registry
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<DatabaseManager>();
@@ -47,6 +54,8 @@ namespace CodeMooc.Web {
                 o.AddSupportedUICultures("it");
                 o.DefaultRequestCulture = new RequestCulture("it");
             });
+
+            app.UseAuthentication();
 
             app.UseMvc();
             app.UseStaticFiles("/static");

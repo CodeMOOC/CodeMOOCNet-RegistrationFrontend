@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using Microsoft.Net.Http.Headers;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 namespace CodeMooc.Web.Controllers {
 
     [Route("admin")]
+    [Authorize]
     public class AdminController : Controller {
 
         protected DatabaseManager Database { get; }
