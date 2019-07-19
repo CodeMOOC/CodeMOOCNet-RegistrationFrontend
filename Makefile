@@ -80,3 +80,7 @@ stop:
 .PHONY: rm
 rm rmc: stop
 	${DC} rm -f
+
+.PHONY: logs
+logs:
+	docker logs -f $(shell ${DC} ps -q web)
