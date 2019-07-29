@@ -1,19 +1,11 @@
 SHELL := /bin/bash
 
-include docker/config.env
+include config.env
 export
-include docker/secret.env
+include secret.env
 export
 
-ENV ?= prod
-
-ifeq ($(ENV),prod)
-	PROJ_NAME := codemooc-reg
-else
-	PROJ_NAME := codemooc-reg-beta
-endif
-
-DC := docker-compose -f docker/docker-compose.yml -f docker/docker-compose.${ENV}.yml --project-name ${PROJ_NAME}
+DC := docker-compose -f docker-compose.yml -f docker-compose.custom.yml
 DC_RUN := ${DC} run --rm
 
 .PHONY: confirmation
@@ -22,7 +14,7 @@ confirmation:
 
 .PHONY: cmd
 cmd:
-	@echo 'Docker-Compose command for ${ENV} environment:'
+	@echo 'Docker-Compose command:'
 	@echo '${DC}'
 
 .PHONY: install

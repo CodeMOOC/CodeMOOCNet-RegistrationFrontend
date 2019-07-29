@@ -7,7 +7,15 @@ services:
   web:
     environment:
     - ASPNETCORE_ENVIRONMENT=Production
+    - ASPNETCORE_BASEPATH=
     labels:
+    - "traefik.enable=true"
+    - "traefik.docker.network=web"
+    - "traefik.protocol=http"
+    - "traefik.port=5001"
+    - "traefik.frontend.entryPoints=http,https"
+    - "traefik.frontend.redirect.entryPoint=https"
+    - "traefik.frontend.priority=100"
     - "traefik.frontend.rule=Host:codemooc.net;PathPrefix:/iscrizione,/statuto,/static,/badge,/admin"
     restart: unless-stopped
 
@@ -17,11 +25,11 @@ services:
     restart: unless-stopped
 
   timer:
-    build: ../src/Timer
+    build: ./src/Timer
     networks:
     - codemooc-reg-backend
     volumes:
-    - ../:/code/:ro
+    - ./:/code/:ro
     - /var/run/docker.sock:/var/run/docker.sock:rw
     env_file:
     - config.env

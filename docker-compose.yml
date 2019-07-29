@@ -6,7 +6,7 @@ networks:
 
 services:
   web:
-    build: ../src/Web
+    build: ./src/Web
     depends_on:
     - db
     networks:
@@ -17,14 +17,6 @@ services:
     - secret.env
     expose:
     - 5001
-    labels:
-    - "traefik.enable=true"
-    - "traefik.docker.network=web"
-    - "traefik.protocol=http"
-    - "traefik.port=5001"
-    - "traefik.frontend.entryPoints=http,https"
-    - "traefik.frontend.redirect.entryPoint=https"
-    - "traefik.frontend.priority=100"
 
   db:
     image: mysql:5.7
@@ -33,7 +25,7 @@ services:
     env_file: config.env
 
   db-client:
-    build: ../src/MysqlClient
+    build: ./src/MysqlClient
     depends_on:
     - db
     networks:
@@ -41,7 +33,7 @@ services:
     env_file: config.env
 
   donation-manager:
-    build: ../src/DonationManager
+    build: ./src/DonationManager
     depends_on:
     - db
     networks:

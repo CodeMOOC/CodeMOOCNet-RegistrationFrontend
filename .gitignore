@@ -3,7 +3,7 @@
 \.vscode/
 \.vs/
 *.csproj.user
-docker/secret.env
+secret.env
 composer.phar
 /src/DonationManager/vendor/*
 *.xlsx
