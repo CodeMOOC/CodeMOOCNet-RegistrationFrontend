@@ -35,3 +35,20 @@ services:
     - config.env
     - secret.env
     restart: unless-stopped
+
+  redirect:
+    image: morbz/docker-web-redirect
+    networks:
+    - web
+    environment:
+    - VIRTUAL_HOST=www.codemooc.net
+    - REDIRECT_TARGET=codemooc.net
+    labels:
+    - "traefik.enable=true"
+    - "traefik.docker.network=web"
+    - "traefik.protocol=http"
+    - "traefik.port=80"
+    - "traefik.frontend.entryPoints=http,https"
+    - "traefik.frontend.redirect.entryPoint=https"
+    - "traefik.frontend.rule=Host:www.codemooc.net"
+    restart: unless-stopped
