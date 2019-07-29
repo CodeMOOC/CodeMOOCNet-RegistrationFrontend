@@ -10,15 +10,17 @@ namespace CodeMooc.Web.Controllers {
     [Route("")]
     public class StaticController : Controller {
 
-        protected DatabaseManager Database { get; }
         protected ILogger<StaticController> Logger { get; }
 
         public StaticController(
-            DatabaseManager database,
             ILogger<StaticController> logger
         ) {
-            Database = database;
             Logger = logger;
+        }
+
+        [HttpGet]
+        public IActionResult ShowFront() {
+            return View("Front");
         }
 
         [HttpGet("statuto")]

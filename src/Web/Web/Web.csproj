@@ -37,6 +37,12 @@
       <DependentUpon>BadgeDescriptions.resx</DependentUpon>
     </Compile>
   </ItemGroup>
+  
+  <ItemGroup>
+    <Content Update="Views\Static\Front.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Update="Resources\BadgeEvidenceDescriptions.resx">

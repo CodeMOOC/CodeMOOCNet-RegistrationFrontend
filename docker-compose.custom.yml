@@ -16,7 +16,7 @@ services:
     - "traefik.frontend.entryPoints=http,https"
     - "traefik.frontend.redirect.entryPoint=https"
     - "traefik.frontend.priority=100"
-    - "traefik.frontend.rule=Host:codemooc.net;PathPrefix:/iscrizione,/statuto,/static,/badge,/admin"
+    - "traefik.frontend.rule=Host:codemooc.net"
     restart: unless-stopped
 
   db:
