@@ -32,7 +32,7 @@ namespace CodeMooc.Web.Controllers {
             return Convert.ToBase64String(buffer, Base64FormattingOptions.None).Substring(0, 10);
         }
 
-        private async Task SendConfirmationEmail(Data.Registration user) {
+        private async Task SendConfirmationEmail(Data.Registration user, Data.Email email) {
             string url = Url.Action(nameof(Validate), "Register", new { id = user.Id, secret = user.ConfirmationSecret });
             string link = "http://codemooc.net" + url;
 
@@ -60,7 +60,7 @@ namespace CodeMooc.Web.Controllers {
                     IsBodyHtml = false,
                     Body = $"Ciao {user.Name} {user.Surname}!\n\nGrazie per esserti registrato/a su CodeMOOC.net. Ti preghiamo di verificare il tuo indirizzo e-mail cliccando sul seguente link:\n{link}\n\nA presto!\nCodeMOOC.net"
                 };
-                msg.To.Add(new MailAddress(user.Email, $"{user.Name} {user.Surname}"));
+                msg.To.Add(new MailAddress(email.Address, $"{user.Name} {user.Surname}"));
                 if (!string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("CONFIRMATION_MAIL_BCC"))) {
                     msg.Bcc.Add(Environment.GetEnvironmentVariable("CONFIRMATION_MAIL_BCC"));
                 }
@@ -90,10 +90,9 @@ namespace CodeMooc.Web.Controllers {
 
             // Check e-mail
             if (!string.IsNullOrWhiteSpace(model.Email)) {
-                var existingMailUser = (from r in Database.Context.Registrations
-                                        where r.Email == model.Email.ToLowerInvariant()
-                                        where r.ConfirmationTimestamp != null
-                                        select r).SingleOrDefault();
+                var existingMailUser = (from e in Database.Context.Emails
+                                        where e.Address == model.Email.ToLowerInvariant()
+                                        select e).SingleOrDefault();
                 if (existingMailUser != null) {
                     Logger.LogInformation(LoggingEvents.Registration, "E-mail already registered");
                     ModelState.AddModelError(nameof(RegistrationViewModel.Email), "Indirizzo e-mail già registrato");
@@ -148,7 +147,6 @@ namespace CodeMooc.Web.Controllers {
                 AddressCity = model.AddressCity,
                 AddressCap = model.AddressCap,
                 AddressCountry = model.AddressCountry,
-                Email = model.Email.Trim().ToLowerInvariant(),
                 PasswordSchema = "bcrypt.net", // hard-coded to hash function
                 PasswordHash = hashedPassword,
                 Category = model.Category,
@@ -158,16 +156,24 @@ namespace CodeMooc.Web.Controllers {
                 ConfirmationSecret = GenerateSecret()
             };
             Database.Context.Registrations.Add(user);
-            int changes = Database.Context.SaveChanges();
 
-            if (changes != 1) {
-                throw new InvalidOperationException("Expected changes equal to 1 when registering user");
+            var email = new Data.Email {
+                Address = model.Email.Trim().ToLowerInvariant(),
+                IsPrimary = true,
+                AssociationTimestamp = user.RegistrationTimestamp,
+                Registration = user
+            };
+            Database.Context.Emails.Add(email);
+
+            int changes = Database.Context.SaveChanges();
+            if(changes != 2) {
+                throw new InvalidOperationException("Expected changes equal to 2 when registering user");
             }
 
-            await SendConfirmationEmail(user);
+            await SendConfirmationEmail(user, email);
 
             // Confirmation view
-            ViewData["email"] = user.Email;
+            ViewData["email"] = email.Address;
             return View("Confirm");
         }
 

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CodeMooc.Web.Data {
@@ -6,7 +8,10 @@ namespace CodeMooc.Web.Data {
     [Table("Registrations")]
     public class Registration {
 
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+
         public string Name { get; set; }
         public string Surname { get; set; }
         public DateTime Birthday { get; set; }
@@ -17,7 +22,9 @@ namespace CodeMooc.Web.Data {
         public string AddressCap { get; set; }
         public string AddressCountry { get; set; }
 
-        public string Email { get; set; }
+        [InverseProperty(nameof(Email.Registration))]
+        public List<Email> Emails { get; set; }
+
         public string PasswordSchema { get; set; }
         public string PasswordHash { get; set; }
 

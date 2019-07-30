@@ -33,14 +33,13 @@ namespace CodeMooc.Web.Controllers {
                         select r;
 
             var sb = new StringBuilder();
-            sb.AppendLine("# ID, Name, Surname, FiscalCode, Email, Category, RegisteredOn, Confirmed");
+            sb.AppendLine("# ID, Name, Surname, FiscalCode, Category, RegisteredOn, Confirmed");
             foreach (var u in users) {
                 sb.AppendJoin(',',
                     u.Id,
                     u.Name,
                     u.Surname,
                     u.FiscalCode.ToUpperInvariant(),
-                    u.Email.ToLowerInvariant(),
                     u.Category,
                     u.RegistrationTimestamp.ToString("R"),
                     u.ConfirmationTimestamp.HasValue ? "1" : "0"

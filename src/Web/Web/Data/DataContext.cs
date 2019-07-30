@@ -28,8 +28,6 @@ namespace CodeMooc.Web.Data {
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.Entity<Registration>(e => {
-                e.HasKey(nameof(Registration.Id));
-                e.Property(nameof(Registration.Id)).ValueGeneratedOnAdd();
                 e.Property(nameof(Registration.Category)).HasConversion<string>();
                 e.Property(nameof(Registration.HasAttendedMooc)).HasConversion<int>();
                 e.Property(nameof(Registration.HasCompletedMooc)).HasConversion<int>();
@@ -53,6 +51,7 @@ namespace CodeMooc.Web.Data {
         }
 
         public DbSet<Registration> Registrations { get; set; }
+        public DbSet<Email> Emails { get; set; }
         public DbSet<Donation> Donations { get; set; }
         public DbSet<Badge> Badges { get; set; }
 
