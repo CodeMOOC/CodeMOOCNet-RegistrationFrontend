@@ -27,7 +27,7 @@ mysql:
 
 .PHONY: dump
 dump:
-	${DC_RUN} db-client mysqldump -h db -u ${MYSQL_USER} -p${MYSQL_PASSWORD} ${MYSQL_DATABASE} > dump.sql
+	${DC_RUN} db-client mysqldump -h db -u ${MYSQL_USER} -p${MYSQL_PASSWORD} ${MYSQL_DATABASE} --extended-insert=FALSE > dump.sql
 	@echo 'Database exported to dump.sql.'
 
 .PHONY: import-db
