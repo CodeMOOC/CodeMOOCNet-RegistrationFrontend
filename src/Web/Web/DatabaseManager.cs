@@ -33,8 +33,6 @@ namespace CodeMooc.Web {
             var schema = dbSection["Schema"];
             ConnectionString = string.Format("server={0};port={1};uid={2};pwd={3};database={4}",
                 host, port, username, password, schema);
-
-            _logger.LogTrace(LoggingEvents.Database, "Database connection string: {0}", ConnectionString);
         }
 
         private DataContext _context = null;
