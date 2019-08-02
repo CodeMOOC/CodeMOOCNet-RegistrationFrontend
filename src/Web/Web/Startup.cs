@@ -108,7 +108,7 @@ namespace CodeMooc.Web {
                 o.DefaultRequestCulture = new RequestCulture("it");
             });
 
-            app.UseStaticFiles("/static");
+            app.UseStaticFiles();
 
             app.UseAuthentication();
 

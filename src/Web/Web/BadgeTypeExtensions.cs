@@ -43,13 +43,13 @@ namespace CodeMooc.Web {
             switch(badgeType) {
                 default:
                 case BadgeType.Member2019:
-                    return "/static/badges/2019/member";
+                    return "/badges/2019/member";
                 case BadgeType.Patron2019:
-                    return "/static/badges/2019/patron";
+                    return "/badges/2019/patron";
                 case BadgeType.GoldPatron2019:
-                    return "/static/badges/2019/patron-gold";
+                    return "/badges/2019/patron-gold";
                 case BadgeType.Sponsor2019:
-                    return "/static/badges/2019/sponsor";
+                    return "/badges/2019/sponsor";
             }
         }
 
