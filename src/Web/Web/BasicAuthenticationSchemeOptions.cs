@@ -9,9 +9,9 @@ namespace CodeMooc.Web {
 
     public class BasicAuthenticationSchemeOptions : AuthenticationSchemeOptions {
 
-        public const string DefaultScheme = "Basic auth";
+        public const string SchemeName = "Custom basic auth";
 
-        public string Scheme => DefaultScheme;
+        public string Scheme => SchemeName;
 
         public StringValues AuthKey { get; set; }
 

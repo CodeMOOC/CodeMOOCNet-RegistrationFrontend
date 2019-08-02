@@ -62,7 +62,8 @@ namespace CodeMooc.Web {
 
             Logger.LogDebug("Authorized successfully");
 
-            var t = new AuthenticationTicket(new ClaimsPrincipal(new StaticUserIdentity(username)), BasicAuthenticationSchemeOptions.DefaultScheme);
+            var principal = new ClaimsPrincipal(new StaticUserIdentity(username));
+            var t = new AuthenticationTicket(principal, BasicAuthenticationSchemeOptions.SchemeName);
             return Task.FromResult(AuthenticateResult.Success(t));
         }
 
