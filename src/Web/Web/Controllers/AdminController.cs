@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace CodeMooc.Web.Controllers {
 
     [Route("admin")]
-    [Authorize(Policy = Startup.BasicAdministratorsPolicyName)]
+    [Authorize(Policy = Startup.LegacyBasicAdministratorsPolicyName)]
     public class AdminController : Controller {
 
         protected DatabaseManager Database { get; }

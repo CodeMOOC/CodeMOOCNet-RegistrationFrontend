@@ -21,7 +21,7 @@ namespace CodeMooc.Web {
 
         public const string AdministratorsOnlyPolicyName = "AdministratorsOnly";
         public const string MembersOnlyPolicyName = "MembersOnly";
-        public const string BasicAdministratorsPolicyName = "BasicAdministratorsOnly";
+        public const string LegacyBasicAdministratorsPolicyName = "BasicAdministratorsOnly";
 
         public const string AdministratorRole = "Administrator";
         public const string MemberRole = "Member";
@@ -61,7 +61,7 @@ namespace CodeMooc.Web {
                     new AuthorizationPolicyBuilder()
                         .RequireAuthenticatedUser()
                         .RequireRole(AdministratorRole)
-                        .AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme, BasicAuthenticationSchemeOptions.SchemeName)
+                        .AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme)
                         .Build()
                 );
                 opt.AddPolicy(
@@ -69,11 +69,11 @@ namespace CodeMooc.Web {
                     new AuthorizationPolicyBuilder()
                         .RequireAuthenticatedUser()
                         .RequireRole(MemberRole)
-                        .AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme, BasicAuthenticationSchemeOptions.SchemeName)
+                        .AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme)
                         .Build()
                 );
                 opt.AddPolicy(
-                    BasicAdministratorsPolicyName,
+                    LegacyBasicAdministratorsPolicyName,
                     new AuthorizationPolicyBuilder()
                         .RequireAuthenticatedUser()
                         .RequireRole(AdministratorRole)
