@@ -48,6 +48,14 @@ span.field-validation-error {
     color: #da0b0b;
     font-weight: 600;
 }
+div.form-error {
+    display: block;
+    color: #da0b0b;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    border: solid #da0b0b 1px;
+    padding: 0.5em 1em;
+}
 
 button {
     margin-bottom: 1em;
