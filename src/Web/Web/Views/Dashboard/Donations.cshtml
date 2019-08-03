@@ -1,0 +1,30 @@
+﻿@using CodeMooc.Web.Model
+@model DashboardDonationsViewModel
+@{
+    Layout = "Main";
+    ViewData["Title"] = "Donazioni";
+}
+
+<div class="container">
+    <h1 class="text-center">Donazioni</h1>
+
+    <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3">
+
+        <p>@Html.ActionLink("◀ Torna al pannello di controllo", "Index")</p>
+
+        <p>Qui di seguito sono elencate le donazioni che sono state registrate a tuo nome tramite il servizio di crowdfunding.</p>
+
+        @if (Model.Donations.Count == 0) {
+            <p><i>Nessuna donaziona registrata a tuo nome.</i></p>
+        }
+        else {
+            <ul>
+            @foreach (var donation in Model.Donations) {
+                <li>Donazione da parte di @donation.Name @donation.Surname (@donation.Email): @donation.Amount&nbsp;€.</li>
+            }
+            </ul>
+        }
+
+    </div>
+
+</div>

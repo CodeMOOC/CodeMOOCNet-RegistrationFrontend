@@ -1,0 +1,28 @@
+﻿@using CodeMooc.Web.Model
+@model DashboardBaseViewModel
+@{
+    Layout = "Main";
+    ViewData["Title"] = "Pannello soci";
+}
+
+<div class="container">
+    <h1 class="text-center">Pannello soci</h1>
+
+    <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3">
+
+        <p>Ciao @Model.LoggedUser.Name!</p>
+
+        <dl>
+            <dt>@Html.ActionLink("Vedi donazioni", "ShowDonations")</dt>
+            <dd>Vedi le donazioni che sono state registrate a tuo nome.</dd>
+
+            <dt>@Html.ActionLink("Vedi stato socio", "ShowAssociationStatus")</dt>
+            <dd>Verifica la tua registrazione come socio dell'associazione CodeMOOC.net ed i badge rilasciati.</dd>
+
+            <dt>@Html.ActionLink("Carica curriculum", "ShowCvUpload")</dt>
+            <dd>Partecipa alla rete di competenze ed esperienze che l'associazione sta costruendo caricando il tuo curriculum.</dd>
+        </dl>
+
+    </div>
+
+</div>
