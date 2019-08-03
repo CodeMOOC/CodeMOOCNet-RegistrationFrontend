@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using CodeMooc.Web.Model;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -26,14 +27,12 @@ namespace CodeMooc.Web.Controllers {
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(string proceed = null) {
-            ViewData["proceed"] = proceed;
-            ViewData["failure"] = TempData["failure"];
+        public IActionResult Index(string proceed = null) {
+            var model = TempData.Get<LoginViewModel>() ?? new LoginViewModel();
+            model.ProceedUrl = proceed;
+            model.IsLoggedIn = HttpContext.User.Identity.IsAuthenticated;
 
-            // Clear existing cookie
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
-            return View();
+            return View(model);
         }
 
         [HttpPost]
@@ -44,15 +43,34 @@ namespace CodeMooc.Web.Controllers {
             [FromForm] bool remember,
             [FromForm] string proceed
         ) {
-            Logger.LogInformation("Logging {0} with pwd {1}, remember {2}, proceeding to {3}", email, password, remember, proceed);
+            Logger.LogDebug("Login attempt by {0}", email);
 
-            if(!email.Equals("asd", StringComparison.InvariantCultureIgnoreCase)) {
-                TempData["failure"] = true;
-                return RedirectToAction("Index");
+            var mailRecord = (from e in Database.Context.Emails
+                              where e.Address == email.ToLowerInvariant()
+                              select e).SingleOrDefault();
+            if(mailRecord == null) {
+                Logger.LogDebug("E-mail address {0} not registered", email);
+                return FailLoginAttempt(email);
             }
 
+            var userRecord = (from u in Database.Context.Registrations
+                              where u.Id == mailRecord.RegistrationId
+                              select u).Single();
+            Logger.LogDebug("Matching {0} with {1}", password, userRecord.PasswordHash);
+            if(!BCrypt.Net.BCrypt.EnhancedVerify(password, userRecord.PasswordHash)) {
+                Logger.LogDebug("Login for user {0} {1} failed", userRecord.Id, mailRecord.Address);
+                return FailLoginAttempt(email);
+            }
+
+            Logger.LogInformation("User {0} {1} logged in", userRecord.Id, mailRecord.Address);
+
+            // TODO: check for association status
+
             var claims = new Claim[] {
-                new Claim(ClaimTypes.Name, "Pinco Pallino"),
+                new Claim(ClaimTypes.NameIdentifier, userRecord.Id.ToString()),
+                new Claim(ClaimTypes.GivenName, userRecord.Name),
+                new Claim(ClaimTypes.Surname, userRecord.Surname),
+                new Claim(ClaimTypes.DateOfBirth, userRecord.Birthday.ToString("s")),
                 new Claim(ClaimTypes.Email, email),
                 new Claim(ClaimTypes.Role, "Member")
             };
@@ -76,11 +94,26 @@ namespace CodeMooc.Web.Controllers {
             }
         }
 
+        protected IActionResult FailLoginAttempt(string email = "") {
+            TempData.Put(new LoginViewModel {
+                Email = email,
+                Status = LoginViewModel.LoginStatus.LoginFailure
+            });
+            return RedirectToAction("Index");
+        }
+
         [HttpGet("logout")]
         public async Task<IActionResult> Logout() {
+            // Get email of logged in user
+            var email = HttpContext.User?.FindFirstValue(ClaimTypes.Email);
+
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            return Redirect("/");
+            TempData.Put(new LoginViewModel {
+                Email = email,
+                Status = LoginViewModel.LoginStatus.LoggedOut
+            });
+            return RedirectToAction("Index");
         }
 
         [HttpGet("unauthorized")]

@@ -7,11 +7,19 @@ namespace CodeMooc.Web.Model {
 
     public class LoginViewModel {
 
+        public enum LoginStatus {
+            None,
+            LoggedOut,
+            LoginFailure
+        }
+
+        public bool IsLoggedIn { get; set; }
+
         public string Email { get; set; }
 
-        public string Password { get; set; }
+        public LoginStatus Status { get; set; }
 
-        public bool Remember { get; set; }
+        public string ProceedUrl { get; set; }
 
     }
 

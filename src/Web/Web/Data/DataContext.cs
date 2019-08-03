@@ -33,6 +33,10 @@ namespace CodeMooc.Web.Data {
                 e.Property(nameof(Registration.HasCompletedMooc)).HasConversion<int>();
             });
 
+            modelBuilder.Entity<Email>(e => {
+                e.Property(nameof(Email.IsPrimary)).HasConversion<int>();
+            });
+
             modelBuilder.Entity<Donation>(e => {
                 e.HasKey(nameof(Donation.Email), nameof(Donation.Year));
                 e.Property(nameof(Donation.Year)).HasConversion(YearConverter.Create());

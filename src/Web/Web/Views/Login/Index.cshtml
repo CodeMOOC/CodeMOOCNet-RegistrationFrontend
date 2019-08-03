@@ -1,4 +1,6 @@
-﻿@{
+﻿@using CodeMooc.Web.Model
+@model LoginViewModel
+@{
     Layout = "Main";
     ViewData["Title"] = "Login";
 }
@@ -7,31 +9,44 @@
     <h1 class="text-center">Login</h1>
 
     <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3">
-        <form asp-controller="Login" asp-action="PerformLogin" method="post" class="form-horizontal" role="form" asp-antiforgery="true">
-            <div class="form-group">
-                <label>Indirizzo e-mail *</label>
-                <input name="email" type="text" class="form-control" value="@ViewData["email"]" />
-            </div>
 
-            <div class="form-group">
-                <label>Password *</label>
-                <input name="password" type="password" class="form-control" />
-            </div>
+    @if (Model.IsLoggedIn) {
+    <div class="form-group">
+        <a href="@Url.Action("Logout", "Login")" class="btn btn-primary btn-block">Logout</a>
+    </div>
+    }
+    else {
+    <form asp-controller="Login" asp-action="PerformLogin" method="post" class="form-horizontal" role="form" asp-antiforgery="true">
+        <div class="form-group">
+            <label>Indirizzo e-mail *</label>
+            <input name="email" type="text" class="form-control" value="@Model.Email" />
+        </div>
 
-            <div>
-                <label><input name="remember" type="checkbox" value="true" /> Rimani collegato/a</label>
-            </div>
+        <div class="form-group">
+            <label>Password *</label>
+            <input name="password" type="password" class="form-control" />
+        </div>
 
-            <input type="hidden" name="proceed" value="@ViewData["proceed"]" />
+        <div>
+            <label><input name="remember" type="checkbox" value="true" /> Rimani collegato/a</label>
+        </div>
 
-            @if(ViewData["failure"] != null) {
-            <div class="form-error">
-                Username o password non validi.
-            </div>
-            }
+        <input type="hidden" name="proceed" value="@Model.ProceedUrl" />
 
-            <button id="submit" type="submit" value="submit" class="btn btn-primary btn-block">Login</button>
-        </form>
+        @if(Model.Status == LoginViewModel.LoginStatus.LoginFailure) {
+        <div class="form-error">
+            Username o password non validi.
+        </div>
+        }
+        else if(Model.Status == LoginViewModel.LoginStatus.LoggedOut) {
+        <div class="form-error">
+            Logout eseguito.
+        </div>
+        }
+
+        <button id="submit" type="submit" value="submit" class="btn btn-primary btn-block">Login</button>
+    </form>
+    }
     </div>
 
 </div>
