@@ -88,7 +88,7 @@ class DbConnection
     static function GetContributorsWithoutAssociationBadge($conn)
     {
         try {
-            $sql = "SELECT Registrations.Email FROM Registrations LEFT OUTER JOIN Donations ON Registrations.Email = Donations.Email WHERE Registrations.ConfirmationTimestamp IS NOT NULL AND Donations.Amount >= 20 AND Registrations.Email NOT IN (SELECT Badges.Email FROM Badges WHERE Badges.Type = 'Iscrizione2019');";
+            $sql = "SELECT r.`ID` AS `ID`, e.`Email` AS `Email` FROM `Registrations` r LEFT OUTER JOIN `Emails` e ON r.`ID` = e.`RegistrationID` LEFT OUTER JOIN `Donations` d ON e.`Email` = d.`Email` WHERE r.`ConfirmationTimestamp` IS NOT NULL AND d.`Amount` >= 20 AND e.`Email` NOT IN (SELECT b.`Email` FROM `Badges` b WHERE b.`Type` = 'Iscrizione');";
             $result = $conn->query($sql);
 
             $contributors = [];
@@ -135,9 +135,8 @@ class DbConnection
     static function InsertAssignedBadge($conn, $email, $token, $type)
     {
         try {
-            $date = date("Y-m-d H:i:s");
-            $sql = "INSERT INTO Badges (Email, Type, IssueTimestamp, EvidenceToken)
-                    VALUES ('" . $conn->real_escape_string($email) . "', '$type', '$date', '$token')";
+            $sql = "INSERT INTO `Badges` (`Email`, `Type`, `IssueTimestamp`, `EvidenceToken`)
+                    VALUES ('" . $conn->real_escape_string($email) . "', '$type', NOW(), '$token')";
 
             $conn->query($sql);
             return true;
@@ -152,10 +151,10 @@ class DbConnection
     {
         try {
             $sql = "SELECT Badges.Email, Badges.Type, Donations.Amount FROM Badges LEFT OUTER JOIN Donations ON Badges.Email = Donations.Email WHERE Donations.Amount IS NULL OR Donations.Amount < CASE Badges.Type
-                WHEN 'Iscrizione2019' THEN 20
-                WHEN 'Sostenitore2019' THEN 50
-                WHEN 'SostenitoreGold2019' THEN 100
-                WHEN 'DonatoreSponsor2019' THEN 1000
+                WHEN 'Iscrizione' THEN 20
+                WHEN 'Sostenitore' THEN 50
+                WHEN 'SostenitoreGold' THEN 100
+                WHEN 'DonatoreSponsor' THEN 1000
                 ELSE 0
             END";
 

@@ -53,8 +53,7 @@ CREATE TABLE IF NOT EXISTS `CodeMoocNet`.`Emails` (
   `AssociationTimestamp` DATETIME NOT NULL,
   
   PRIMARY KEY (`Email`),
-  INDEX (`RegistrationID`),
-  FOREIGN KEY (`RegistrationID`) REFERENCES `Registrations` (`ID`)
+  CONSTRAINT `Registration_fk` FOREIGN KEY `Registration_idx` (`RegistrationID`) REFERENCES `Registrations` (`ID`)
     ON UPDATE RESTRICT
     ON DELETE RESTRICT
 )
@@ -82,12 +81,13 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `CodeMoocNet`.`Badges` (
   `Email` VARCHAR(512) NOT NULL COLLATE latin1_general_ci,
   `Type` VARCHAR(32) NOT NULL COLLATE latin1_general_ci,
+  `Year` YEAR(4) NOT NULL,
   `IssueTimestamp` DATETIME NOT NULL,
   `EvidenceToken` VARCHAR(64) NOT NULL COLLATE latin1_general_ci,
 
-  PRIMARY KEY (`Email`, `Type`),
+  PRIMARY KEY (`Email`, `Type`, `Year`),
   INDEX `Issue_idx` (`IssueTimestamp`),
-  INDEX `Lookup_idx` (`Type`, `EvidenceToken`)
+  INDEX `Lookup_idx` (`Type`, `Year`, `EvidenceToken`)
 )
 ENGINE = InnoDB;
 

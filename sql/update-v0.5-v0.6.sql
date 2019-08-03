@@ -10,16 +10,27 @@ CREATE TABLE IF NOT EXISTS `CodeMoocNet`.`Emails` (
   `AssociationTimestamp` DATETIME NOT NULL,
   
   PRIMARY KEY (`Email`),
-  INDEX (`RegistrationID`),
-  FOREIGN KEY (`RegistrationID`) REFERENCES `Registrations` (`ID`)
+  CONSTRAINT `Registration_fk` FOREIGN KEY `Registration_idx` (`RegistrationID`) REFERENCES `Registrations` (`ID`)
     ON UPDATE RESTRICT
     ON DELETE RESTRICT
 )
 ENGINE = InnoDB;
 
 -- Migrate email data
-INSERT INTO `Emails` (`Email`, `RegistrationID`, `IsPrimary`, `AssociationTimestamp`)
-SELECT `Email`, `ID`, b'1', `RegistrationTimestamp` FROM `Registrations`;
+INSERT INTO `Emails` (`Email`, `RegistrationID`, `IsPrimary`, `AssociationTimestamp`) SELECT DISTINCT `Email`, `ID`, b'1', `RegistrationTimestamp` FROM `Registrations`;
 
 -- Drop old email data
 ALTER TABLE `Registrations` DROP COLUMN `Email`;
+
+-- Fix badge table
+ALTER TABLE `Badges`
+  DROP PRIMARY KEY,
+  DROP INDEX `Lookup_idx`,
+  -- ADD COLUMN `RegistrationID` INT UNSIGNED DEFAULT NULL AFTER `Email`,
+  ADD COLUMN `Year` YEAR(4) NOT NULL DEFAULT '2019' AFTER `Type`;
+-- UPDATE `Badges` b LEFT OUTER JOIN `Emails` e ON b.`Email` = e.`Email` SET b.`RegistrationID` = e.`RegistrationID`;
+ALTER TABLE `Badges`
+  ADD PRIMARY KEY (`Email`, `Type`, `Year`),
+  ADD INDEX `Lookup_idx` (`Type`, `Year`, `EvidenceToken`);
+  -- ADD CONSTRAINT `Registration_fk` FOREIGN KEY `Registration_idx` (`RegistrationID`) REFERENCES `Registrations` (`ID`) ON UPDATE RESTRICT ON DELETE RESTRICT
+UPDATE `Badges` SET `Type` = SUBSTRING(`Type`, 1, CHAR_LENGTH(`Type`) - 4);

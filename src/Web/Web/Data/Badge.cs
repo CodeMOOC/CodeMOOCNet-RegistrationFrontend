@@ -10,8 +10,13 @@ namespace CodeMooc.Web.Data {
     public class Badge {
 
         public string Email { get; set; }
+
         public BadgeType Type { get; set; }
+
+        public DateTime Year { get; set; }
+
         public DateTime IssueTimestamp { get; set; }
+
         public string EvidenceToken { get; set; }
 
     }

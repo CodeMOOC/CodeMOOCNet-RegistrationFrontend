@@ -13,10 +13,10 @@ namespace CodeMooc.Web.Data {
 
         static BadgeTypeConverter() {
             _mapToProvider = new Dictionary<BadgeType, string> {
-                { BadgeType.Member2019, "Iscrizione2019" },
-                { BadgeType.Patron2019, "Sostenitore2019" },
-                { BadgeType.GoldPatron2019, "SostenitoreGold2019" },
-                { BadgeType.Sponsor2019, "DonatoreSponsor2019" }
+                { BadgeType.Member, "Iscrizione" },
+                { BadgeType.Patron, "Sostenitore" },
+                { BadgeType.GoldPatron, "SostenitoreGold" },
+                { BadgeType.Sponsor, "DonatoreSponsor" }
             };
 
             _mapToModel = new Dictionary<string, BadgeType>(from p in _mapToProvider.Keys

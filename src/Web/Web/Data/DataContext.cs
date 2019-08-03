@@ -39,8 +39,9 @@ namespace CodeMooc.Web.Data {
             });
 
             modelBuilder.Entity<Badge>(e => {
-                e.HasKey(nameof(Badge.Email), nameof(Badge.Type));
+                e.HasKey(nameof(Badge.Email), nameof(Badge.Type), nameof(Badge.Year));
                 e.Property(nameof(Badge.Type)).HasConversion(BadgeTypeConverter.Create());
+                e.Property(nameof(Badge.Year)).HasConversion(YearConverter.Create());
             });
         }
 

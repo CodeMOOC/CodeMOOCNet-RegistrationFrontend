@@ -149,16 +149,16 @@ function launchBadgeAssigner($assignBadge, $conn, $email, $badgeType)
     switch ($badgeType)
     {
         case Badges::ISCRIZIONE_2019:
-            $urlPath = "socio2019";
+            $urlPath = "socio/2019";
             break;
         case Badges::SOSTENITORE_2019:
-            $urlPath = "sostenitore2019";
+            $urlPath = "sostenitore/2019";
             break;
         case Badges::SOSTENITORE_GOLD_2019:
-            $urlPath = "sostenitoregold2019";
+            $urlPath = "sostenitoregold/2019";
             break;
         case Badges::DONATORE_SPONSOR_2019:
-            $urlPath = "sponsor2019";
+            $urlPath = "sponsor/2019";
             break;
     }
     if($token === false) {

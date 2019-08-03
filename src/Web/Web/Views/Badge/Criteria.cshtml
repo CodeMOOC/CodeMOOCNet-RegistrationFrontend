@@ -1,20 +1,21 @@
 ﻿@using CodeMooc.Web
-@model BadgeType
+@using CodeMooc.Web.Model
+@model BadgeCriteriaViewModel
 @{
     Layout = "Main";
-    ViewData["Title"] = "Criteri " + Model.GetName();
+    ViewData["Title"] = "Criteri " + Model.BadgeType.GetName(Model.Year);
 }
 
 <div class="container">
-    <h1 class="text-center">Criteri @Model.GetName()</h1>
+    <h1 class="text-center">Criteri @Model.BadgeType.GetName(Model.Year)</h1>
 
     <div class="col-8 offset-2 col-sm-6 offset-sm-3 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
         <p>
-            <img src="@Model.GetRootPath()-1000.png" alt="@Model.GetName() badge" srcset="@Model.GetSrcSet()" class="img-fluid" />
+            <img src="@Model.BadgeType.GetRootPath(Model.Year)-1000.png" alt="@Model.BadgeType.GetName(Model.Year) badge" srcset="@Model.BadgeType.GetSrcSet(Model.Year)" class="img-fluid" />
         </p>
     </div>
 
     <div class="col-12 col-sm-8 offset-sm-2 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
-        @Html.Raw(Model.GetDescription())
+        @Html.Raw(Model.BadgeType.GetDescription(Model.Year))
     </div>
 </div>
