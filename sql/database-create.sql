@@ -24,7 +24,6 @@ CREATE TABLE IF NOT EXISTS `CodeMoocNet`.`Registrations` (
   `AddressCity` VARCHAR(64) NOT NULL,
   `AddressCap` CHAR(5) NOT NULL COLLATE latin1_general_ci,
   `AddressCountry` VARCHAR(64) NOT NULL,
-  `Email` VARCHAR(512) NOT NULL COLLATE latin1_general_ci,
   `PasswordSchema` CHAR(10) NOT NULL,
   `PasswordHash` VARBINARY(128) NOT NULL,
   `Category` VARCHAR(16) NOT NULL,
