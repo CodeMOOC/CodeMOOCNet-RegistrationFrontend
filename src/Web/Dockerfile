@@ -1,6 +1,6 @@
 # ---
 # First stage (build)
-FROM microsoft/dotnet:2.1-sdk AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build
 WORKDIR /app
 
 # Copy solution as distinct layer
@@ -15,7 +15,7 @@ RUN dotnet publish -c Release -o out
 
 # ---
 # Second stage (execution)
-FROM microsoft/dotnet:2.1-aspnetcore-runtime AS runtime
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.2 AS runtime
 WORKDIR /app
 COPY --from=build /app/Web/out ./
 
