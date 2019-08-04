@@ -27,6 +27,9 @@ namespace CodeMooc.Web.Data {
 
         public DateTime AssociationTimestamp { get; set; }
 
+        [InverseProperty(nameof(Donation.Address))]
+        public List<Donation> AssociatedDonations { get; set; }
+
     }
 
 }

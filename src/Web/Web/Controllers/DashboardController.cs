@@ -8,6 +8,7 @@ using CodeMooc.Web.Model;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -37,13 +38,13 @@ namespace CodeMooc.Web.Controllers {
 
             if(!HttpContext.User.Identity.IsAuthenticated) {
                 Logger.LogError("User not authenticated on dashboard");
-                return model;
+                return null;
             }
 
             var sId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if(!int.TryParse(sId, out int id)) {
                 Logger.LogError("Cannot parse user ID '{0}'", sId);
-                return model;
+                return null;
             }
 
             model.LoggedUser = (from r in Database.Registrations
@@ -55,22 +56,28 @@ namespace CodeMooc.Web.Controllers {
         }
 
         public IActionResult Index() {
-            return View(GetViewModel<DashboardBaseViewModel>());
+            var model = GetViewModel<DashboardBaseViewModel>();
+            if(model == null) {
+                return Forbid();
+            }
+
+            return View(model);
         }
 
         [HttpGet("donazioni")]
         public IActionResult ShowDonations() {
             var model = GetViewModel<DashboardDonationsViewModel>();
+            if(model == null) {
+                return Forbid();
+            }
 
             var emails = (from e in Database.Emails
                           where e.RegistrationId == model.LoggedUser.Id
-                          select e).ToArray();
+                          select e)
+                          .Include(e => e.AssociatedDonations)
+                          .Single();
 
-            var donations = (from d in Database.Donations
-                             where emails.Any(e => e.Address == d.Email)
-                             select d).ToList();
-
-            model.Donations = donations;
+            model.Donations = emails.AssociatedDonations;
 
             return View("Donations", model);
         }

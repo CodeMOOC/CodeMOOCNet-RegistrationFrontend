@@ -10,10 +10,17 @@ namespace CodeMooc.Web.Data {
     public class Donation {
 
         public string Name { get; set; }
+
         public string Surname { get; set; }
+
         public string Email { get; set; }
+
         public DateTime Year { get; set; }
+
         public ushort Amount { get; set; }
+
+        [ForeignKey(nameof(Email))]
+        public Email Address { get; set; }
 
     }
 
