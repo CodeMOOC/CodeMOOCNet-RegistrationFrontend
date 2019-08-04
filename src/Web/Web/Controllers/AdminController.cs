@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using CodeMooc.Web.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
@@ -15,11 +16,11 @@ namespace CodeMooc.Web.Controllers {
     [Authorize(Policy = Startup.LegacyBasicAdministratorsPolicyName)]
     public class AdminController : Controller {
 
-        protected DatabaseManager Database { get; }
+        protected DataContext Database { get; }
         protected ILogger<RegisterController> Logger { get; }
 
         public AdminController(
-            DatabaseManager database,
+            DataContext database,
             ILogger<RegisterController> logger
         ) {
             Database = database;
@@ -28,7 +29,7 @@ namespace CodeMooc.Web.Controllers {
 
         [HttpGet("registrations")]
         public IActionResult ListRegistrations() {
-            var users = from r in Database.Context.Registrations
+            var users = from r in Database.Registrations
                         orderby r.Id ascending
                         select r;
 

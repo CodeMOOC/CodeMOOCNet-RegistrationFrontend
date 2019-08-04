@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using CodeMooc.Web.Data;
 using CodeMooc.Web.Model;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -15,11 +16,11 @@ namespace CodeMooc.Web.Controllers {
     [Route("login")]
     public class LoginController : Controller {
 
-        protected DatabaseManager Database { get; }
+        protected DataContext Database { get; }
         protected ILogger<LoginController> Logger { get; }
 
         public LoginController(
-            DatabaseManager database,
+            DataContext database,
             ILogger<LoginController> logger
         ) {
             Database = database;
@@ -45,7 +46,7 @@ namespace CodeMooc.Web.Controllers {
         ) {
             Logger.LogDebug("Login attempt by {0}", email);
 
-            var mailRecord = (from e in Database.Context.Emails
+            var mailRecord = (from e in Database.Emails
                               where e.Address == email.ToLowerInvariant()
                               select e).SingleOrDefault();
             if(mailRecord == null) {
@@ -53,7 +54,7 @@ namespace CodeMooc.Web.Controllers {
                 return FailLoginAttempt(email);
             }
 
-            var userRecord = (from u in Database.Context.Registrations
+            var userRecord = (from u in Database.Registrations
                               where u.Id == mailRecord.RegistrationId
                               select u).Single();
             Logger.LogDebug("Matching {0} with {1}", password, userRecord.PasswordHash);

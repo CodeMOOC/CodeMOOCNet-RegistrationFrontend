@@ -10,20 +10,9 @@ namespace CodeMooc.Web.Data {
 
     public class DataContext : DbContext {
 
-        public string ConnectionString { get; }
+        public DataContext(DbContextOptions options) :
+            base(options) {
 
-        protected readonly ILogger<DatabaseManager> _logger;
-
-        public DataContext(
-            string connectionString,
-            ILogger<DatabaseManager> logger
-        ) {
-            ConnectionString = connectionString;
-            _logger = logger;
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-            optionsBuilder.UseMySQL(ConnectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
@@ -47,12 +36,6 @@ namespace CodeMooc.Web.Data {
                 e.Property(nameof(Badge.Type)).HasConversion(BadgeTypeConverter.Create());
                 e.Property(nameof(Badge.Year)).HasConversion(YearConverter.Create());
             });
-        }
-
-        public override void Dispose() {
-            _logger.LogTrace("Disposing data context");
-
-            base.Dispose();
         }
 
         public DbSet<Registration> Registrations { get; set; }

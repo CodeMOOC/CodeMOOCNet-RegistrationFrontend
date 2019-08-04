@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using CodeMooc.Web.Data;
 using CodeMooc.Web.Model;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace CodeMooc.Web.Controllers {
@@ -15,15 +17,18 @@ namespace CodeMooc.Web.Controllers {
     [Authorize(Policy = Startup.MembersOnlyPolicyName)]
     public class DashboardController : Controller {
 
-        protected DatabaseManager Database { get; }
-        protected ILogger<DashboardController> Logger { get; }
+        protected readonly DataContext Database;
+        protected readonly ILogger<DashboardController> Logger;
+        protected readonly IConfiguration Configuration;
 
         public DashboardController(
-            DatabaseManager database,
-            ILogger<DashboardController> logger
+            DataContext database,
+            ILogger<DashboardController> logger,
+            IConfiguration configuration
         ) {
             Database = database;
             Logger = logger;
+            Configuration = configuration;
         }
 
         protected T GetViewModel<T>()
@@ -41,7 +46,7 @@ namespace CodeMooc.Web.Controllers {
                 return model;
             }
 
-            model.LoggedUser = (from r in Database.Context.Registrations
+            model.LoggedUser = (from r in Database.Registrations
                                 where r.Id == id
                                 select r).SingleOrDefault();
             Logger.LogDebug("Loaded user information for user {0} {1}", model.LoggedUser.Id, model.LoggedUser.Name);
@@ -57,11 +62,11 @@ namespace CodeMooc.Web.Controllers {
         public IActionResult ShowDonations() {
             var model = GetViewModel<DashboardDonationsViewModel>();
 
-            var emails = (from e in Database.Context.Emails
+            var emails = (from e in Database.Emails
                           where e.RegistrationId == model.LoggedUser.Id
                           select e).ToArray();
 
-            var donations = (from d in Database.Context.Donations
+            var donations = (from d in Database.Donations
                              where emails.Any(e => e.Address == d.Email)
                              select d).ToList();
 

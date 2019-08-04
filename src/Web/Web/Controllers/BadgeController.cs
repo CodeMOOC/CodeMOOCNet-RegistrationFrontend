@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using CodeMooc.Web.Data;
 using CodeMooc.Web.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,11 +12,11 @@ namespace CodeMooc.Web.Controllers {
     [AllowAnonymous]
     public class BadgeController : Controller {
 
-        protected DatabaseManager Database { get; }
+        protected DataContext Database { get; }
         protected ILogger<BadgeController> Logger { get; }
 
         public BadgeController(
-            DatabaseManager database,
+            DataContext database,
             ILogger<BadgeController> logger
         ) {
             Database = database;
@@ -84,7 +85,7 @@ namespace CodeMooc.Web.Controllers {
         }
 
         protected IActionResult ShowEvidenceInternal(BadgeType badgeType, int year, string token) {
-            var badge = (from b in Database.Context.Badges
+            var badge = (from b in Database.Badges
                          where b.Type == badgeType
                          where b.Year == new DateTime(year, 1, 1)
                          where b.EvidenceToken == token
@@ -94,7 +95,7 @@ namespace CodeMooc.Web.Controllers {
                 return NotFound();
             }
 
-            var user = (from u in Database.Context.Donations
+            var user = (from u in Database.Donations
                         where u.Email == badge.Email
                         where u.Year == new DateTime(year, 1, 1)
                         select u).FirstOrDefault();

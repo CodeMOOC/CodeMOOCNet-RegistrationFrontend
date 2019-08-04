@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using CodeMooc.Web.Data;
 using CodeMooc.Web.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -14,11 +15,11 @@ namespace CodeMooc.Web.Controllers {
     [Route("iscrizione")]
     public class RegisterController : Controller {
 
-        protected DatabaseManager Database { get; }
+        protected DataContext Database { get; }
         protected ILogger<RegisterController> Logger { get; }
 
         public RegisterController(
-            DatabaseManager database,
+            DataContext database,
             ILogger<RegisterController> logger
         ) {
             Database = database;
@@ -90,7 +91,7 @@ namespace CodeMooc.Web.Controllers {
 
             // Check e-mail
             if (!string.IsNullOrWhiteSpace(model.Email)) {
-                var existingMailUser = (from e in Database.Context.Emails
+                var existingMailUser = (from e in Database.Emails
                                         where e.Address == model.Email.ToLowerInvariant()
                                         select e).SingleOrDefault();
                 if (existingMailUser != null) {
@@ -101,7 +102,7 @@ namespace CodeMooc.Web.Controllers {
 
             // Check fiscal code
             if (!string.IsNullOrWhiteSpace(model.FiscalCode)) {
-                var existingCodeUser = (from r in Database.Context.Registrations
+                var existingCodeUser = (from r in Database.Registrations
                                         where r.FiscalCode == model.FiscalCode.ToUpperInvariant()
                                         where r.ConfirmationTimestamp != null
                                         select r).SingleOrDefault();
@@ -155,7 +156,7 @@ namespace CodeMooc.Web.Controllers {
                 RegistrationTimestamp = DateTime.UtcNow,
                 ConfirmationSecret = GenerateSecret()
             };
-            Database.Context.Registrations.Add(user);
+            Database.Registrations.Add(user);
 
             var email = new Data.Email {
                 Address = model.Email.Trim().ToLowerInvariant(),
@@ -163,9 +164,9 @@ namespace CodeMooc.Web.Controllers {
                 AssociationTimestamp = user.RegistrationTimestamp,
                 Registration = user
             };
-            Database.Context.Emails.Add(email);
+            Database.Emails.Add(email);
 
-            int changes = Database.Context.SaveChanges();
+            int changes = Database.SaveChanges();
             if(changes != 2) {
                 throw new InvalidOperationException("Expected changes equal to 2 when registering user");
             }
@@ -179,7 +180,7 @@ namespace CodeMooc.Web.Controllers {
 
         [HttpGet("verifica/{id}")]
         public IActionResult Validate([FromRoute] int id, [FromQuery] string secret) {
-            var user = (from r in Database.Context.Registrations
+            var user = (from r in Database.Registrations
                         where r.Id == id
                         select r).SingleOrDefault();
 
@@ -207,7 +208,7 @@ namespace CodeMooc.Web.Controllers {
 
         [HttpPost("verifica/{id}")]
         public IActionResult DoValidate([FromRoute] int id, [FromForm] string secret) {
-            var user = (from r in Database.Context.Registrations
+            var user = (from r in Database.Registrations
                         where r.Id == id
                         where r.ConfirmationTimestamp == null
                         select r).SingleOrDefault();
@@ -223,7 +224,7 @@ namespace CodeMooc.Web.Controllers {
             }
 
             user.ConfirmationTimestamp = DateTime.UtcNow;
-            Database.Context.SaveChanges();
+            Database.SaveChanges();
 
             Logger.LogInformation(LoggingEvents.Verification, "User {0} verified", id);
 
@@ -232,7 +233,7 @@ namespace CodeMooc.Web.Controllers {
 
         [HttpGet("mostra/{id}")]
         public IActionResult Show([FromRoute] int id) {
-            var user = (from r in Database.Context.Registrations
+            var user = (from r in Database.Registrations
                         where r.Id == id
                         select r).SingleOrDefault();
 
