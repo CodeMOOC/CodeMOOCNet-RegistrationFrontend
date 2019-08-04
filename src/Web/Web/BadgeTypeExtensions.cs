@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Resources;
 using CodeMooc.Web.Resources;
 
 namespace CodeMooc.Web {
@@ -21,6 +19,13 @@ namespace CodeMooc.Web {
             { "sostenitoregold", BadgeType.GoldPatron },
             { "sponsor", BadgeType.Sponsor },
         };
+
+        private static readonly Dictionary<BadgeType, string> _reverseNames;
+
+        static BadgeTypeExtensions() {
+            _reverseNames = new Dictionary<BadgeType, string>(from p in _routeNames.Keys
+                                                              select new KeyValuePair<BadgeType, string>(_routeNames[p], p));
+        }
 
         private static readonly int[] _widths = new int[] {
             250,
@@ -78,6 +83,10 @@ namespace CodeMooc.Web {
 
         public static string GetEvidence(this BadgeType badgeType, int year) {
             return BadgeEvidenceDescriptions.ResourceManager.GetString($"{badgeType}{year}");
+        }
+
+        public static string GetPathToken(this BadgeType badgeType) {
+            return _reverseNames[badgeType];
         }
 
     }

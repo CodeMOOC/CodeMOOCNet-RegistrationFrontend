@@ -30,6 +30,9 @@ namespace CodeMooc.Web.Data {
         [InverseProperty(nameof(Donation.Address))]
         public List<Donation> AssociatedDonations { get; set; }
 
+        [InverseProperty(nameof(Badge.Address))]
+        public List<Badge> AssociatedBadges { get; set; }
+
     }
 
 }

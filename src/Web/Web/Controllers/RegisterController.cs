@@ -15,6 +15,8 @@ namespace CodeMooc.Web.Controllers {
     [Route("iscrizione")]
     public class RegisterController : Controller {
 
+        public const string RegistrationFromAddress = "no-reply@codemooc.net";
+
         protected DataContext Database { get; }
         protected ILogger<RegisterController> Logger { get; }
 
@@ -54,7 +56,7 @@ namespace CodeMooc.Web.Controllers {
 
                 Logger.LogTrace(LoggingEvents.Email, "SMTP host {0}:{1} username {2} SSL {3}", client.Host, client.Port, credentials.UserName, client.EnableSsl);
 
-                var noReplyAddress = new MailAddress("no-reply@codemooc.net", "CodeMOOC.net");
+                var noReplyAddress = new MailAddress(RegistrationFromAddress, "CodeMOOC.net");
                 var msg = new MailMessage {
                     From = noReplyAddress,
                     Subject = "Verifica indirizzo e-mail",

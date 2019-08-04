@@ -75,16 +75,37 @@ namespace CodeMooc.Web.Controllers {
                           where e.RegistrationId == model.LoggedUser.Id
                           select e)
                           .Include(e => e.AssociatedDonations)
-                          .Single();
-
-            model.Donations = emails.AssociatedDonations;
+                          .ToList();
+            model.Donations = emails.SelectMany(e => e.AssociatedDonations).ToList();
 
             return View("Donations", model);
         }
 
         [HttpGet("stato")]
         public IActionResult ShowAssociationStatus() {
-            return null;
+            var model = GetViewModel<DashboardStatusViewModel>();
+            if(model == null) {
+                return Forbid();
+            }
+
+            model.IsRegistrationConfirmed = model.LoggedUser.ConfirmationTimestamp.HasValue;
+
+            var emails = (from e in Database.Emails
+                          where e.RegistrationId == model.LoggedUser.Id
+                          select e)
+                          .Include(e => e.AssociatedBadges)
+                          .ToList();
+
+            model.Emails = emails;
+            model.PrimaryEmail = emails.Where(e => e.IsPrimary).Single();
+
+            model.Badges = emails.SelectMany(e => e.AssociatedBadges).ToList();
+
+            model.IsAssociateForCurrentYear = model.Badges.Any(b => b.Year.Year == DateTime.Now.Year && b.Type == BadgeType.Member);
+
+            model.ConfirmationEmailAddress = RegisterController.RegistrationFromAddress;
+
+            return View("Status", model);
         }
 
         [HttpGet("cv-upload")]

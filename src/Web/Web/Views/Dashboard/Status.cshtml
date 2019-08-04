@@ -1,0 +1,63 @@
+﻿@using CodeMooc.Web
+@using CodeMooc.Web.Model
+@model DashboardStatusViewModel
+@{
+    Layout = "Main";
+    ViewData["Title"] = "Stato";
+}
+
+<div class="container">
+    <h1 class="text-center">Stato</h1>
+
+    <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3">
+
+        <p>◀&nbsp;@Html.ActionLink("Torna al pannello di controllo", "Index")</p>
+
+        <h2>Indirizzi e-mail</h2>
+
+        <p>Indirizzi e-mail associati al tuo account:</p>
+        <ul>
+            @foreach (var e in Model.Emails) {
+                <li>
+                    @e.Address @if (e.IsPrimary) {
+                    <span>(Primario)</span>
+                }
+                </li>
+            }
+        </ul>
+
+        <h2>Registrazione</h2>
+
+        @if (Model.IsRegistrationConfirmed) {
+            <p>La tua registrazione è stata confermata correttamente.</p>
+        }
+        else {
+            <p class="warning">La tua registrazione non è confermata!</p>
+            <p class="help">
+                Verifica di aver ricevuto una e-mail di conferma dall'indirizzo <i>@Model.ConfirmationEmailAddress</i> (controlla anche nella cartella dello spam).
+                Se così non fosse, contatta <i>associazione@codemooc.net</i> scrivendo un'e-mail dall'indirizzo <i>@Model.PrimaryEmail.Address</i>.
+            </p>
+        }
+
+        <h2>Badge e iscrizione</h2>
+
+        @if (Model.Badges.Count == 0) {
+            <p><i>Nessun badge emesso.</i></p>
+        }
+        else {
+            <ul>
+                @foreach (var badge in Model.Badges) {
+                    <li>
+                        @badge.Type.GetName(badge.Year.Year) (@Html.ActionLink("vedi", "ShowEvidenceYear", "Badge", new { type = badge.Type.GetPathToken(), year = badge.Year.Year, token = badge.EvidenceToken }, null))
+                    </li>
+                }
+            </ul>
+        }
+
+        @if(Model.IsAssociateForCurrentYear) {
+            <p>Risulti correttamente iscritto/a all'associazione CodeMOOC.net per il corrente anno. Grazie!</p>
+        }
+
+    </div>
+
+</div>

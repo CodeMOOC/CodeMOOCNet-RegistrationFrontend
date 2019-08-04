@@ -19,6 +19,9 @@ namespace CodeMooc.Web.Data {
 
         public string EvidenceToken { get; set; }
 
+        [ForeignKey(nameof(Email))]
+        public Email Address { get; set; }
+
     }
 
 }
