@@ -65,6 +65,10 @@ button {
     color: rgb(172, 82, 138) !important;
 }
 
+img.avatar {
+    max-width: 50%;
+}
+
 hr {
     margin-top: 2rem;
     margin-bottom: 2rem;
@@ -75,6 +79,14 @@ hr {
     display: block;
     margin-left: auto;
     margin-right: auto;
+}
+
+.input-form-control {
+    display: block;
+    height: calc(2.25rem + 2px);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
 }
 
 #submit {

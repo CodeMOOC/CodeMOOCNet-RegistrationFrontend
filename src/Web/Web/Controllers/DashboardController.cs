@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -7,10 +8,14 @@ using CodeMooc.Web.Data;
 using CodeMooc.Web.Model;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 
 namespace CodeMooc.Web.Controllers {
 
@@ -32,10 +37,7 @@ namespace CodeMooc.Web.Controllers {
             Configuration = configuration;
         }
 
-        protected T GetViewModel<T>()
-            where T : DashboardBaseViewModel {
-            T model = (T)Activator.CreateInstance(typeof(T));
-
+        protected int? GetUserId() {
             if(!HttpContext.User.Identity.IsAuthenticated) {
                 Logger.LogError("User not authenticated on dashboard");
                 return null;
@@ -47,8 +49,21 @@ namespace CodeMooc.Web.Controllers {
                 return null;
             }
 
+            return id;
+        }
+
+        protected T GetViewModel<T>()
+            where T : DashboardBaseViewModel {
+
+            T model = (T)Activator.CreateInstance(typeof(T));
+
+            var userId = GetUserId();
+            if(!userId.HasValue) {
+                return null;
+            }
+
             model.LoggedUser = (from r in Database.Registrations
-                                where r.Id == id
+                                where r.Id == userId.Value
                                 select r).SingleOrDefault();
             Logger.LogDebug("Loaded user information for user {0} {1}", model.LoggedUser.Id, model.LoggedUser.Name);
 
@@ -108,14 +123,89 @@ namespace CodeMooc.Web.Controllers {
             return View("Status", model);
         }
 
-        [HttpGet("cv-upload")]
-        public IActionResult ShowCvUpload() {
-            return null;
+        protected string GetCurriculumPath(int userId) {
+            var pathsConf = Configuration.GetSection("Paths");
+            string pathCurricula = pathsConf["Curricula"];
+
+            return Path.Combine(pathCurricula, $"{userId}.pdf");
         }
 
-        [HttpPost("cv-upload")]
-        public IActionResult ProcessCvUpload() {
-            return null;
+        protected string GetProfilePicPath(int userId) {
+            var pathsConf = Configuration.GetSection("Paths");            
+            string pathProfilePics = pathsConf["ProfilePics"];
+
+            return Path.Combine(pathProfilePics, $"{userId}.jpg");
+        }
+
+        [HttpGet("curriculum")]
+        public IActionResult ShowCvUpload() {
+            var model = GetViewModel<DashboardUploadViewModel>();
+            var userId = model.LoggedUser.Id;
+
+            var pathProfile = GetProfilePicPath(userId);
+            model.ProfilePictureFilename = System.IO.File.Exists(pathProfile) ? Path.GetFileName(pathProfile) : null;
+            Logger.LogDebug("Path {0} exists {1}", pathProfile, model.ProfilePictureFilename != null);
+
+            var pathCurriculum = GetCurriculumPath(userId);
+            model.CurriculumFilename = System.IO.File.Exists(pathCurriculum) ? Path.GetFileName(pathCurriculum) : null;
+            Logger.LogDebug("Path {0} exists {1}", pathCurriculum, model.ProfilePictureFilename != null);
+
+            return View("Upload", model);
+        }
+
+        [HttpPost("curriculum")]
+        public async Task<IActionResult> ProcessCvUpload(IFormFile profilePic, IFormFile curriculum) {
+            var userId = GetUserId();
+            if(!userId.HasValue) {
+                return RedirectToAction(nameof(ShowCvUpload));
+            }
+
+            if(profilePic != null) {
+                ProcessProfilePicture(userId.Value, profilePic);
+            }
+            if(curriculum != null) {
+                await ProcessCurriculum(userId.Value, curriculum);
+            }
+
+            return RedirectToAction(nameof(ShowCvUpload));
+        }
+
+        protected void ProcessProfilePicture(int userId, IFormFile file) {
+            Logger.LogDebug("Processing profile picture, name {0} size {1}", file.FileName, file.Length);
+
+            var pathProfile = GetProfilePicPath(userId);
+            using(var source = file.OpenReadStream()) {
+                using(var img = Image.Load(source)) {
+                    Logger.LogTrace("Resizing input image");
+                    img.Mutate(x => x
+                        .AutoOrient()
+                        .Resize(new ResizeOptions {
+                            Mode = ResizeMode.Min,
+                            Size = new SixLabors.Primitives.Size(640, 640)
+                        })
+                        .Crop(640, 640)
+                    );
+
+                    using(var output = new FileStream(pathProfile, FileMode.Create, FileAccess.Write)) {
+                        Logger.LogTrace("Writing file to {0}", pathProfile);
+                        img.SaveAsJpeg(output);
+                    }
+                }
+            }
+
+            Logger.LogInformation("Profile picture for user {0} uploaded to {1}", userId, pathProfile);
+        }
+
+        protected async Task ProcessCurriculum(int userId, IFormFile file) {
+            Logger.LogDebug("Processing curriculum, name {0} size {1}", file.FileName, file.Length);
+
+            var pathCurriculum = GetCurriculumPath(userId);
+            using(var output = new FileStream(pathCurriculum, FileMode.Create, FileAccess.Write)) {
+                Logger.LogTrace("Writing file to {0}", pathCurriculum);
+                await file.CopyToAsync(output);
+            }
+
+            Logger.LogInformation("Curriculum for user {0} uploaded to {1}", userId, pathCurriculum);
         }
 
     }

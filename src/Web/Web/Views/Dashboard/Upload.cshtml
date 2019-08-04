@@ -1,0 +1,74 @@
+﻿@using CodeMooc.Web.Model
+@model DashboardUploadViewModel
+@{
+    Layout = "Main";
+    ViewData["Title"] = "Raccolta curricula";
+}
+
+<div class="container">
+    <h1 class="text-center">Raccolta curricula</h1>
+
+    <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3">
+
+        <p>◀&nbsp;@Html.ActionLink("Torna al pannello di controllo", "Index")</p>
+
+        <p>
+            CodeMOOC.net sta sviluppando una <b>rete di competenze ed esperienze</b>,  una via di mezzo tra una raccolta di curricula ed un social network.
+            Questo strumento verrà <b>sviluppato su misura</b>, in modo che rappresenti al meglio la rete degli associati, le loro esperienze professionali e le relazioni che le valorizzano.
+        </p>
+
+        <p>
+            Tramite questo modulo raccoglieremo i curricula degli associati, in modo da usarli come base di dati reale attorno alla quale costruire lo strumento.
+        </p>
+
+        <h2>Profilo utente</h2>
+
+        <p>
+            Usa questo modulo per caricare un'immagine di profilo che ti rappresenti sulla rete di associati CodeMOOC.net.
+            Utilizza immagini di formato quadrato.
+        </p>
+
+        @if (Model.ProfilePictureFilename != null) {
+            <p class="text-center">
+                <img src="~/uploads/profiles/@Model.ProfilePictureFilename" alt="Profile utente" class="avatar img-fluid" />
+            </p>
+        }
+
+        <form asp-controller="Dashboard" asp-action="ProcessCvUpload" method="post" enctype="multipart/form-data" class="form-horizontal" role="form" asp-antiforgery="true">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="profilePic">Immagine profilo:</label>
+                    <input name="profilePic" type="file" class="input-form-control" />
+                </div>
+
+                <button id="submit" type="submit" value="submit" class="btn btn-primary btn-block">Carica immagine profilo</button>
+            </div>
+        </form>
+
+        <h2>Curriculum</h2>
+
+        <p>
+            Usa questo modulo per caricare il tuo curriculum in formato EuroPass: utilizza l'<a href="https://europass.cedefop.europa.eu/it/documents/curriculum-vitae">editor online</a> per creare il documento e trasmettilo qui in formato PDF.
+        </p>
+
+        @if (Model.CurriculumFilename != null) {
+            <p>
+                <b>Il tuo curriculum è stato caricato correttamente!</b><br />
+                File attuale: <a href="~/uploads/curricula/@Model.CurriculumFilename">@Model.CurriculumFilename</a>.
+            </p>
+        }
+
+        <form asp-controller="Dashboard" asp-action="ProcessCvUpload" method="post" enctype="multipart/form-data" class="form-horizontal" role="form" asp-antiforgery="true">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="curriculum">Curriculum:</label>
+                    <input name="curriculum" type="file" class="input-form-control" />
+                </div>
+
+                <button id="submit" type="submit" value="submit" class="btn btn-primary btn-block">Carica curriculum</button>
+            </div>
+        </form>
+
+    </div>
+
+</div>

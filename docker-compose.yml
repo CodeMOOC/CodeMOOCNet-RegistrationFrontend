@@ -12,6 +12,8 @@ services:
     networks:
     - web
     - codemooc-reg-backend
+    volumes:
+    - ./data:/data:rw
     env_file:
     - config.env
     - secret.env

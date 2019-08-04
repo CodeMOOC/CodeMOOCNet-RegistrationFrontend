@@ -7,3 +7,7 @@ secret.env
 composer.phar
 /src/DonationManager/vendor/*
 *.xlsx
+data/curricula/*
+!data/curricula/placeholder
+data/profile/*
+!data/profile/placeholder

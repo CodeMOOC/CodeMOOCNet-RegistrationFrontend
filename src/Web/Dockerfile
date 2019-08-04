@@ -23,7 +23,4 @@ COPY --from=build /app/Web/out ./
 ENV ASPNETCORE_URLS http://+:5001
 EXPOSE 5001
 
-# Drop privileges
-USER 1000
-
 ENTRYPOINT ["dotnet", "CodeMooc.Web.dll"]

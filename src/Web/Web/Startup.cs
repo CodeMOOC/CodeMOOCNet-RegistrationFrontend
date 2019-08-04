@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using CodeMooc.Web.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 
 namespace CodeMooc.Web {
 
@@ -125,6 +127,21 @@ namespace CodeMooc.Web {
             });
 
             app.UseStaticFiles();
+
+            // Add static file paths for uploaded files
+            var pathsConf = Configuration.GetSection("Paths");
+
+            string pathCurricula = pathsConf["Curricula"];
+            app.UseStaticFiles(new StaticFileOptions {
+                FileProvider = new PhysicalFileProvider(Path.Combine("/data", pathCurricula)),
+                RequestPath = "/uploads/curricula"
+            });
+
+            string pathProfilePics = pathsConf["ProfilePics"];
+            app.UseStaticFiles(new StaticFileOptions {
+                FileProvider = new PhysicalFileProvider(Path.Combine("/data", pathProfilePics)),
+                RequestPath = "/uploads/profiles"
+            });
 
             app.UseAuthentication();
 
