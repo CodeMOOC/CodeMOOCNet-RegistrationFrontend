@@ -26,11 +26,13 @@ ALTER TABLE `Registrations` DROP COLUMN `Email`;
 ALTER TABLE `Badges`
   DROP PRIMARY KEY,
   DROP INDEX `Lookup_idx`,
-  -- ADD COLUMN `RegistrationID` INT UNSIGNED DEFAULT NULL AFTER `Email`,
-  ADD COLUMN `Year` YEAR(4) NOT NULL DEFAULT '2019' AFTER `Type`;
--- UPDATE `Badges` b LEFT OUTER JOIN `Emails` e ON b.`Email` = e.`Email` SET b.`RegistrationID` = e.`RegistrationID`;
-ALTER TABLE `Badges`
+  ADD COLUMN `Year` YEAR(4) NOT NULL DEFAULT '2019' AFTER `Type`,
   ADD PRIMARY KEY (`Email`, `Type`, `Year`),
   ADD INDEX `Lookup_idx` (`Type`, `Year`, `EvidenceToken`);
-  -- ADD CONSTRAINT `Registration_fk` FOREIGN KEY `Registration_idx` (`RegistrationID`) REFERENCES `Registrations` (`ID`) ON UPDATE RESTRICT ON DELETE RESTRICT
 UPDATE `Badges` SET `Type` = SUBSTRING(`Type`, 1, CHAR_LENGTH(`Type`) - 4);
+
+-- Optimize step
+OPTIMIZE TABLE `Registrations`;
+OPTIMIZE TABLE `Emails`;
+OPTIMIZE TABLE `Donations`;
+OPTIMIZE TABLE `Badges`;
