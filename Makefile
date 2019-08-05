@@ -25,6 +25,10 @@ install:
 mysql:
 	${DC_RUN} db-client mysql -h db -u ${MYSQL_USER} -p${MYSQL_PASSWORD} ${MYSQL_DATABASE}
 
+.PHONY: mysql-cmd
+mysql-cmd:
+	@echo '${DC_RUN} db-client mysql -h db -u ${MYSQL_USER} -p${MYSQL_PASSWORD} ${MYSQL_DATABASE}'
+
 .PHONY: dump
 dump:
 	${DC_RUN} db-client mysqldump -h db -u ${MYSQL_USER} -p${MYSQL_PASSWORD} ${MYSQL_DATABASE} --extended-insert=FALSE > dump.sql
