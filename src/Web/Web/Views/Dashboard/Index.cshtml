@@ -1,5 +1,5 @@
 ﻿@using CodeMooc.Web.Model
-@model DashboardBaseViewModel
+@model DashboardIndexViewModel
 @{
     Layout = "Main";
     ViewData["Title"] = "Pannello soci";
@@ -9,6 +9,12 @@
     <h1 class="text-center">Pannello soci</h1>
 
     <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3">
+
+        @if (Model.ProfilePictureFilename != null) {
+            <p class="text-center">
+                <img src="~/uploads/profiles/@Model.ProfilePictureFilename" alt="Profilo utente" class="avatar img-fluid" />
+            </p>
+        }
 
         <p>Ciao @Model.LoggedUser.Name!</p>
 

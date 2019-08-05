@@ -67,6 +67,7 @@ button {
 
 img.avatar {
     max-width: 50%;
+    border-radius: 50%;
 }
 
 hr {

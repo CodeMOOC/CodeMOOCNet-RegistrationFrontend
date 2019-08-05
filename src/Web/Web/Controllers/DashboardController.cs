@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using CodeMooc.Web.Data;
 using CodeMooc.Web.Model;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +12,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
 namespace CodeMooc.Web.Controllers {
@@ -71,10 +68,13 @@ namespace CodeMooc.Web.Controllers {
         }
 
         public IActionResult Index() {
-            var model = GetViewModel<DashboardBaseViewModel>();
+            var model = GetViewModel<DashboardIndexViewModel>();
             if(model == null) {
                 return Forbid();
             }
+
+            var pathProfile = GetProfilePicPath(model.LoggedUser.Id);
+            model.ProfilePictureFilename = System.IO.File.Exists(pathProfile) ? Path.GetFileName(pathProfile) : null;
 
             return View(model);
         }

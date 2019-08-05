@@ -30,15 +30,15 @@
 
         @if (Model.ProfilePictureFilename != null) {
             <p class="text-center">
-                <img src="~/uploads/profiles/@Model.ProfilePictureFilename" alt="Profile utente" class="avatar img-fluid" />
+                <img src="~/uploads/profiles/@Model.ProfilePictureFilename" alt="Profilo utente" class="avatar img-fluid" />
             </p>
         }
 
         <form asp-controller="Dashboard" asp-action="ProcessCvUpload" method="post" enctype="multipart/form-data" class="form-horizontal" role="form" asp-antiforgery="true">
-            <div class="form-row">
+            <div>
                 <div class="form-group">
                     <label for="profilePic">Immagine profilo:</label>
-                    <input name="profilePic" type="file" class="input-form-control" />
+                    <input name="profilePic" type="file" class="input-form-control" accept="image/*" />
                 </div>
 
                 <button id="submit" type="submit" value="submit" class="btn btn-primary btn-block">Carica immagine profilo</button>
