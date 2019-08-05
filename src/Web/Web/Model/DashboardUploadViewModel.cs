@@ -11,6 +11,13 @@ namespace CodeMooc.Web.Model {
 
         public string CurriculumFilename { get; set; }
 
+        public enum CurriculumUploadFailure {
+            None,
+            WrongExtension
+        }
+
+        public CurriculumUploadFailure CurriculumFailure { get; set; }
+
     }
 
 }

@@ -59,11 +59,17 @@
         }
 
         <form asp-controller="Dashboard" asp-action="ProcessCvUpload" method="post" enctype="multipart/form-data" class="form-horizontal" role="form" asp-antiforgery="true">
-            <div class="form-row">
+            <div>
                 <div class="form-group">
                     <label for="curriculum">Curriculum:</label>
-                    <input name="curriculum" type="file" class="input-form-control" />
+                    <input name="curriculum" type="file" class="input-form-control" accept="application/pdf" />
                 </div>
+
+                @if (Model.CurriculumFailure == DashboardUploadViewModel.CurriculumUploadFailure.WrongExtension) {
+                    <div class="form-error">
+                        Il curriculum deve essere in formato PDF.
+                    </div>
+                }
 
                 <button id="submit" type="submit" value="submit" class="btn btn-primary btn-block">Carica curriculum</button>
             </div>

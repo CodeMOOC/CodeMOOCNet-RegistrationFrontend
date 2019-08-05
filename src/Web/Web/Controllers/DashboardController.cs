@@ -55,7 +55,7 @@ namespace CodeMooc.Web.Controllers {
         protected T GetViewModel<T>()
             where T : DashboardBaseViewModel {
 
-            T model = (T)Activator.CreateInstance(typeof(T));
+            T model = TempData.Get<T>() ?? (T)Activator.CreateInstance(typeof(T));
 
             var userId = GetUserId();
             if(!userId.HasValue) {
@@ -198,6 +198,14 @@ namespace CodeMooc.Web.Controllers {
 
         protected async Task ProcessCurriculum(int userId, IFormFile file) {
             Logger.LogDebug("Processing curriculum, name {0} size {1}", file.FileName, file.Length);
+
+            if(Path.GetExtension(file.FileName).Equals("pdf", StringComparison.InvariantCultureIgnoreCase)) {
+                Logger.LogError("File extension is not PDF");
+                TempData.Put(new DashboardUploadViewModel {
+                    CurriculumFailure = DashboardUploadViewModel.CurriculumUploadFailure.WrongExtension
+                });
+                return;
+            }
 
             var pathCurriculum = GetCurriculumPath(userId);
             using(var output = new FileStream(pathCurriculum, FileMode.Create, FileAccess.Write)) {
