@@ -180,10 +180,9 @@ namespace CodeMooc.Web.Controllers {
                     img.Mutate(x => x
                         .AutoOrient()
                         .Resize(new ResizeOptions {
-                            Mode = ResizeMode.Min,
+                            Mode = ResizeMode.Crop,
                             Size = new SixLabors.Primitives.Size(640, 640)
                         })
-                        .Crop(640, 640)
                     );
 
                     using(var output = new FileStream(pathProfile, FileMode.Create, FileAccess.Write)) {
