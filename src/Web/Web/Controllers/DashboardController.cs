@@ -142,6 +142,14 @@ namespace CodeMooc.Web.Controllers {
             var model = GetViewModel<DashboardUploadViewModel>();
             var userId = model.LoggedUser.Id;
 
+            var emails = (from e in Database.Emails
+                          where e.RegistrationId == userId
+                          select e)
+                          .Include(e => e.AssociatedBadges)
+                          .ToList();
+            var badges = emails.SelectMany(e => e.AssociatedBadges).ToList();
+            model.IsAssociateForCurrentYear = badges.Any(b => b.Year.Year == DateTime.Now.Year && b.Type == BadgeType.Member);
+
             var pathProfile = GetProfilePicPath(userId);
             model.ProfilePictureFilename = System.IO.File.Exists(pathProfile) ? Path.GetFileName(pathProfile) : null;
             Logger.LogDebug("Path {0} exists {1}", pathProfile, model.ProfilePictureFilename != null);

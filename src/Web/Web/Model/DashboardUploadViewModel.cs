@@ -7,6 +7,8 @@ namespace CodeMooc.Web.Model {
 
     public class DashboardUploadViewModel : DashboardBaseViewModel {
 
+        public bool IsAssociateForCurrentYear { get; set; }
+
         public string ProfilePictureFilename { get; set; }
 
         public string CurriculumFilename { get; set; }
