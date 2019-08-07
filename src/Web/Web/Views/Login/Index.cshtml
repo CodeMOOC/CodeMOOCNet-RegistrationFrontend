@@ -11,9 +11,11 @@
     <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3">
 
     @if (Model.IsLoggedIn) {
-    <div class="form-group">
-        <a href="@Url.Action("Logout", "Login")" class="btn btn-primary btn-block">Logout</a>
-    </div>
+    <form asp-controller="Login" asp-action="Logout" method="post" role="form" asp-antiforgery="true">
+        <div class="form-group">
+            <button id="submit" type="submit" value="submit" class="btn btn-primary btn-block">Logout</button>
+        </div>
+    </form>
     }
     else {
     <form asp-controller="Login" asp-action="PerformLogin" method="post" class="form-horizontal" role="form" asp-antiforgery="true">
@@ -43,6 +45,8 @@
             Logout eseguito.
         </div>
         }
+
+        <p>Password dimenticata? @Html.ActionLink("Reimposta le tue credenziali", "ResetPassword").</p>
 
         <button id="submit" type="submit" value="submit" class="btn btn-primary btn-block">Login</button>
     </form>

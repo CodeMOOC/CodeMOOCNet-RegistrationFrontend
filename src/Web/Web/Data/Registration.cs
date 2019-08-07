@@ -38,6 +38,8 @@ namespace CodeMooc.Web.Data {
         public string ConfirmationSecret { get; set; }
         public DateTime? ConfirmationTimestamp { get; set; }
 
+        public string PasswordResetSecret { get; set; }
+
     }
 
 }

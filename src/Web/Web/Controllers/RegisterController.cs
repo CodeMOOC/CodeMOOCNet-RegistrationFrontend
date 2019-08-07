@@ -28,13 +28,6 @@ namespace CodeMooc.Web.Controllers {
             Logger = logger;
         }
 
-        private string GenerateSecret() {
-            var rnd = new Random();
-            byte[] buffer = new byte[10];
-            rnd.NextBytes(buffer);
-            return Convert.ToBase64String(buffer, Base64FormattingOptions.None).Substring(0, 10);
-        }
-
         private async Task SendConfirmationEmail(Data.Registration user, Data.Email email) {
             string url = Url.Action(nameof(Validate), "Register", new { id = user.Id, secret = user.ConfirmationSecret });
             string link = "http://codemooc.net" + url;
@@ -156,7 +149,7 @@ namespace CodeMooc.Web.Controllers {
                 HasAttendedMooc = model.HasAttendedMooc,
                 HasCompletedMooc = model.HasCompletedMooc,
                 RegistrationTimestamp = DateTime.UtcNow,
-                ConfirmationSecret = GenerateSecret()
+                ConfirmationSecret = Startup.GenerateSecret()
             };
             Database.Registrations.Add(user);
 

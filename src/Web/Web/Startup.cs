@@ -148,6 +148,14 @@ namespace CodeMooc.Web {
             app.UseMvc();
         }
 
+        private static readonly Random _random = new Random();
+
+        public static string GenerateSecret() {
+            byte[] buffer = new byte[10];
+            _random.NextBytes(buffer);
+            return Convert.ToBase64String(buffer, Base64FormattingOptions.None).Substring(0, 10);
+        }
+
     }
 
 }

@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS `CodeMoocNet`.`Registrations` (
   `RegistrationTimestamp` DATETIME NOT NULL,
   `ConfirmationSecret` CHAR(10) NOT NULL,
   `ConfirmationTimestamp` DATETIME DEFAULT NULL,
+  `PasswordResetSecret` CHAR(10) DEFAULT NULL,
   
   PRIMARY KEY (`ID`),
   INDEX `FullName_idx` (`Surname`, `Name`),
