@@ -2,8 +2,6 @@ SHELL := /bin/bash
 
 include config.env
 export
-include secret.env
-export
 
 DC := docker-compose -f docker-compose.yml -f docker-compose.custom.yml
 DC_RUN := ${DC} run --rm
