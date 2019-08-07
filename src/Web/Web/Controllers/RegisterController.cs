@@ -30,7 +30,7 @@ namespace CodeMooc.Web.Controllers {
 
         private async Task SendConfirmationEmail(Data.Registration user, Data.Email email) {
             string url = Url.Action(nameof(Validate), "Register", new { id = user.Id, secret = user.ConfirmationSecret });
-            string link = "http://codemooc.net" + url;
+            string link = "https://codemooc.net" + url;
 
             Logger.LogTrace(LoggingEvents.Email, "Destination URL {0}, final link {1}", url, link);
 

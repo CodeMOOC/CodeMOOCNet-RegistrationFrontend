@@ -128,7 +128,7 @@ namespace CodeMooc.Web.Controllers {
 
         private async Task SendPasswordResetEmail(string email, Data.Registration user) {
             string url = Url.Action(nameof(FinalizeResetPassword), "Login", new { id = user.Id, secret = user.PasswordResetSecret });
-            string link = "http://codemooc.net" + url;
+            string link = "https://codemooc.net" + url;
 
             Logger.LogTrace(LoggingEvents.Email, "Destination URL {0}, final link {1}", url, link);
 
