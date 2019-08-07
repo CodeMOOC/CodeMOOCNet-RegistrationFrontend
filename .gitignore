@@ -4,6 +4,7 @@
 \.vs/
 *.csproj.user
 secret.env
+config.env
 composer.phar
 /src/DonationManager/vendor/*
 *.xlsx

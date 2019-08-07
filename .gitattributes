@@ -1,2 +1,6 @@
 # Do not process any file :)
 * -text
+
+docker-compose.custom.yml merge=ours
+config.env merge=ours
+secret.env merge=ours
