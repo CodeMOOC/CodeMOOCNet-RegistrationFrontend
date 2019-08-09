@@ -1,6 +1,7 @@
 ﻿using CodeMooc.Web.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using Microsoft.Net.Http.Headers;
@@ -51,6 +52,47 @@ namespace CodeMooc.Web.Controllers {
             Response.Headers.TryAdd(HeaderNames.ContentDisposition, new StringValues("attachment; filename=registrations.csv"));
 
             return Content(sb.ToString(), "text/csv");
+        }
+
+        private const int ExpirationHour = 6;
+        private const int ExpirationMinutes = 30;
+
+        [HttpGet("check-mail")]
+        [Produces("application/json")]
+        public IActionResult CheckEmailStatus(string email) {
+            var userMail = (from e in Database.Emails
+                          where e.Address == email.ToLowerInvariant()
+                          select e).SingleOrDefault();
+            if(userMail == null) {
+                return NotFound();
+            }
+
+            var emails = (from e in Database.Emails
+                          where e.RegistrationId == userMail.RegistrationId
+                          select e)
+                          .Include(e => e.AssociatedBadges)
+                          .ToList();
+
+            var badges = emails.SelectMany(e => e.AssociatedBadges).ToList();
+            bool isAssociate = badges.Any(b => b.Year.Year == DateTime.Now.Year && b.Type == BadgeType.Member);
+
+            var now = DateTime.UtcNow;
+            var yesterday = now.AddDays(-1);
+            var lastGeneration = (now.Hour < ExpirationHour && now.Minute < ExpirationMinutes) ?
+                new DateTime(yesterday.Year, yesterday.Month, yesterday.Day, ExpirationHour, ExpirationMinutes, 0, DateTimeKind.Utc) :
+                new DateTime(now.Year, now.Month, now.Day, ExpirationHour, ExpirationMinutes, 0, DateTimeKind.Utc);
+
+            Response.Headers.Add(HeaderNames.LastModified, lastGeneration.ToString("R"));
+            Response.Headers.Add(HeaderNames.Expires, lastGeneration.AddDays(1).AddSeconds(1).ToString("R"));
+
+            return Ok(new {
+                UserId = userMail.RegistrationId,
+                KnownIdentities = from e in emails
+                                  select new { Email = e.Address, e.IsPrimary },
+                IsMember = isAssociate,
+                GeneratedBadges = from b in badges
+                                  select new { Type = b.Type.GetPathToken(), b.Year.Year }
+            });
         }
 
     }
