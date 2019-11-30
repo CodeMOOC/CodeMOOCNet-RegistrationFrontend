@@ -30,12 +30,13 @@ namespace CodeMooc.Web.Controllers {
 
         [HttpGet("registrations")]
         public IActionResult ListRegistrations() {
-            var users = from r in Database.Registrations
-                        orderby r.Id ascending
-                        select r;
+            var users = (from r in Database.Registrations
+                         orderby r.Id ascending
+                         select r)
+                         .Include(r => r.Emails);
 
             var sb = new StringBuilder();
-            sb.AppendLine("# ID, Name, Surname, FiscalCode, Category, RegisteredOn, Confirmed");
+            sb.AppendLine("# ID, Name, Surname, FiscalCode, Category, RegisteredOn, Confirmed, PrimaryMail");
             foreach (var u in users) {
                 sb.AppendJoin(',',
                     u.Id,
@@ -44,7 +45,8 @@ namespace CodeMooc.Web.Controllers {
                     u.FiscalCode.ToUpperInvariant(),
                     u.Category,
                     u.RegistrationTimestamp.ToString("R"),
-                    u.ConfirmationTimestamp.HasValue ? "1" : "0"
+                    u.ConfirmationTimestamp.HasValue ? "1" : "0",
+                    u.Emails.OrderByDescending(e => e.IsPrimary).FirstOrDefault()?.Address
                 );
                 sb.AppendLine();
             }
