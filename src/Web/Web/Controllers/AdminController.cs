@@ -46,7 +46,7 @@ namespace CodeMooc.Web.Controllers {
                     u.Category,
                     u.RegistrationTimestamp.ToString("R"),
                     u.ConfirmationTimestamp.HasValue ? "1" : "0",
-                    u.Emails.OrderByDescending(e => e.IsPrimary).FirstOrDefault()
+                    u.Emails.OrderByDescending(e => e.IsPrimary).FirstOrDefault()?.Address
                 );
                 sb.AppendLine();
             }
