@@ -38,7 +38,6 @@ CREATE TABLE IF NOT EXISTS `CodeMoocNet`.`Registrations` (
   INDEX `FullName_idx` (`Surname`, `Name`),
   INDEX `Address_idx` (`AddressCountry`, `AddressCity`),
   INDEX `FiscalCode_idx` (`FiscalCode`),
-  INDEX `Email_idx` (`Email`),
   INDEX `RegistrationTimestamp_idx` (`RegistrationTimestamp`)
 )
 ENGINE = InnoDB;
