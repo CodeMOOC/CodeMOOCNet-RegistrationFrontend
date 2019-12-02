@@ -56,6 +56,45 @@ namespace CodeMooc.Web.Controllers {
             return Content(sb.ToString(), "text/csv");
         }
 
+        [HttpGet("members/{year}")]
+        public IActionResult ListMembers(int year) {
+            var users = (from r in Database.Registrations
+                         orderby r.Id ascending
+                         select r)
+                         .Include(r => r.Emails);
+
+            var donations = (from b in Database.Badges
+                             where b.Type == BadgeType.Member
+                             where b.Year.Year == year
+                             select b)
+                             .ToDictionary(b => b.Email);
+
+            var sb = new StringBuilder();
+            sb.AppendLine("# ID, Name, Surname, FiscalCode, Category, RegisteredOn, Confirmed, PrimaryMail");
+            foreach(var u in users) {
+                if(!u.Emails.Any(e => donations.ContainsKey(e.Address))) {
+                    // No e-mail matches membership badge
+                    continue;
+                }
+
+                sb.AppendJoin(',',
+                    u.Id,
+                    u.Name,
+                    u.Surname,
+                    u.FiscalCode.ToUpperInvariant(),
+                    u.Category,
+                    u.RegistrationTimestamp.ToString("R"),
+                    u.ConfirmationTimestamp.HasValue ? "1" : "0",
+                    u.Emails.OrderByDescending(e => e.IsPrimary).FirstOrDefault()?.Address
+                );
+                sb.AppendLine();
+            }
+
+            Response.Headers.TryAdd(HeaderNames.ContentDisposition, new StringValues("attachment; filename=registrations.csv"));
+
+            return Content(sb.ToString(), "text/csv");
+        }
+
         private const int ExpirationHour = 6;
         private const int ExpirationMinutes = 30;
 
