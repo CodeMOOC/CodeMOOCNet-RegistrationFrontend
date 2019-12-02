@@ -14,6 +14,8 @@ namespace CodeMooc.Web {
 
         public const int Badges = 4000;
 
+        public const int Api = 5000;
+
     }
 
 }

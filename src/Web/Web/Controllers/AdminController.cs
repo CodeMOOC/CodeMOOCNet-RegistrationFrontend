@@ -90,7 +90,7 @@ namespace CodeMooc.Web.Controllers {
                 sb.AppendLine();
             }
 
-            Response.Headers.TryAdd(HeaderNames.ContentDisposition, new StringValues("attachment; filename=registrations.csv"));
+            Response.Headers.TryAdd(HeaderNames.ContentDisposition, new StringValues("attachment; filename=members.csv"));
 
             return Content(sb.ToString(), "text/csv");
         }
