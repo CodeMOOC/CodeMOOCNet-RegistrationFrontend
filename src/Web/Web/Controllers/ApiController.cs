@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
-using Microsoft.Net.Http.Headers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,6 +31,14 @@ namespace CodeMooc.Web.Controllers {
         [HttpPost("members/verify")]
         public IActionResult VerifyMembership([FromQuery] string email) {
             Logger.LogInformation(LoggingEvents.Api, "Member verification for mail {0}", email);
+
+            if(Request.Headers.ContainsKey("Origin")) {
+                if(Uri.TryCreate(Request.Headers["Origin"], UriKind.Absolute, out Uri origin)) {
+                    if(origin.Host.ToLowerInvariant().EndsWith("codemooc.net")) {
+                        Response.Headers.Add("Access-Control-Allow-Origin", Request.Headers["Origin"]);
+                    }
+                }
+            }
 
             var entry = (from e in Database.Emails
                          where e.Address == email.ToLowerInvariant().Trim()
