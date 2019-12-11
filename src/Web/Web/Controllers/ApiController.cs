@@ -29,6 +29,7 @@ namespace CodeMooc.Web.Controllers {
         }
 
         [HttpPost("members/verify")]
+        [Produces("application/json")]
         public IActionResult VerifyMembership([FromQuery] string email) {
             Logger.LogInformation(LoggingEvents.Api, "Member verification for mail {0}", email);
 

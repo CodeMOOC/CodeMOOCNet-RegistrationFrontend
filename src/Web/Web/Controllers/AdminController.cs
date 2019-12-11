@@ -102,8 +102,8 @@ namespace CodeMooc.Web.Controllers {
         [Produces("application/json")]
         public IActionResult CheckEmailStatus(string email) {
             var userMail = (from e in Database.Emails
-                          where e.Address == email.ToLowerInvariant()
-                          select e).SingleOrDefault();
+                            where e.Address == email.ToLowerInvariant()
+                            select e).SingleOrDefault();
             if(userMail == null) {
                 return NotFound();
             }
