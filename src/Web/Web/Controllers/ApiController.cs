@@ -1,5 +1,6 @@
 ﻿using CodeMooc.Web.Data;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -29,17 +30,11 @@ namespace CodeMooc.Web.Controllers {
         }
 
         [HttpPost("members/verify")]
+        [HttpOptions("members/verify")]
         [Produces("application/json")]
+        [EnableCors(Startup.CorsPolicyCodeMooc)]
         public IActionResult VerifyMembership([FromQuery] string email) {
             Logger.LogInformation(LoggingEvents.Api, "Member verification for mail {0}", email);
-
-            if(Request.Headers.ContainsKey("Origin")) {
-                if(Uri.TryCreate(Request.Headers["Origin"], UriKind.Absolute, out Uri origin)) {
-                    if(origin.Host.ToLowerInvariant().EndsWith("codemooc.net")) {
-                        Response.Headers.Add("Access-Control-Allow-Origin", Request.Headers["Origin"]);
-                    }
-                }
-            }
 
             var entry = (from e in Database.Emails
                          where e.Address == email.ToLowerInvariant().Trim()

@@ -30,6 +30,8 @@ namespace CodeMooc.Web {
         public const string AdministratorRole = "Administrator";
         public const string MemberRole = "Member";
 
+        public const string CorsPolicyCodeMooc = "CodeMoocCORS";
+
         public void ConfigureServices(IServiceCollection services) {
             services.AddMvc(opts => {
                 // None
@@ -84,6 +86,13 @@ namespace CodeMooc.Web {
                         .AddAuthenticationSchemes(BasicAuthenticationSchemeOptions.SchemeName)
                         .Build()
                 );
+            });
+
+            services.AddCors(opts => {
+                opts.AddPolicy(CorsPolicyCodeMooc, builder => {
+                    builder.WithOrigins("https://*.codemooc.net")
+                        .SetIsOriginAllowedToAllowWildcardSubdomains();
+                });
             });
 
             // Add services to dependency registry
@@ -144,6 +153,7 @@ namespace CodeMooc.Web {
             });
 
             app.UseAuthentication();
+            app.UseCors(CorsPolicyCodeMooc);
 
             app.UseMvc();
         }
