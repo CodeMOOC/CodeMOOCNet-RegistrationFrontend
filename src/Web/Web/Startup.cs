@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Net.Http.Headers;
 
 namespace CodeMooc.Web {
 
@@ -91,7 +92,8 @@ namespace CodeMooc.Web {
             services.AddCors(opts => {
                 opts.AddPolicy(CorsPolicyCodeMooc, builder => {
                     builder.WithOrigins("https://*.codemooc.net")
-                        .SetIsOriginAllowedToAllowWildcardSubdomains();
+                        .SetIsOriginAllowedToAllowWildcardSubdomains()
+                        .WithHeaders(HeaderNames.Authorization);
                 });
             });
 
