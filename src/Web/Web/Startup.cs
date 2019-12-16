@@ -14,6 +14,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Net.Http.Headers;
 
+using SameSiteMode = Microsoft.AspNetCore.Http.SameSiteMode;
+
 namespace CodeMooc.Web {
 
     public class Startup {
