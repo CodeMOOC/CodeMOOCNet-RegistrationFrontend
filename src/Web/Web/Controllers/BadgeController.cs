@@ -24,7 +24,7 @@ namespace CodeMooc.Web.Controllers {
         }
 
         public const int MinYear = 2019;
-        public const int MaxYear = 2019;
+        public const int MaxYear = 2020;
 
         [HttpGet("{type}/criteri")]
         public IActionResult ShowCriteria([FromRoute] string type) {
