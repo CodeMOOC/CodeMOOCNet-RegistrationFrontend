@@ -19,7 +19,7 @@ namespace CodeMooc.Web.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class BadgeNames {
@@ -70,11 +70,29 @@ namespace CodeMooc.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sostenitore Gold.
+        /// </summary>
+        public static string GoldPatron2020 {
+            get {
+                return ResourceManager.GetString("GoldPatron2020", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Socio 2019.
         /// </summary>
         public static string Member2019 {
             get {
                 return ResourceManager.GetString("Member2019", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Socio 2020.
+        /// </summary>
+        public static string Member2020 {
+            get {
+                return ResourceManager.GetString("Member2020", resourceCulture);
             }
         }
         
@@ -88,11 +106,29 @@ namespace CodeMooc.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sostenitore.
+        /// </summary>
+        public static string Patron2020 {
+            get {
+                return ResourceManager.GetString("Patron2020", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Donatore Sponsor.
         /// </summary>
         public static string Sponsor2019 {
             get {
                 return ResourceManager.GetString("Sponsor2019", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Donatore Sponsor.
+        /// </summary>
+        public static string Sponsor2020 {
+            get {
+                return ResourceManager.GetString("Sponsor2020", resourceCulture);
             }
         }
     }
