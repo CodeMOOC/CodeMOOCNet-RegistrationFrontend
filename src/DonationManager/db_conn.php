@@ -83,6 +83,32 @@ class DbConnection
 
     /**
      * @param $conn mysqli
+     * @param $email
+     * @param $type
+     * @return bool
+     */
+    static function GetContributorBadgesForYear($conn, $email, $year)
+    {
+        try {
+            $sql = "SELECT `Type`
+                    FROM `Badges`
+                    WHERE `Email` = '" . $conn->escape_string($email) . "'
+                    AND `Year` = '$year';";
+
+            $result = $conn->query($sql);
+
+            $values = $result->fetch_all(MYSQLI_NUM);
+
+            return array_map(function ($a) { return $a[0]; }, $values);
+        } catch (Exception $e)
+        {
+            echo $sql . "<br>" . $e->getMessage();
+            return false;
+        }
+    }
+
+    /**
+     * @param $conn mysqli
      * @return array|bool
      */
     static function GetContributorsWithoutAssociationBadge($conn)
@@ -116,7 +142,7 @@ class DbConnection
     {
         try {
             $sql = "REPLACE INTO Donations (Name, Surname, Email, Year, Amount)
-                    VALUES ('" . $conn->real_escape_string($donator->name) . "', '" . $conn->real_escape_string($donator->surname) . "', '" . $conn->real_escape_string($donator->email) . "', '". date("Y") . "', $donator->donation);";
+                    VALUES ('" . $conn->real_escape_string($donator->name) . "', '" . $conn->real_escape_string($donator->surname) . "', '" . $conn->real_escape_string($donator->email) . "', '2020', $donator->donation);";
 
             $result = $conn->query($sql);
             return true;
@@ -135,8 +161,7 @@ class DbConnection
     static function InsertAssignedBadge($conn, $email, $token, $type)
     {
         try {
-            $sql = "INSERT INTO `Badges` (`Email`, `Type`, `IssueTimestamp`, `EvidenceToken`)
-                    VALUES ('" . $conn->real_escape_string($email) . "', '$type', NOW(), '$token')";
+            $sql = "INSERT INTO `Badges` (`Email`, `Type`, `Year`, `IssueTimestamp`, `EvidenceToken`) VALUES ('" . $conn->real_escape_string($email) . "', '$type', '2020', NOW(), '$token')";
 
             $conn->query($sql);
             return true;
