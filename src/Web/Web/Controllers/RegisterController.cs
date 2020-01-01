@@ -77,7 +77,7 @@ namespace CodeMooc.Web.Controllers {
 
         [HttpGet]
         public IActionResult Index() {
-            return NotFound();
+            return View("Create");
         }
 
         [HttpPost]
