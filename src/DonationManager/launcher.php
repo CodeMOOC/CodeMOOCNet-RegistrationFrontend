@@ -86,13 +86,14 @@ foreach ($donors as $donor)
     }
 
     if($amount >= 1000 && !in_array('Sostenitore', $badges)) {
-        launchBadgeAssigner($assignBadge, $conn, $donorEmail, 'Sostenitore', 'sostenitore/2020', 'Vx2oxvqiTXCSfnGlTlRDRw');
+        launchBadgeAssigner($assignBadge, $conn, $donorEmail, 'DonatoreSponsor', 'sponsor/2020', 'ubQoQa8eSXWRV0R_eLN7wA');
     }
     else if($amount >= 100 && !in_array('SostenitoreGold', $badges)) {
         launchBadgeAssigner($assignBadge, $conn, $donorEmail, 'SostenitoreGold', 'sostenitoregold/2020', 'X5ZR6AmsTQ-VdshdLPirfQ');
     }
     else if($amount >= 50 && !in_array('DonatoreSponsor', $badges)) {
-        launchBadgeAssigner($assignBadge, $conn, $donorEmail, 'DonatoreSponsor', 'sponsor/2020', 'ubQoQa8eSXWRV0R_eLN7wA');
+        launchBadgeAssigner($assignBadge, $conn, $donorEmail, 'Sostenitore', 'sostenitore/2020', 'Vx2oxvqiTXCSfnGlTlRDRw');
+    }
     }
 }
 append_to_log("...done.");
@@ -135,10 +136,9 @@ if(!empty($summary_mail_to)) {
     // Send the message
     $result = $mailer->send($message);
     if($result !== 1) {
-        echo "result is $result! ";
+        echo "result: $result! ";
     }
 }
-
 echo "done." . PHP_EOL;
 
 append_to_log("All done.");
