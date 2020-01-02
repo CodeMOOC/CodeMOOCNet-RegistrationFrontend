@@ -85,15 +85,14 @@ foreach ($donors as $donor)
         launchBadgeAssigner($assignBadge, $conn, $donorEmail, 'Iscrizione', 'socio/2020', 'y0KPBhtPT5K6DH8vpxLCNg');
     }
 
-    if($amount >= 1000 && !in_array('Sostenitore', $badges)) {
+    if($amount >= 1000 && !in_array('DonatoreSponsor', $badges)) {
         launchBadgeAssigner($assignBadge, $conn, $donorEmail, 'DonatoreSponsor', 'sponsor/2020', 'ubQoQa8eSXWRV0R_eLN7wA');
     }
     else if($amount >= 100 && !in_array('SostenitoreGold', $badges)) {
         launchBadgeAssigner($assignBadge, $conn, $donorEmail, 'SostenitoreGold', 'sostenitoregold/2020', 'X5ZR6AmsTQ-VdshdLPirfQ');
     }
-    else if($amount >= 50 && !in_array('DonatoreSponsor', $badges)) {
+    else if($amount >= 50 && !in_array('Sostenitore', $badges)) {
         launchBadgeAssigner($assignBadge, $conn, $donorEmail, 'Sostenitore', 'sostenitore/2020', 'Vx2oxvqiTXCSfnGlTlRDRw');
-    }
     }
 }
 append_to_log("...done.");
