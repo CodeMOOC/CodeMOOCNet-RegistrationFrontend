@@ -67,6 +67,9 @@ namespace CodeMooc.Web.Controllers {
             );
             return Json(new {
                 user.Id,
+                user.Name,
+                user.Surname,
+                user.Birthday,
                 PrimaryMail = emails[0],
                 RegisteredOn = user.RegistrationTimestamp,
                 IsMember = memberships.ContainsKey(DateTime.UtcNow.Year),
