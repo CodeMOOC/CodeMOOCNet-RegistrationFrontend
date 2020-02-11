@@ -67,6 +67,11 @@ process-donations:
 	${DC} build donation-manager
 	${DC_RUN} donation-manager bash pre_launcher.sh
 
+.PHONY: phpmyadmin
+phpmyadmin:
+	@echo 'Running phpMyAdmin, terminate with CTRL+C...'
+	${DC} up database-manager
+
 .PHONY: stop
 stop:
 	${DC} stop

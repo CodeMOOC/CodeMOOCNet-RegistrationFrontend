@@ -43,3 +43,18 @@ services:
     env_file:
     - config.env
     - secret.env
+
+  database-manager:
+    image: phpmyadmin/phpmyadmin:latest
+    depends_on:
+    - db
+    networks:
+    - web
+    - codemooc-reg-backend
+    env_file: config.env
+    environment:
+    - "PMA_HOST=db"
+    expose:
+    - "80"
+    stdin_open: true
+    tty: true

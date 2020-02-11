@@ -15,7 +15,6 @@ services:
     - "traefik.port=5001"
     - "traefik.frontend.entryPoints=http,https"
     - "traefik.frontend.redirect.entryPoint=https"
-    - "traefik.frontend.priority=100"
     - "traefik.frontend.rule=Host:codemooc.net"
     restart: unless-stopped
 
@@ -52,3 +51,15 @@ services:
     - "traefik.frontend.redirect.entryPoint=https"
     - "traefik.frontend.rule=Host:www.codemooc.net"
     restart: unless-stopped
+
+  database-manager:
+    environment:
+    - "PMA_ABSOLUTE_URI=https://codemooc.net/phpmyadmin/"
+    labels:
+    - "traefik.enable=true"
+    - "traefik.docker.network=web"
+    - "traefik.protocol=http"
+    - "traefik.port=80"
+    - "traefik.frontend.rule=Host:codemooc.net;PathPrefixStrip:/phpmyadmin"
+    - "traefik.frontend.entryPoints=http,https"
+    - "traefik.frontend.redirect.entryPoint=https"
