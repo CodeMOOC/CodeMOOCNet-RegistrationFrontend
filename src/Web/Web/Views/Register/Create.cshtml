@@ -45,8 +45,9 @@
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label asp-for="Birthday">Data di nascita *</label>
-                        <input asp-for="Birthday" class="form-control" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" />
+                        <input asp-for="Birthday" class="form-control" pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}" />
                         <span asp-validation-for="Birthday"></span>
+                        <small>Specificare la data nel formato GG-MM-AAAA (giorno, mese e anno, separati da un trattino).</small>
                     </div>
                 </div>
                 <div class="col-sm-6">

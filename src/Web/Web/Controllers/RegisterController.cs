@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -107,6 +108,12 @@ namespace CodeMooc.Web.Controllers {
                 }
             }
 
+            // Check birthday
+            if (!DateTime.TryParseExact(model.Birthday, "dd-MM-yyyy", new CultureInfo("it-IT"), DateTimeStyles.AssumeLocal, out var birthday)) {
+                Logger.LogInformation(LoggingEvents.Registration, "Birthday {0} not valid", model.Birthday);
+                ModelState.AddModelError(nameof(RegistrationViewModel.Birthday), "Inserire data di nascita nel formato GG-MM-AAAA");
+            }
+
             // Check ReCaptcha
             Logger.LogTrace(LoggingEvents.Registration, "Checking ReCaptcha token");
             var rest = new RestClient("https://www.google.com/recaptcha/api/siteverify");
@@ -115,28 +122,27 @@ namespace CodeMooc.Web.Controllers {
             restReq.AddParameter("secret", Environment.GetEnvironmentVariable("GOOGLE_RECAPTCHA_SECRET"));
             var recaptchaResult = rest.Execute<ReCaptchaResponse>(restReq);
             if (!recaptchaResult.IsSuccessful || !recaptchaResult.Data.Success) {
-                Logger.LogWarning(LoggingEvents.Registration, "ReCaptcha verification failed");
+                Logger.LogInformation(LoggingEvents.Registration, "ReCaptcha verification failed");
                 ModelState.AddModelError("ReCaptcha", "Attiva il controllo anti-spam ReCaptcha");
 
                 return View("Create", model);
             }
-            Logger.LogInformation(LoggingEvents.Registration, "ReCaptcha verification succeeded for hostname {0}", recaptchaResult.Data.Hostname);
+            Logger.LogDebug(LoggingEvents.Registration, "ReCaptcha verification succeeded for hostname {0}", recaptchaResult.Data.Hostname);
 
+            // Final validity check
             if (!ModelState.IsValid) {
-                Logger.LogInformation(LoggingEvents.Registration, "Model binding failed");
+                Logger.LogDebug(LoggingEvents.Registration, "Model binding failed");
 
                 return View("Create", model);
             }
 
-            // Proceed
+            Logger.LogDebug("Input validated, proceeding with registration");
             var hashedPassword = BCrypt.Net.BCrypt.EnhancedHashPassword(model.Password);
-
-            Logger.LogDebug(LoggingEvents.Registration, "Password hashed to {0}, length {1}", hashedPassword, hashedPassword.Length);
 
             var user = new Data.Registration {
                 Name = model.Name.Trim(),
                 Surname = model.Surname.Trim(),
-                Birthday = model.Birthday,
+                Birthday = birthday.Date,
                 Birthplace = model.Birthplace,
                 FiscalCode = model.FiscalCode.ToUpperInvariant(),
                 AddressStreet = model.AddressStreet,
