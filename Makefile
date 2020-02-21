@@ -42,7 +42,7 @@ import-db: confirmation
 
 .PHONY: up
 up:
-	${DC} up -d
+	${DC} up -d web
 	${DC} ps
 	@echo
 	@echo 'Service is now up'
@@ -59,8 +59,7 @@ rs:
 .PHONY: rebuild
 rebuild:
 	${DC} rm -sf web
-	${DC} build web
-	${DC} up -d
+	${DC} up -d --build web
 
 .PHONY: process-donations
 process-donations:

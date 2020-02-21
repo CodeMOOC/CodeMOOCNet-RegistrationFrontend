@@ -36,9 +36,7 @@ namespace CodeMooc.Web {
         public const string CorsPolicyCodeMooc = "CodeMoocCORS";
 
         public void ConfigureServices(IServiceCollection services) {
-            services.AddMvc(opts => {
-                // None
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddControllersWithViews();
 
             services.AddAuthentication(opts => {
                 opts.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -54,7 +52,6 @@ namespace CodeMooc.Web {
                 opts.ExpireTimeSpan = TimeSpan.FromDays(30);
                 opts.SlidingExpiration = true;
                 opts.Cookie = new CookieBuilder {
-                    Expiration = TimeSpan.FromDays(30),
                     Domain = "codemooc.net",
                     IsEssential = true,
                     Name = "CodeMOOCLogin",
@@ -133,6 +130,8 @@ namespace CodeMooc.Web {
                 });
             }
 
+            app.UseRouting();
+
             app.UseRequestLocalization(o => {
                 o.AddSupportedCultures("it");
                 o.AddSupportedUICultures("it");
@@ -157,9 +156,12 @@ namespace CodeMooc.Web {
             });
 
             app.UseAuthentication();
+            app.UseAuthorization();
             app.UseCors(CorsPolicyCodeMooc);
 
-            app.UseMvc();
+            app.UseEndpoints(conf => {
+                conf.MapControllers();
+            });
         }
 
         private static readonly Random _random = new Random();
