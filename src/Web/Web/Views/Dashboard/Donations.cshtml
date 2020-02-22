@@ -15,12 +15,14 @@
         <p>Qui di seguito sono elencate le donazioni che sono state registrate a tuo nome tramite la <a href="https://www.produzionidalbasso.com/project/codemooc-net/">campagna di crowdfunding</a>.</p>
 
         @if (Model.Donations.Count == 0) {
-            <p><i>Nessuna donaziona registrata a tuo nome.</i></p>
+            <p><i>Nessuna donazione registrata a tuo nome.</i></p>
         }
         else {
             <ul>
                 @foreach (var donation in Model.Donations) {
-                    <li>Donazione da parte di @donation.Name @donation.Surname (@donation.Email): @donation.Amount&nbsp;€.</li>
+                    <li>
+                        Donazione da parte di @donation.Name @donation.Surname (@donation.Email): <b>@donation.Amount&nbsp;€</b> per l’anno <b>@donation.Year.Year</b>.
+                    </li>
                 }
             </ul>
         }
