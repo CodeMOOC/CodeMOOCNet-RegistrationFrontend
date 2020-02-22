@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using CodeMooc.Web.Data;
+using CodeMooc.Web.InputModel;
 using CodeMooc.Web.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -221,6 +222,65 @@ namespace CodeMooc.Web.Controllers {
             }
 
             Logger.LogInformation("Curriculum for user {0} uploaded to {1}", userId, pathCurriculum);
+        }
+
+        [HttpGet("pigna-registration")]
+        public async Task<IActionResult> ShowPignaNotebooksRegistration() {
+            var userId = GetUserId();
+            if(!userId.HasValue) {
+                return NotFound();
+            }
+
+            var emails = await (from e in Database.Emails
+                                where e.RegistrationId == userId.Value
+                                select e)
+                               .Include(e => e.AssociatedBadges)
+                               .ToListAsync();
+            var badges = emails.SelectMany(e => e.AssociatedBadges).ToList();
+            var isAssociate = badges.Any(b => b.Year.Year == DateTime.Now.Year && b.Type == BadgeType.Member);
+            if(!isAssociate) {
+                return View("AssociatesOnly");
+            }
+
+            var registration = await (from reg in Database.PignaNotebookRegistrations
+                                      where reg.RegistrationId == userId.Value
+                                      select reg).SingleOrDefaultAsync();
+            if(registration != null) {
+                return View("PignaRegistrationConfirmation");
+            }
+
+            return View("PignaRegistration", new PignaRegistrationInputModel {
+                Email = emails.FirstOrDefault(e => e.IsPrimary)?.Address
+            });
+        }
+
+        [HttpPost("pigna-registration")]
+        public async Task<IActionResult> ProcessPignaNotebooksRegistration(
+            [FromForm] PignaRegistrationInputModel input
+        ) {
+            if(!ModelState.IsValid) {
+                return View("PignaRegistration", input);
+            }
+
+            Logger.LogInformation("Registering user {0}", input.Email);
+
+            Database.PignaNotebookRegistrations.Add(new PignaNotebookRegistration {
+                RegistrationId = GetUserId().Value,
+                Email = input.Email,
+                MeccanographicCode = input.MeccanographicCode,
+                SchoolName = input.SchoolName,
+                SchoolAddress = input.SchoolAddress,
+                SchoolCap = input.SchoolCap,
+                SchoolCity = input.SchoolCity,
+                SchoolProvince = input.SchoolProvince,
+                PhoneNumber = input.PhoneNumber,
+                RegisteredOn = DateTime.UtcNow
+            });
+            if(await Database.SaveChangesAsync() != 1) {
+                Logger.LogError("Failed to write to database, changes != 1");
+            }
+
+            return RedirectToAction(nameof(ShowPignaNotebooksRegistration));
         }
 
     }

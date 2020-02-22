@@ -1,96 +1,174 @@
--- MySQL Script handcrafted
+-- phpMyAdmin SQL Dump
+-- version 4.9.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: db
+-- Generation Time: Feb 21, 2020 at 09:22 PM
+-- Server version: 5.7.28
+-- PHP Version: 7.2.22
 
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
 
--- -----------------------------------------------------
--- Schema CodeMoocNet
--- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `CodeMoocNet` DEFAULT CHARACTER SET utf8;
-USE `CodeMoocNet`;
+--
+-- Database: `CodeMoocNet`
+--
 
--- -----------------------------------------------------
--- Table `CodeMoocNet`.`Registrations`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `CodeMoocNet`.`Registrations` (
-  `ID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `Name` VARCHAR(128) NOT NULL,
-  `Surname` VARCHAR(128) NOT NULL,
-  `Birthday` DATE NOT NULL,
-  `Birthplace` VARCHAR(128) NOT NULL,
-  `FiscalCode` CHAR(16) NOT NULL COLLATE latin1_general_ci,
-  `AddressStreet` VARCHAR(128) NOT NULL,
-  `AddressCity` VARCHAR(64) NOT NULL,
-  `AddressCap` CHAR(5) NOT NULL COLLATE latin1_general_ci,
-  `AddressCountry` VARCHAR(64) NOT NULL,
-  `PasswordSchema` CHAR(10) NOT NULL,
-  `PasswordHash` VARBINARY(128) NOT NULL,
-  `Category` VARCHAR(16) NOT NULL,
-  `HasAttendedMooc` BIT(1) DEFAULT b'0',
-  `HasCompletedMooc` BIT(1) DEFAULT b'0',
-  `RegistrationTimestamp` DATETIME NOT NULL,
-  `ConfirmationSecret` CHAR(10) NOT NULL,
-  `ConfirmationTimestamp` DATETIME DEFAULT NULL,
-  `PasswordResetSecret` CHAR(10) DEFAULT NULL,
-  
-  PRIMARY KEY (`ID`),
-  INDEX `FullName_idx` (`Surname`, `Name`),
-  INDEX `Address_idx` (`AddressCountry`, `AddressCity`),
-  INDEX `FiscalCode_idx` (`FiscalCode`),
-  INDEX `RegistrationTimestamp_idx` (`RegistrationTimestamp`)
-)
-ENGINE = InnoDB;
+-- --------------------------------------------------------
 
+--
+-- Table structure for table `Badges`
+--
 
--- -----------------------------------------------------
--- Table `CodeMoocNet`.`Emails`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `CodeMoocNet`.`Emails` (
-  `Email` VARCHAR(512) NOT NULL COLLATE latin1_general_ci,
-  `RegistrationID` INT UNSIGNED NOT NULL REFERENCES `Registrations` (`ID`),
-  `IsPrimary` BIT(1) DEFAULT b'0',
-  `AssociationTimestamp` DATETIME NOT NULL,
-  
-  PRIMARY KEY (`Email`),
-  CONSTRAINT `Registration_fk` FOREIGN KEY `Registration_idx` (`RegistrationID`) REFERENCES `Registrations` (`ID`)
-    ON UPDATE RESTRICT
-    ON DELETE RESTRICT
-)
-ENGINE = InnoDB;
+CREATE TABLE `Badges` (
+  `Email` varchar(512) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+  `Type` varchar(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+  `Year` year(4) NOT NULL DEFAULT '2019',
+  `IssueTimestamp` datetime NOT NULL,
+  `EvidenceToken` varchar(64) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
 
--- -----------------------------------------------------
--- Table `CodeMoocNet`.`Donations`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `CodeMoocNet`.`Donations` (
-  `Name` VARCHAR(128) NOT NULL,
-  `Surname` VARCHAR(128) NOT NULL,
-  `Email` VARCHAR(512) NOT NULL COLLATE latin1_general_ci,
-  `Year` YEAR(4) NOT NULL,
-  `Amount` SMALLINT UNSIGNED NOT NULL,
+--
+-- Table structure for table `Donations`
+--
 
-  PRIMARY KEY (`Email`, `Year`),
-  INDEX `FullName_idx` (`Surname`, `Name`)
-)
-ENGINE = InnoDB;
+CREATE TABLE `Donations` (
+  `Name` varchar(128) NOT NULL,
+  `Surname` varchar(128) NOT NULL,
+  `Email` varchar(512) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+  `Year` year(4) NOT NULL,
+  `Amount` smallint(5) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- -----------------------------------------------------
--- Table `CodeMoocNet`.`Badges`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `CodeMoocNet`.`Badges` (
-  `Email` VARCHAR(512) NOT NULL COLLATE latin1_general_ci,
-  `Type` VARCHAR(32) NOT NULL COLLATE latin1_general_ci,
-  `Year` YEAR(4) NOT NULL,
-  `IssueTimestamp` DATETIME NOT NULL,
-  `EvidenceToken` VARCHAR(64) NOT NULL COLLATE latin1_general_ci,
+-- --------------------------------------------------------
 
-  PRIMARY KEY (`Email`, `Type`, `Year`),
-  INDEX `Issue_idx` (`IssueTimestamp`),
-  INDEX `Lookup_idx` (`Type`, `Year`, `EvidenceToken`)
-)
-ENGINE = InnoDB;
+--
+-- Table structure for table `Emails`
+--
 
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+CREATE TABLE `Emails` (
+  `Email` varchar(512) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+  `RegistrationID` int(10) UNSIGNED NOT NULL,
+  `IsPrimary` bit(1) DEFAULT b'0',
+  `AssociationTimestamp` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `PignaNotebookRegistrations`
+--
+
+CREATE TABLE `PignaNotebookRegistrations` (
+  `RegistrationID` int(10) UNSIGNED NOT NULL,
+  `Email` varchar(512) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+  `MeccanoCode` varchar(16) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+  `SchoolName` varchar(256) NOT NULL,
+  `SchoolAddress` varchar(512) NOT NULL,
+  `SchoolCAP` char(5) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+  `SchoolCity` varchar(64) NOT NULL,
+  `SchoolProvince` varchar(32) NOT NULL,
+  `Phone` varchar(32) CHARACTER SET latin1 COLLATE latin1_general_ci DEFAULT NULL,
+  `RegisteredOn` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Registrations for Pigna notebook deliveries 2020';
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Registrations`
+--
+
+CREATE TABLE `Registrations` (
+  `ID` int(10) UNSIGNED NOT NULL,
+  `Name` varchar(128) NOT NULL,
+  `Surname` varchar(128) NOT NULL,
+  `Birthday` date NOT NULL,
+  `Birthplace` varchar(128) NOT NULL,
+  `FiscalCode` char(16) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+  `AddressStreet` varchar(128) NOT NULL,
+  `AddressCity` varchar(64) NOT NULL,
+  `AddressCap` char(5) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+  `AddressCountry` varchar(64) NOT NULL,
+  `PasswordSchema` char(10) NOT NULL,
+  `PasswordHash` char(64) CHARACTER SET latin1 COLLATE latin1_bin NOT NULL,
+  `Category` varchar(16) NOT NULL,
+  `HasAttendedMooc` bit(1) DEFAULT b'0',
+  `HasCompletedMooc` bit(1) DEFAULT b'0',
+  `RegistrationTimestamp` datetime NOT NULL,
+  `ConfirmationSecret` char(10) NOT NULL,
+  `ConfirmationTimestamp` datetime DEFAULT NULL,
+  `PasswordResetSecret` char(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `Badges`
+--
+ALTER TABLE `Badges`
+  ADD PRIMARY KEY (`Email`,`Type`,`Year`),
+  ADD KEY `Issue_idx` (`IssueTimestamp`),
+  ADD KEY `Lookup_idx` (`Type`,`Year`,`EvidenceToken`);
+
+--
+-- Indexes for table `Donations`
+--
+ALTER TABLE `Donations`
+  ADD PRIMARY KEY (`Email`,`Year`),
+  ADD KEY `FullName_idx` (`Surname`,`Name`);
+
+--
+-- Indexes for table `Emails`
+--
+ALTER TABLE `Emails`
+  ADD PRIMARY KEY (`Email`),
+  ADD KEY `Registration_fk` (`RegistrationID`);
+
+--
+-- Indexes for table `PignaNotebookRegistrations`
+--
+ALTER TABLE `PignaNotebookRegistrations`
+  ADD PRIMARY KEY (`RegistrationID`);
+
+--
+-- Indexes for table `Registrations`
+--
+ALTER TABLE `Registrations`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `FullName_idx` (`Surname`,`Name`),
+  ADD KEY `Address_idx` (`AddressCountry`,`AddressCity`),
+  ADD KEY `FiscalCode_idx` (`FiscalCode`),
+  ADD KEY `RegistrationTimestamp_idx` (`RegistrationTimestamp`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `Registrations`
+--
+ALTER TABLE `Registrations`
+  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `Emails`
+--
+ALTER TABLE `Emails`
+  ADD CONSTRAINT `Registration_fk` FOREIGN KEY (`RegistrationID`) REFERENCES `Registrations` (`ID`);
+
+--
+-- Constraints for table `PignaNotebookRegistrations`
+--
+ALTER TABLE `PignaNotebookRegistrations`
+  ADD CONSTRAINT `PignaNotebookRegistration_RegistrationIDs` FOREIGN KEY (`RegistrationID`) REFERENCES `Registrations` (`ID`);
+COMMIT;

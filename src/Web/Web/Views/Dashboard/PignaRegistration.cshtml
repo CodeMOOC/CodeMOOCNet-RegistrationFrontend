@@ -1,0 +1,77 @@
+﻿@model CodeMooc.Web.InputModel.PignaRegistrationInputModel
+@{
+    Layout = "Main";
+    ViewData["Title"] = "Registrazione Pigna";
+}
+
+<div class="container">
+    <h1 class="text-center">Registrazione Pigna</h1>
+
+    <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3">
+        <p>
+            Compilando questo modulo puoi registrarti per ricevere in anteprima dei campioni dei <b>Quaderni Pigna</b> e accesso alla relativa applicazione mobile.
+        </p>
+
+        <form asp-controller="Dashboard" asp-action="ProcessPignaNotebooksRegistration" method="post" class="form-horizontal" role="form" asp-antiforgery="false">
+
+            @Html.ValidationSummary(true)
+
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="MeccanographicCode" class="control-label"></label>
+                <input asp-for="MeccanographicCode" class="form-control" />
+                <span asp-validation-for="MeccanographicCode" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="SchoolName" class="control-label"></label>
+                <input asp-for="SchoolName" class="form-control" />
+                <span asp-validation-for="SchoolName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="SchoolAddress" class="control-label"></label>
+                <input asp-for="SchoolAddress" class="form-control" />
+                <span asp-validation-for="SchoolAddress" class="text-danger"></span>
+            </div>
+
+            <div class="form-row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label asp-for="SchoolCap" class="control-label"></label>
+                        <input asp-for="SchoolCap" class="form-control" />
+                        <span asp-validation-for="SchoolCap" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-sm-7">
+                    <div class="form-group">
+                        <label asp-for="SchoolCity" class="control-label"></label>
+                        <input asp-for="SchoolCity" class="form-control" />
+                        <span asp-validation-for="SchoolCity" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label asp-for="SchoolProvince" class="control-label"></label>
+                        <input asp-for="SchoolProvince" class="form-control" />
+                        <span asp-validation-for="SchoolProvince" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PhoneNumber" class="control-label"></label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <button id="submit" type="submit" value="submit" class="btn btn-primary btn-block">Registrati!</button>
+        </form>
+    </div>
+
+</div>

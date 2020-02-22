@@ -42,6 +42,7 @@ namespace CodeMooc.Web.Data {
         public DbSet<Email> Emails { get; set; }
         public DbSet<Donation> Donations { get; set; }
         public DbSet<Badge> Badges { get; set; }
+        public DbSet<PignaNotebookRegistration> PignaNotebookRegistrations { get; set; }
 
     }
 
