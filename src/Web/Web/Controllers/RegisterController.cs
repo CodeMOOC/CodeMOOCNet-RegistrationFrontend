@@ -16,8 +16,6 @@ namespace CodeMooc.Web.Controllers {
     [Route("iscrizione")]
     public class RegisterController : Controller {
 
-        public const string RegistrationFromAddress = "no-reply@codemooc.net";
-
         protected DataContext Database { get; }
         protected ILogger<RegisterController> Logger { get; }
 
@@ -31,7 +29,7 @@ namespace CodeMooc.Web.Controllers {
 
         private async Task SendConfirmationEmail(Data.Registration user, Data.Email email) {
             string url = Url.Action(nameof(Validate), "Register", new { id = user.Id, secret = user.ConfirmationSecret });
-            string link = "https://codemooc.net" + url;
+            string link = Environment.GetEnvironmentVariable("BASE_URL") + url;
 
             Logger.LogTrace(LoggingEvents.Email, "Destination URL {0}, final link {1}", url, link);
 
@@ -50,7 +48,7 @@ namespace CodeMooc.Web.Controllers {
 
                 Logger.LogTrace(LoggingEvents.Email, "SMTP host {0}:{1} username {2} SSL {3}", client.Host, client.Port, credentials.UserName, client.EnableSsl);
 
-                var noReplyAddress = new MailAddress(RegistrationFromAddress, "CodeMOOC.net");
+                var noReplyAddress = new MailAddress(Environment.GetEnvironmentVariable("MAIL_FROM"), "CodeMOOC.net");
                 var msg = new MailMessage {
                     From = noReplyAddress,
                     Subject = "Verifica indirizzo e-mail",

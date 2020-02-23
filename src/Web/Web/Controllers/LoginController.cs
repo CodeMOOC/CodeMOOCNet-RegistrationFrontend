@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -9,7 +8,6 @@ using CodeMooc.Web.Data;
 using CodeMooc.Web.Model;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -17,8 +15,6 @@ namespace CodeMooc.Web.Controllers {
 
     [Route("login")]
     public class LoginController : Controller {
-
-        public const string FromAddress = "no-reply@codemooc.net";
 
         protected DataContext Database { get; }
         protected ILogger<LoginController> Logger { get; }
@@ -128,7 +124,7 @@ namespace CodeMooc.Web.Controllers {
 
         private async Task SendPasswordResetEmail(string email, Data.Registration user) {
             string url = Url.Action(nameof(FinalizeResetPassword), "Login", new { id = user.Id, secret = user.PasswordResetSecret });
-            string link = "https://codemooc.net" + url;
+            string link = Environment.GetEnvironmentVariable("BASE_URL") + url;
 
             Logger.LogTrace(LoggingEvents.Email, "Destination URL {0}, final link {1}", url, link);
 
@@ -147,7 +143,7 @@ namespace CodeMooc.Web.Controllers {
 
                 Logger.LogTrace(LoggingEvents.Email, "SMTP host {0}:{1} username {2} SSL {3}", client.Host, client.Port, credentials.UserName, client.EnableSsl);
 
-                var noReplyAddress = new MailAddress(FromAddress, "CodeMOOC.net");
+                var noReplyAddress = new MailAddress(Environment.GetEnvironmentVariable("MAIL_FROM"), "CodeMOOC.net");
                 var msg = new MailMessage {
                     From = noReplyAddress,
                     Subject = "Richiesta nuova password",
