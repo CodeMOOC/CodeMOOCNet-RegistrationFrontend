@@ -119,7 +119,7 @@ namespace CodeMooc.Web.Controllers {
 
             model.IsAssociateForCurrentYear = model.Badges.Any(b => b.Year.Year == DateTime.Now.Year && b.Type == BadgeType.Member);
 
-            model.ConfirmationEmailAddress = RegisterController.RegistrationFromAddress;
+            model.ConfirmationEmailAddress = Environment.GetEnvironmentVariable("CONFIRMATION_MAIL_BCC");
 
             return View("Status", model);
         }
