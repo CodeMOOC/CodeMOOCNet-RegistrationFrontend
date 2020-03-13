@@ -65,6 +65,7 @@ namespace CodeMooc.Web.Controllers {
                     IssuedOn = b.IssueTimestamp
                 }
             );
+
             return Json(new {
                 user.Id,
                 user.Name,
@@ -72,8 +73,7 @@ namespace CodeMooc.Web.Controllers {
                 user.Birthday,
                 PrimaryMail = emails[0],
                 RegisteredOn = user.RegistrationTimestamp,
-                IsMember = memberships.ContainsKey(DateTime.UtcNow.Year),
-                Memberships = memberships
+                IsMember = memberships.ContainsKey(DateTime.UtcNow.Year)
             });
         }
 
