@@ -35,6 +35,19 @@ namespace CodeMooc.Web.Data {
         [MaxLength(32)]
         public string SchoolProvince { get; set; }
 
+        [MaxLength(512)]
+        public string PersonalAddress { get; set; }
+
+        [Column("PersonalCAP")]
+        [MaxLength(5)]
+        public string PersonalCap { get; set; }
+
+        [MaxLength(64)]
+        public string PersonalCity { get; set; }
+
+        [MaxLength(32)]
+        public string PersonalProvince { get; set; }
+
         [Column("Phone")]
         [MaxLength(32)]
         public string PhoneNumber { get; set; }

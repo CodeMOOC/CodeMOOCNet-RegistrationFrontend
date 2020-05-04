@@ -245,12 +245,23 @@ namespace CodeMooc.Web.Controllers {
             var registration = await (from reg in Database.PignaNotebookRegistrations
                                       where reg.RegistrationId == userId.Value
                                       select reg).SingleOrDefaultAsync();
-            if(registration != null) {
+            if(registration != null && registration.IsPersonalAddressComplete()) {
                 return View("PignaRegistrationConfirmation");
             }
 
             return View("PignaRegistration", new PignaRegistrationInputModel {
-                Email = emails.FirstOrDefault(e => e.IsPrimary)?.Address
+                Email = registration?.Email ?? emails.FirstOrDefault(e => e.IsPrimary)?.Address,
+                MeccanographicCode = registration?.MeccanographicCode,
+                SchoolName = registration?.SchoolName,
+                SchoolAddress = registration?.SchoolAddress,
+                SchoolCap = registration?.SchoolCap,
+                SchoolCity = registration?.SchoolCity,
+                SchoolProvince = registration?.SchoolProvince,
+                PersonalAddress = registration?.PersonalAddress,
+                PersonalCap = registration?.PersonalCap,
+                PersonalCity = registration?.PersonalCity,
+                PersonalProvince = registration?.PersonalProvince,
+                PhoneNumber = registration?.PhoneNumber
             });
         }
 
@@ -264,18 +275,29 @@ namespace CodeMooc.Web.Controllers {
 
             Logger.LogInformation("Registering user {0}", input.Email);
 
-            Database.PignaNotebookRegistrations.Add(new PignaNotebookRegistration {
-                RegistrationId = GetUserId().Value,
-                Email = input.Email,
-                MeccanographicCode = input.MeccanographicCode,
-                SchoolName = input.SchoolName,
-                SchoolAddress = input.SchoolAddress,
-                SchoolCap = input.SchoolCap,
-                SchoolCity = input.SchoolCity,
-                SchoolProvince = input.SchoolProvince,
-                PhoneNumber = input.PhoneNumber,
-                RegisteredOn = DateTime.UtcNow
-            });
+            var id = GetUserId().Value;
+            var user = await Database.PignaNotebookRegistrations.Where(r => r.RegistrationId == id).SingleOrDefaultAsync();
+            if(user == null) {
+                user = new PignaNotebookRegistration {
+                    RegistrationId = id
+                };
+                Database.PignaNotebookRegistrations.Add(user);
+            }
+
+            user.Email = input.Email;
+            user.MeccanographicCode = input.MeccanographicCode;
+            user.SchoolName = input.SchoolName;
+            user.SchoolAddress = input.SchoolAddress;
+            user.SchoolCap = input.SchoolCap;
+            user.SchoolCity = input.SchoolCity;
+            user.SchoolProvince = input.SchoolProvince;
+            user.PersonalAddress = input.PersonalAddress;
+            user.PersonalCap = input.PersonalCap;
+            user.PersonalCity = input.PersonalCity;
+            user.PersonalProvince = input.PersonalProvince;
+            user.PhoneNumber = input.PhoneNumber;
+            user.RegisteredOn = DateTime.UtcNow;
+
             if(await Database.SaveChangesAsync() != 1) {
                 Logger.LogError("Failed to write to database, changes != 1");
             }

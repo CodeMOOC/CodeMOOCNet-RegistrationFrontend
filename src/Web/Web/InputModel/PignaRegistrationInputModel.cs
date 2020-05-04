@@ -45,6 +45,28 @@ namespace CodeMooc.Web.InputModel {
         [MinLength(2, ErrorMessage = "Nome della provincia troppo corto.")]
         public string SchoolProvince { get; set; }
 
+        [DataType(DataType.MultilineText)]
+        [Display(Name = "Indirizzo")]
+        [Required(ErrorMessage = "Devi specificare il tuo indirizzo di casa.")]
+        [MinLength(10, ErrorMessage = "Indirizzo di casa troppo corto.")]
+        public string PersonalAddress { get; set; }
+
+        [DataType(DataType.PostalCode)]
+        [Display(Name = "CAP")]
+        [Required(ErrorMessage = "Devi specificare il CAP del tuo indirizzo di casa.")]
+        [StringLength(5, MinimumLength = 5, ErrorMessage = "Il CAP deve essere di 5 lettere.")]
+        public string PersonalCap { get; set; }
+
+        [Display(Name = "Città")]
+        [Required(ErrorMessage = "Devi specificare la città del tuo indirizzo di casa.")]
+        [MinLength(3, ErrorMessage = "Nome della città troppo corto.")]
+        public string PersonalCity { get; set; }
+
+        [Display(Name = "Provincia")]
+        [Required(ErrorMessage = "Devi specificare la provincia del tuo indirizzo di casa.")]
+        [MinLength(2, ErrorMessage = "Nome della provincia troppo corto.")]
+        public string PersonalProvince { get; set; }
+
         [DataType(DataType.PhoneNumber)]
         [Display(Name = "Numero di telefono")]
         [Phone(ErrorMessage = "Specifica un numero di telefono valido.")]

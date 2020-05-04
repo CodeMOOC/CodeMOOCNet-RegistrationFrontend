@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Feb 21, 2020 at 09:22 PM
+-- Generation Time: May 04, 2020 at 04:34 PM
 -- Server version: 5.7.28
 -- PHP Version: 7.2.22
 
@@ -72,6 +72,10 @@ CREATE TABLE `PignaNotebookRegistrations` (
   `SchoolCAP` char(5) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
   `SchoolCity` varchar(64) NOT NULL,
   `SchoolProvince` varchar(32) NOT NULL,
+  `PersonalAddress` varchar(512) CHARACTER SET latin1 COLLATE latin1_general_ci DEFAULT NULL,
+  `PersonalCAP` char(5) CHARACTER SET latin1 COLLATE latin1_general_ci DEFAULT NULL,
+  `PersonalCity` varchar(64) CHARACTER SET latin1 COLLATE latin1_general_ci DEFAULT NULL,
+  `PersonalProvince` varchar(32) CHARACTER SET latin1 COLLATE latin1_general_ci DEFAULT NULL,
   `Phone` varchar(32) CHARACTER SET latin1 COLLATE latin1_general_ci DEFAULT NULL,
   `RegisteredOn` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Registrations for Pigna notebook deliveries 2020';
@@ -170,5 +174,5 @@ ALTER TABLE `Emails`
 -- Constraints for table `PignaNotebookRegistrations`
 --
 ALTER TABLE `PignaNotebookRegistrations`
-  ADD CONSTRAINT `PignaNotebookRegistration_RegistrationIDs` FOREIGN KEY (`RegistrationID`) REFERENCES `Registrations` (`ID`);
+  ADD CONSTRAINT `PignaNotebookRegistrations_RegistrationIDs` FOREIGN KEY (`RegistrationID`) REFERENCES `Registrations` (`ID`);
 COMMIT;
