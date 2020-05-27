@@ -95,6 +95,43 @@ namespace CodeMooc.Web.Controllers {
             return Content(sb.ToString(), "text/csv");
         }
 
+        [HttpGet("pigna/registrations")]
+        public IActionResult ListPignaRegistrations() {
+            var regs = (from r in Database.PignaNotebookRegistrations
+                        orderby r.RegistrationId ascending
+                        select r);
+
+            var users = Database.Registrations.ToDictionary(u => u.Id);
+
+            var sb = new StringBuilder();
+            sb.AppendLine("# ID, Email, Name, Surname, MeccanographicCode, SchoolName, SchoolAddress, SchoolCAP, SchoolCity, SchoolProvince, PersonalAddress, PersonalCAP, PersonalCity, PersonalProvince, PhoneNumber, RegistrationDate");
+            foreach(var r in regs) {
+                sb.AppendJoin(',',
+                    r.RegistrationId,
+                    r.Email,
+                    users[r.RegistrationId].Name,
+                    users[r.RegistrationId].Surname,
+                    r.MeccanographicCode,
+                    r.SchoolName.EscapeCsv(),
+                    r.SchoolAddress.EscapeCsv(),
+                    r.SchoolCap,
+                    r.SchoolCity,
+                    r.SchoolProvince,
+                    r.PersonalAddress.EscapeCsv(),
+                    r.PersonalCap,
+                    r.PersonalCity,
+                    r.PersonalProvince,
+                    r.PhoneNumber,
+                    r.RegisteredOn.ToString("O").EscapeCsv()
+                );
+                sb.AppendLine();
+            }
+
+            Response.Headers.TryAdd(HeaderNames.ContentDisposition, new StringValues("attachment; filename=registrations.csv"));
+
+            return Content(sb.ToString(), "text/csv");
+        }
+
         private const int ExpirationHour = 6;
         private const int ExpirationMinutes = 30;
 
