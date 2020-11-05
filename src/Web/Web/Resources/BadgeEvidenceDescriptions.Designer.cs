@@ -79,6 +79,15 @@ namespace CodeMooc.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;p&gt;Si certifica che {0} {1} ({2}) è un &lt;b&gt;SOSTENITORE&amp;nbsp;GOLD&lt;/b&gt; di CODEMOOC&amp;nbsp;NET, avendo partecipato con un contribuito non inferiore a 100&amp;nbsp;Euro alla &lt;a href=&quot;https://www.produzionidalbasso.com/project/codemooc-net-2021/&quot;&gt;campagna di crowdfuding&lt;/a&gt; lanciata per il 2021 dall’Associazione di Promozione Sociale e Culturale “CODEMOOC&amp;nbsp;NET” per azioni di promozione del pensiero computazionale e del coding a scuola.&lt;/p&gt;.
+        /// </summary>
+        public static string GoldPatron2021 {
+            get {
+                return ResourceManager.GetString("GoldPatron2021", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;p&gt;Si certifica che {0} {1} ({2}) è &lt;b&gt;SOCIO/A&lt;/b&gt; dell’Associazione di Promozione Sociale e Culturale “CODEMOOC&amp;nbsp;NET”, in regola con il versamento della quota associativa per il&amp;nbsp;2019.&lt;/p&gt;.
         /// </summary>
         public static string Member2019 {
@@ -93,6 +102,15 @@ namespace CodeMooc.Web.Resources {
         public static string Member2020 {
             get {
                 return ResourceManager.GetString("Member2020", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;p&gt;Si certifica che {0} {1} ({2}) è &lt;b&gt;SOCIO/A&lt;/b&gt; dell’Associazione di Promozione Sociale e Culturale “CODEMOOC&amp;nbsp;NET”, in regola con il versamento della quota associativa per il&amp;nbsp;2021.&lt;/p&gt;.
+        /// </summary>
+        public static string Member2021 {
+            get {
+                return ResourceManager.GetString("Member2021", resourceCulture);
             }
         }
         
@@ -115,6 +133,15 @@ namespace CodeMooc.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;p&gt;Si certifica che {0} {1} ({2}) è un &lt;b&gt;SOSTENITORE&lt;/b&gt; di CODEMOOC&amp;nbsp;NET, avendo partecipato con un contribuito non inferiore a 50&amp;nbsp;Euro alla &lt;a href=&quot;https://www.produzionidalbasso.com/project/codemooc-net-2021/&quot;&gt;campagna di crowdfuding&lt;/a&gt; lanciata per il 2021 dall’Associazione di Promozione Sociale e Culturale “CODEMOOC&amp;nbsp;NET” per azioni di promozione del pensiero computazionale e del coding a scuola.&lt;/p&gt;.
+        /// </summary>
+        public static string Patron2021 {
+            get {
+                return ResourceManager.GetString("Patron2021", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;p&gt;Si certifica che {0} {1} ({2}) è un &lt;b&gt;DONATORE&amp;nbsp;SPONSOR&lt;/b&gt; di CODEMOOC&amp;nbsp;NET, avendo partecipato con un contribuito non inferiore a 1000&amp;nbsp;Euro alla &lt;a href=&quot;https://www.produzionidalbasso.com/project/codemooc-net/&quot;&gt;campagna di crowdfuding&lt;/a&gt; lanciata per il 2019 dall’Associazione di Promozione Sociale e Culturale “CODEMOOC&amp;nbsp;NET” per azioni di promozione del pensiero computazionale e del coding a scuola.&lt;/p&gt;.
         /// </summary>
         public static string Sponsor2019 {
@@ -129,6 +156,15 @@ namespace CodeMooc.Web.Resources {
         public static string Sponsor2020 {
             get {
                 return ResourceManager.GetString("Sponsor2020", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;p&gt;Si certifica che {0} {1} ({2}) è un &lt;b&gt;DONATORE&amp;nbsp;SPONSOR&lt;/b&gt; di CODEMOOC&amp;nbsp;NET, avendo partecipato con un contribuito non inferiore a 1000&amp;nbsp;Euro alla &lt;a href=&quot;https://www.produzionidalbasso.com/project/codemooc-net-2021/&quot;&gt;campagna di crowdfuding&lt;/a&gt; lanciata per il 2021 dall’Associazione di Promozione Sociale e Culturale “CODEMOOC&amp;nbsp;NET” per azioni di promozione del pensiero computazionale e del coding a scuola.&lt;/p&gt;.
+        /// </summary>
+        public static string Sponsor2021 {
+            get {
+                return ResourceManager.GetString("Sponsor2021", resourceCulture);
             }
         }
     }

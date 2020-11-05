@@ -123,11 +123,17 @@
   <data name="GoldPatron2020" xml:space="preserve">
     <value>Sostenitore Gold</value>
   </data>
+  <data name="GoldPatron2021" xml:space="preserve">
+    <value>Sostenitore Gold</value>
+  </data>
   <data name="Member2019" xml:space="preserve">
     <value>Socio 2019</value>
   </data>
   <data name="Member2020" xml:space="preserve">
     <value>Socio 2020</value>
+  </data>
+  <data name="Member2021" xml:space="preserve">
+    <value>Socio 2021</value>
   </data>
   <data name="Patron2019" xml:space="preserve">
     <value>Sostenitore</value>
@@ -135,10 +141,16 @@
   <data name="Patron2020" xml:space="preserve">
     <value>Sostenitore</value>
   </data>
+  <data name="Patron2021" xml:space="preserve">
+    <value>Sostenitore</value>
+  </data>
   <data name="Sponsor2019" xml:space="preserve">
     <value>Donatore Sponsor</value>
   </data>
   <data name="Sponsor2020" xml:space="preserve">
+    <value>Donatore Sponsor</value>
+  </data>
+  <data name="Sponsor2021" xml:space="preserve">
     <value>Donatore Sponsor</value>
   </data>
 </root>

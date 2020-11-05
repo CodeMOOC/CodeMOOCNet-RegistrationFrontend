@@ -123,11 +123,17 @@
   <data name="GoldPatron2020" xml:space="preserve">
     <value>&lt;p&gt;Si certifica che {0} {1} ({2}) è un &lt;b&gt;SOSTENITORE&amp;nbsp;GOLD&lt;/b&gt; di CODEMOOC&amp;nbsp;NET, avendo partecipato con un contribuito non inferiore a 100&amp;nbsp;Euro alla &lt;a href="https://www.produzionidalbasso.com/project/codemooc-net-2020/"&gt;campagna di crowdfuding&lt;/a&gt; lanciata per il 2020 dall’Associazione di Promozione Sociale e Culturale “CODEMOOC&amp;nbsp;NET” per azioni di promozione del pensiero computazionale e del coding a scuola.&lt;/p&gt;</value>
   </data>
+  <data name="GoldPatron2021" xml:space="preserve">
+    <value>&lt;p&gt;Si certifica che {0} {1} ({2}) è un &lt;b&gt;SOSTENITORE&amp;nbsp;GOLD&lt;/b&gt; di CODEMOOC&amp;nbsp;NET, avendo partecipato con un contribuito non inferiore a 100&amp;nbsp;Euro alla &lt;a href="https://www.produzionidalbasso.com/project/codemooc-net-2021/"&gt;campagna di crowdfuding&lt;/a&gt; lanciata per il 2021 dall’Associazione di Promozione Sociale e Culturale “CODEMOOC&amp;nbsp;NET” per azioni di promozione del pensiero computazionale e del coding a scuola.&lt;/p&gt;</value>
+  </data>
   <data name="Member2019" xml:space="preserve">
     <value>&lt;p&gt;Si certifica che {0} {1} ({2}) è &lt;b&gt;SOCIO/A&lt;/b&gt; dell’Associazione di Promozione Sociale e Culturale “CODEMOOC&amp;nbsp;NET”, in regola con il versamento della quota associativa per il&amp;nbsp;2019.&lt;/p&gt;</value>
   </data>
   <data name="Member2020" xml:space="preserve">
     <value>&lt;p&gt;Si certifica che {0} {1} ({2}) è &lt;b&gt;SOCIO/A&lt;/b&gt; dell’Associazione di Promozione Sociale e Culturale “CODEMOOC&amp;nbsp;NET”, in regola con il versamento della quota associativa per il&amp;nbsp;2020.&lt;/p&gt;</value>
+  </data>
+  <data name="Member2021" xml:space="preserve">
+    <value>&lt;p&gt;Si certifica che {0} {1} ({2}) è &lt;b&gt;SOCIO/A&lt;/b&gt; dell’Associazione di Promozione Sociale e Culturale “CODEMOOC&amp;nbsp;NET”, in regola con il versamento della quota associativa per il&amp;nbsp;2021.&lt;/p&gt;</value>
   </data>
   <data name="Patron2019" xml:space="preserve">
     <value>&lt;p&gt;Si certifica che {0} {1} ({2}) è un &lt;b&gt;SOSTENITORE&lt;/b&gt; di CODEMOOC&amp;nbsp;NET, avendo partecipato con un contribuito non inferiore a 50&amp;nbsp;Euro alla &lt;a href="https://www.produzionidalbasso.com/project/codemooc-net/"&gt;campagna di crowdfuding&lt;/a&gt; lanciata per il 2019 dall’Associazione di Promozione Sociale e Culturale “CODEMOOC&amp;nbsp;NET” per azioni di promozione del pensiero computazionale e del coding a scuola.&lt;/p&gt;</value>
@@ -135,10 +141,16 @@
   <data name="Patron2020" xml:space="preserve">
     <value>&lt;p&gt;Si certifica che {0} {1} ({2}) è un &lt;b&gt;SOSTENITORE&lt;/b&gt; di CODEMOOC&amp;nbsp;NET, avendo partecipato con un contribuito non inferiore a 50&amp;nbsp;Euro alla &lt;a href="https://www.produzionidalbasso.com/project/codemooc-net-2020/"&gt;campagna di crowdfuding&lt;/a&gt; lanciata per il 2020 dall’Associazione di Promozione Sociale e Culturale “CODEMOOC&amp;nbsp;NET” per azioni di promozione del pensiero computazionale e del coding a scuola.&lt;/p&gt;</value>
   </data>
+  <data name="Patron2021" xml:space="preserve">
+    <value>&lt;p&gt;Si certifica che {0} {1} ({2}) è un &lt;b&gt;SOSTENITORE&lt;/b&gt; di CODEMOOC&amp;nbsp;NET, avendo partecipato con un contribuito non inferiore a 50&amp;nbsp;Euro alla &lt;a href="https://www.produzionidalbasso.com/project/codemooc-net-2021/"&gt;campagna di crowdfuding&lt;/a&gt; lanciata per il 2021 dall’Associazione di Promozione Sociale e Culturale “CODEMOOC&amp;nbsp;NET” per azioni di promozione del pensiero computazionale e del coding a scuola.&lt;/p&gt;</value>
+  </data>
   <data name="Sponsor2019" xml:space="preserve">
     <value>&lt;p&gt;Si certifica che {0} {1} ({2}) è un &lt;b&gt;DONATORE&amp;nbsp;SPONSOR&lt;/b&gt; di CODEMOOC&amp;nbsp;NET, avendo partecipato con un contribuito non inferiore a 1000&amp;nbsp;Euro alla &lt;a href="https://www.produzionidalbasso.com/project/codemooc-net/"&gt;campagna di crowdfuding&lt;/a&gt; lanciata per il 2019 dall’Associazione di Promozione Sociale e Culturale “CODEMOOC&amp;nbsp;NET” per azioni di promozione del pensiero computazionale e del coding a scuola.&lt;/p&gt;</value>
   </data>
   <data name="Sponsor2020" xml:space="preserve">
     <value>&lt;p&gt;Si certifica che {0} {1} ({2}) è un &lt;b&gt;DONATORE&amp;nbsp;SPONSOR&lt;/b&gt; di CODEMOOC&amp;nbsp;NET, avendo partecipato con un contribuito non inferiore a 1000&amp;nbsp;Euro alla &lt;a href="https://www.produzionidalbasso.com/project/codemooc-net-2020/"&gt;campagna di crowdfuding&lt;/a&gt; lanciata per il 2020 dall’Associazione di Promozione Sociale e Culturale “CODEMOOC&amp;nbsp;NET” per azioni di promozione del pensiero computazionale e del coding a scuola.&lt;/p&gt;</value>
+  </data>
+  <data name="Sponsor2021" xml:space="preserve">
+    <value>&lt;p&gt;Si certifica che {0} {1} ({2}) è un &lt;b&gt;DONATORE&amp;nbsp;SPONSOR&lt;/b&gt; di CODEMOOC&amp;nbsp;NET, avendo partecipato con un contribuito non inferiore a 1000&amp;nbsp;Euro alla &lt;a href="https://www.produzionidalbasso.com/project/codemooc-net-2021/"&gt;campagna di crowdfuding&lt;/a&gt; lanciata per il 2021 dall’Associazione di Promozione Sociale e Culturale “CODEMOOC&amp;nbsp;NET” per azioni di promozione del pensiero computazionale e del coding a scuola.&lt;/p&gt;</value>
   </data>
 </root>

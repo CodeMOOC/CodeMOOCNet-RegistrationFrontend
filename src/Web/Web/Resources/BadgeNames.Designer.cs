@@ -79,6 +79,15 @@ namespace CodeMooc.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sostenitore Gold.
+        /// </summary>
+        public static string GoldPatron2021 {
+            get {
+                return ResourceManager.GetString("GoldPatron2021", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Socio 2019.
         /// </summary>
         public static string Member2019 {
@@ -93,6 +102,15 @@ namespace CodeMooc.Web.Resources {
         public static string Member2020 {
             get {
                 return ResourceManager.GetString("Member2020", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Socio 2021.
+        /// </summary>
+        public static string Member2021 {
+            get {
+                return ResourceManager.GetString("Member2021", resourceCulture);
             }
         }
         
@@ -115,6 +133,15 @@ namespace CodeMooc.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sostenitore.
+        /// </summary>
+        public static string Patron2021 {
+            get {
+                return ResourceManager.GetString("Patron2021", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Donatore Sponsor.
         /// </summary>
         public static string Sponsor2019 {
@@ -129,6 +156,15 @@ namespace CodeMooc.Web.Resources {
         public static string Sponsor2020 {
             get {
                 return ResourceManager.GetString("Sponsor2020", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Donatore Sponsor.
+        /// </summary>
+        public static string Sponsor2021 {
+            get {
+                return ResourceManager.GetString("Sponsor2021", resourceCulture);
             }
         }
     }
