@@ -43,6 +43,9 @@ import-db: confirmation
 .PHONY: up
 up:
 	${DC} up -d web
+ifeq ($(MODE),prod)
+	${DC} up -d timer
+endif
 	${DC} ps
 	@echo
 	@echo 'Service is now up'
