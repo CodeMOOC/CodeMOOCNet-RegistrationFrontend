@@ -47,19 +47,8 @@ foreach ($donators as $donator) {
 }
 append_to_log("$donorUpsertCount processed.");
 
-// Get list of users that have to receive association badge
-/*$associateUsers = DbConnection::GetContributorsWithoutAssociationBadge($conn);
-echo "Found " . count($associateUsers) . " donors without association badge..." . PHP_EOL;
-
-foreach($associateUsers as $email)
-{
-    $badgeType = Badges::ISCRIZIONE_2019;
-    launchBadgeAssigner($assignBadge, $conn, $email, $badgeType);
-}
-echo "...done." . PHP_EOL;*/
-
 // Get all donations
-$donors = DbConnection::GetAllContributorsForYear($conn, '2020');
+$donors = DbConnection::GetAllContributorsForYear($conn, '2021');
 if($donors === false)
 {
     die("Couldn't get donor list");
@@ -72,7 +61,7 @@ foreach ($donors as $donor)
     // Get donation type
     $amount = $donor['Amount'];
     $donorEmail = $donor['Email'];
-    $badges = DbConnection::GetContributorBadgesForYear($conn, $donorEmail, '2020');
+    $badges = DbConnection::GetContributorBadgesForYear($conn, $donorEmail, '2021');
 
     if($amount < 20) {
         if(count($badges) > 0) {
@@ -82,17 +71,17 @@ foreach ($donors as $donor)
     }
 
     if(!in_array('Iscrizione', $badges)) {
-        launchBadgeAssigner($assignBadge, $conn, $donorEmail, 'Iscrizione', 'socio/2020', 'y0KPBhtPT5K6DH8vpxLCNg');
+        launchBadgeAssigner($assignBadge, $conn, $donorEmail, 'Iscrizione', 'socio/2021', '5fa4604d33e12a00752f934c');
     }
 
     if($amount >= 1000 && !in_array('DonatoreSponsor', $badges)) {
-        launchBadgeAssigner($assignBadge, $conn, $donorEmail, 'DonatoreSponsor', 'sponsor/2020', 'ubQoQa8eSXWRV0R_eLN7wA');
+        launchBadgeAssigner($assignBadge, $conn, $donorEmail, 'DonatoreSponsor', 'sponsor/2021', '5fa4635bf6731e70e1b574ca');
     }
     else if($amount >= 100 && !in_array('SostenitoreGold', $badges)) {
-        launchBadgeAssigner($assignBadge, $conn, $donorEmail, 'SostenitoreGold', 'sostenitoregold/2020', 'X5ZR6AmsTQ-VdshdLPirfQ');
+        launchBadgeAssigner($assignBadge, $conn, $donorEmail, 'SostenitoreGold', 'sostenitoregold/2021', '5fa4632933e12a00752f95a7');
     }
     else if($amount >= 50 && !in_array('Sostenitore', $badges)) {
-        launchBadgeAssigner($assignBadge, $conn, $donorEmail, 'Sostenitore', 'sostenitore/2020', 'Vx2oxvqiTXCSfnGlTlRDRw');
+        launchBadgeAssigner($assignBadge, $conn, $donorEmail, 'Sostenitore', 'sostenitore/2021', '5fa462e433e12a00752f952b');
     }
 }
 append_to_log("...done.");
