@@ -1,11 +1,13 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using CodeMooc.Web.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -131,6 +133,13 @@ namespace CodeMooc.Web {
                     await next.Invoke();
                 });
             }
+
+            // Enable forwarded headers within Docker local networks
+            var forwardOptions = new ForwardedHeadersOptions {
+                ForwardedHeaders = ForwardedHeaders.All
+            };
+            forwardOptions.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("172.20.0.1"), 2));
+            app.UseForwardedHeaders(forwardOptions);
 
             app.UseRouting();
 
