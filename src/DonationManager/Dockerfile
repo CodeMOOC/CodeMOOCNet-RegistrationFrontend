@@ -1,4 +1,4 @@
-FROM composer:1.8.0
+FROM composer:1.10
 
 # Install PHP extensions
 RUN apk add --no-cache freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev && \
