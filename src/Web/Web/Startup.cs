@@ -51,14 +51,13 @@ namespace CodeMooc.Web {
                 opts.LogoutPath = "/login/logout";
                 opts.ReturnUrlParameter = "proceed";
                 opts.AccessDeniedPath = "/login/unauthorized";
-                opts.ExpireTimeSpan = TimeSpan.FromDays(30);
+                opts.ExpireTimeSpan = TimeSpan.FromDays(90);
                 opts.SlidingExpiration = true;
                 opts.Cookie = new CookieBuilder {
-                    Domain = "codemooc.net",
                     IsEssential = true,
                     Name = "CodeMOOCLogin",
-                    SecurePolicy = CookieSecurePolicy.None,
-                    SameSite = SameSiteMode.None,
+                    SecurePolicy = CookieSecurePolicy.Always,
+                    SameSite = SameSiteMode.Strict,
                     HttpOnly = true
                 };
             });
