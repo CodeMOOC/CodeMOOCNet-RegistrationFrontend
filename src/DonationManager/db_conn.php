@@ -138,11 +138,11 @@ class DbConnection
      * @param $donator Donator
      * @return bool
      */
-    static function InsertDonator($conn, $donator)
+    static function InsertDonor($conn, $donator, $year)
     {
         try {
             $sql = "REPLACE INTO Donations (Name, Surname, Email, Year, Amount)
-                    VALUES ('" . $conn->real_escape_string($donator->name) . "', '" . $conn->real_escape_string($donator->surname) . "', '" . $conn->real_escape_string($donator->email) . "', '2020', $donator->donation);";
+                    VALUES ('" . $conn->real_escape_string($donator->name) . "', '" . $conn->real_escape_string($donator->surname) . "', '" . $conn->real_escape_string($donator->email) . "', '" . $year . "', $donator->donation);";
 
             $result = $conn->query($sql);
             return true;

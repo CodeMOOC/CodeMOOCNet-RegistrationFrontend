@@ -42,7 +42,7 @@ if($assignBadge->isDryRun()) {
 append_to_log("Updating donor DB... ");
 $donorUpsertCount = 0;
 foreach ($donators as $donator) {
-    DbConnection::InsertDonator($conn, $donator);
+    DbConnection::InsertDonor($conn, $donator, '2021');
     $donorUpsertCount++;
 }
 append_to_log("$donorUpsertCount processed.");
