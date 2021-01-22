@@ -158,10 +158,10 @@ class DbConnection
      * @param $badgeInfo
      * @return bool
      */
-    static function InsertAssignedBadge($conn, $email, $token, $type)
+    static function InsertAssignedBadge($conn, $email, $token, $type, $year)
     {
         try {
-            $sql = "INSERT INTO `Badges` (`Email`, `Type`, `Year`, `IssueTimestamp`, `EvidenceToken`) VALUES ('" . $conn->real_escape_string($email) . "', '$type', '2020', NOW(), '$token')";
+            $sql = "INSERT INTO `Badges` (`Email`, `Type`, `Year`, `IssueTimestamp`, `EvidenceToken`) VALUES ('" . $conn->real_escape_string($email) . "', '$type', '$year', NOW(), '$token')";
 
             $conn->query($sql);
             return true;

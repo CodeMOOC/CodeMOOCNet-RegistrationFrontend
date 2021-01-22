@@ -71,17 +71,17 @@ foreach ($donors as $donor)
     }
 
     if(!in_array('Iscrizione', $badges)) {
-        launchBadgeAssigner($assignBadge, $conn, $donorEmail, 'Iscrizione', 'socio/2021', '5fa4604d33e12a00752f934c');
+        launchBadgeAssigner($assignBadge, $conn, $donorEmail, 'Iscrizione', '2021', 'socio/2021', '5fa4604d33e12a00752f934c');
     }
 
     if($amount >= 1000 && !in_array('DonatoreSponsor', $badges)) {
-        launchBadgeAssigner($assignBadge, $conn, $donorEmail, 'DonatoreSponsor', 'sponsor/2021', '5fa4635bf6731e70e1b574ca');
+        launchBadgeAssigner($assignBadge, $conn, $donorEmail, 'DonatoreSponsor', '2021', 'sponsor/2021', '5fa4635bf6731e70e1b574ca');
     }
     else if($amount >= 100 && !in_array('SostenitoreGold', $badges)) {
-        launchBadgeAssigner($assignBadge, $conn, $donorEmail, 'SostenitoreGold', 'sostenitoregold/2021', '5fa4632933e12a00752f95a7');
+        launchBadgeAssigner($assignBadge, $conn, $donorEmail, 'SostenitoreGold', '2021', 'sostenitoregold/2021', '5fa4632933e12a00752f95a7');
     }
     else if($amount >= 50 && !in_array('Sostenitore', $badges)) {
-        launchBadgeAssigner($assignBadge, $conn, $donorEmail, 'Sostenitore', 'sostenitore/2021', '5fa462e433e12a00752f952b');
+        launchBadgeAssigner($assignBadge, $conn, $donorEmail, 'Sostenitore', '2021', 'sostenitore/2021', '5fa462e433e12a00752f952b');
     }
 }
 append_to_log("...done.");
@@ -137,7 +137,7 @@ append_to_log("All done.");
  * @param $email
  * @param $badgeType
  */
-function launchBadgeAssigner($assignBadge, $conn, $email, $badgeName, $evidenceUrlPath, $badgrBadgeID)
+function launchBadgeAssigner($assignBadge, $conn, $email, $badgeName, $badgeYear, $evidenceUrlPath, $badgrBadgeID)
 {
     global $generated_badge_list;
 
@@ -153,7 +153,7 @@ function launchBadgeAssigner($assignBadge, $conn, $email, $badgeName, $evidenceU
 
     if(!$assignBadge->isDryRun()) {
         // Update Badges table in DB
-        $res = DbConnection::InsertAssignedBadge($conn, $email, $token, $badgeName);
+        $res = DbConnection::InsertAssignedBadge($conn, $email, $token, $badgeName, $badgeYear);
         if($res === false) {
             append_to_log("Error inserting $badgeName in DB for $email");
             return;
