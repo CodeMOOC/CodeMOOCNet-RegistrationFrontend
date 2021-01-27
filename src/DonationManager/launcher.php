@@ -144,7 +144,7 @@ function launchBadgeAssigner($assignBadge, $conn, $email, $badgeName, $badgeYear
     $token = SaltyHasher::hash();
     $evidence = "https://codemooc.net/badge/$evidenceUrlPath/evidence/$token";
     $result = $assignBadge->issueBadge($email, $evidence, $badgrBadgeID);
-    if($result === false) {
+    if($result === false || !$result['status']['success']) {
         append_to_log("Error assigning $badgeName to $email");
         return;
     }

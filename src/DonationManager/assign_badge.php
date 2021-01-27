@@ -29,6 +29,7 @@ class AssignBadge
         {
             $this->client = $cl;
             $this->authToken = $auth["token"];
+            echo 'Using auth token: ' . $this->authToken . PHP_EOL;
         }
         else
         {
@@ -84,7 +85,7 @@ class AssignBadge
             // Close request to clear up some resources
             curl_close($curl);
 
-            return $resp;
+            return json_decode($resp, true);
         }
         catch (Exception $e)
         {
