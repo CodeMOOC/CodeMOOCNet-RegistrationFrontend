@@ -70,18 +70,20 @@ foreach ($donors as $donor)
         continue;
     }
 
+    // WARNING: when updating badge IDs, check for correct ID (not MongoDB-style IDs!) 🚨
+
     if(!in_array('Iscrizione', $badges)) {
-        launchBadgeAssigner($assignBadge, $conn, $donorEmail, 'Iscrizione', '2021', 'socio/2021', '5fa4604d33e12a00752f934c');
+        launchBadgeAssigner($assignBadge, $conn, $donorEmail, 'Iscrizione', '2021', 'socio/2021', 'aHUuFKcAQ_OYGoHJJcvKJg');
     }
 
     if($amount >= 1000 && !in_array('DonatoreSponsor', $badges)) {
-        launchBadgeAssigner($assignBadge, $conn, $donorEmail, 'DonatoreSponsor', '2021', 'sponsor/2021', '5fa4635bf6731e70e1b574ca');
+        launchBadgeAssigner($assignBadge, $conn, $donorEmail, 'DonatoreSponsor', '2021', 'sponsor/2021', 'I68nUBXKTRC8EOec6C1vwQ');
     }
     else if($amount >= 100 && !in_array('SostenitoreGold', $badges)) {
-        launchBadgeAssigner($assignBadge, $conn, $donorEmail, 'SostenitoreGold', '2021', 'sostenitoregold/2021', '5fa4632933e12a00752f95a7');
+        launchBadgeAssigner($assignBadge, $conn, $donorEmail, 'SostenitoreGold', '2021', 'sostenitoregold/2021', 'BQg_Fv8VTnOFVns0wChU-A');
     }
     else if($amount >= 50 && !in_array('Sostenitore', $badges)) {
-        launchBadgeAssigner($assignBadge, $conn, $donorEmail, 'Sostenitore', '2021', 'sostenitore/2021', '5fa462e433e12a00752f952b');
+        launchBadgeAssigner($assignBadge, $conn, $donorEmail, 'Sostenitore', '2021', 'sostenitore/2021', 'LM-Ho_4tTcqtLIpd5n7p8Q');
     }
 }
 append_to_log("...done.");
