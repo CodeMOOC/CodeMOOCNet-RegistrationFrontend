@@ -63,16 +63,16 @@ namespace CodeMooc.Web.Controllers {
                          select r)
                          .Include(r => r.Emails);
 
-            var donations = (from b in Database.Badges
-                             where b.Type == BadgeType.Member
-                             where b.Year.Year == year
-                             select b)
-                             .ToDictionary(b => b.Email);
+            var badgeEmails = (from b in Database.Badges
+                               where b.Year.Year == year
+                               select b.Email)
+                               .Distinct()
+                               .ToHashSet();
 
             var sb = new StringBuilder();
             sb.AppendLine("# ID, Name, Surname, FiscalCode, Category, RegisteredOn, Confirmed, PrimaryMail");
             foreach(var u in users) {
-                if(!u.Emails.Any(e => donations.ContainsKey(e.Address))) {
+                if(!u.Emails.Any(e => badgeEmails.Contains(e.Address))) {
                     // No e-mail matches membership badge
                     continue;
                 }
